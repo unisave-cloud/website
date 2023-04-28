@@ -1,0 +1,12 @@
+{
+  "name": "@unisave/parcel-transformer-website",
+  "private": true,
+  "version": "0.0.0",
+  "engines": {
+    "parcel": "2.x"
+  },
+  "dependencies": {
+    "@parcel/plugin": "^2.8.3",
+    "marked": "^4.3.0"
+  }
+}

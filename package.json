@@ -1,6 +1,8 @@
 {
-  "name": "unisave-website",
-  "version": "latest",
+  "name": "@unisave/website",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": ["packages/*"],
   "source": [
     "src/index.html"
   ],
@@ -10,6 +12,7 @@
     "build": "parcel build --public-url ./"
   },
   "devDependencies": {
+    "@unisave/parcel-transformer-website": "file:packages/parcel-transformer-website",
     "parcel": "^2.8.3"
   }
 }
