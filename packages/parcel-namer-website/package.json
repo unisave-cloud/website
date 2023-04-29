@@ -1,5 +1,5 @@
 {
-  "name": "@unisave/parcel-transformer-website",
+  "name": "@unisave/parcel-namer-website",
   "private": true,
   "version": "0.0.0",
   "engines": {
@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "@parcel/plugin": "^2.8.3",
-    "marked": "^4.3.0",
-    "js-yaml": "^4.1.0"
+    "@parcel/utils": "^2.8.3"
   }
 }

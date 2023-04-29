@@ -4,5 +4,9 @@
     // "*.html": ["@unisave/parcel-transformer-website/partials"],
     "*.md": ["@unisave/parcel-transformer-website/md"],
     "sitemap.txt": ["@unisave/parcel-transformer-website/sitemap"]
+  },
+  "namers": ["@unisave/parcel-namer-website/html", "..."],
+  "packagers": {
+    "sitemap.txt": "@unisave/parcel-packager-website/sitemap"
   }
 }

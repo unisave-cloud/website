@@ -2,8 +2,11 @@
   "name": "@unisave/website",
   "private": true,
   "version": "0.0.0",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "source": [
+    "src/sitemap.txt",
     "src/index.html"
   ],
   "browserslist": "> 0.5%, last 2 versions, not dead",
@@ -12,6 +15,7 @@
     "build": "parcel build --public-url ./"
   },
   "devDependencies": {
+    "@unisave/parcel-namer-website": "file:packages/parcel-namer-website",
     "@unisave/parcel-transformer-website": "file:packages/parcel-transformer-website",
     "parcel": "^2.8.3"
   }

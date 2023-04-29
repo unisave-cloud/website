@@ -1,5 +1,5 @@
 # Navigation
 
-- [Installation](installation.md)
+- [Installation](installation)
 - Lorem
 - Ipsum
