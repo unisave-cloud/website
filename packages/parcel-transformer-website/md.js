@@ -1,38 +1,6 @@
 const { Transformer } = require("@parcel/plugin");
-const { marked } = require("marked");
 const path = require("path");
-const yaml = require("js-yaml");
-
-function parseMarkdownFile(contents) {
-  let yamlHeader = null;
-  let markdownBody = contents;
-  
-  if (contents.startsWith("---\n")) {
-    let i = contents.indexOf("---\n", 4);
-    if (i > 0) {
-      yamlHeader = contents.substring(4, i);
-      markdownBody = contents.substring(i + 4);
-    }
-  }
-  
-  const htmlBody = marked.parse(markdownBody);
-  const header = yamlHeader ? yaml.load(yamlHeader) : {};
-
-  const articlePage = {
-    header: header,
-
-    title: header.title || "Untitled article",
-    url: header.url || "untitled-article",
-    tags: header.tags || [],
-    author: header.author || null,
-    date: header.date || null
-  };
-
-  return {
-    htmlBody,
-    articlePage
-  }
-}
+const ArticlePage = require("./src/ArticlePage");
 
 exports.default = new Transformer({
   async transform({ asset, options }) {
@@ -44,9 +12,11 @@ exports.default = new Transformer({
 
     asset.invalidateOnFileChange(templatePath);
 
-    const { htmlBody, articlePage } = parseMarkdownFile(
+    const page = new ArticlePage(
       await asset.getCode()
     );
+    const htmlBody = page.buildOutputHtml();
+    const articlePage = page.buildArticlePageMeta();
 
     const pageHtml = templateHtml.replace("@docBody", htmlBody);
     
