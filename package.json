@@ -7,7 +7,8 @@
   ],
   "source": [
     "src/sitemap.txt",
-    "src/index.html"
+    "src/index.html",
+    "src/lunr-index.json"
   ],
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {

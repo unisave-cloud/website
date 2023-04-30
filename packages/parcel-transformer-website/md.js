@@ -3,8 +3,36 @@ const { marked } = require("marked");
 const path = require("path");
 const yaml = require("js-yaml");
 
-// Take a look at: (yaml header separation)
-// https://github.com/j201/meta-marked/blob/master/lib/meta-marked.js
+function parseMarkdownFile(contents) {
+  let yamlHeader = null;
+  let markdownBody = contents;
+  
+  if (contents.startsWith("---\n")) {
+    let i = contents.indexOf("---\n", 4);
+    if (i > 0) {
+      yamlHeader = contents.substring(4, i);
+      markdownBody = contents.substring(i + 4);
+    }
+  }
+  
+  const htmlBody = marked.parse(markdownBody);
+  const header = yamlHeader ? yaml.load(yamlHeader) : {};
+
+  const articlePage = {
+    header: header,
+
+    title: header.title || "Untitled article",
+    url: header.url || "untitled-article",
+    tags: header.tags || [],
+    author: header.author || null,
+    date: header.date || null
+  };
+
+  return {
+    htmlBody,
+    articlePage
+  }
+}
 
 exports.default = new Transformer({
   async transform({ asset, options }) {
@@ -16,12 +44,15 @@ exports.default = new Transformer({
 
     asset.invalidateOnFileChange(templatePath);
 
-    const markdown = await asset.getCode();
-    const markdownHtml = marked.parse(markdown);
+    const { htmlBody, articlePage } = parseMarkdownFile(
+      await asset.getCode()
+    );
 
-    const html = templateHtml.replace("@docBody", markdownHtml);
+    const pageHtml = templateHtml.replace("@docBody", htmlBody);
+    
+    asset.setCode(pageHtml);
 
-    asset.setCode(html);
+    asset.meta.articlePage = articlePage;
 
     return [asset];
   }

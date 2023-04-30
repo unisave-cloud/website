@@ -3,10 +3,12 @@
   "transformers": {
     // "*.html": ["@unisave/parcel-transformer-website/partials"],
     "*.md": ["@unisave/parcel-transformer-website/md"],
-    "sitemap.txt": ["@unisave/parcel-transformer-website/sitemap"]
+    "sitemap.txt": ["@unisave/parcel-transformer-website/sitemap"],
+    "lunr-index.json": ["@unisave/parcel-transformer-website/lunr-index"]
   },
   "namers": ["@unisave/parcel-namer-website/html", "..."],
   "packagers": {
-    "sitemap.txt": "@unisave/parcel-packager-website/sitemap"
+    "sitemap.txt": "@unisave/parcel-packager-website/sitemap",
+    "lunr-index.json": "@unisave/parcel-packager-website/lunr-index"
   }
 }
