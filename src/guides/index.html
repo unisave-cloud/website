@@ -1,17 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <title>Unisave Guides</title>
+  <INCLUDE src="../partials/common-head.html"/>
+  
+  <link rel="stylesheet" href="../partials/navigation/navigation.scss">
+  <link rel="stylesheet" href="../partials/content.scss">
+
+  <link rel="stylesheet" href="./_template/guide.scss">
+  
+  <title>Guides - Unisave</title>
 </head>
 <body>
-  <a href="/">home</a>
 
-  <h1>Unisave Guides</h1>
+  <INCLUDE src="../partials/navigation/navigation.html"/>
 
-  <a href="guides/public-guide">public-guide</a>
+  <div class="guide-hero-container">
+    <div class="guide-hero">
+      <h1>How to store player data online with Unity</h1>
+      <div class="guide-author">Jiří Mayer</div>
+      <div class="guide-dates">
+        Published on May 1, 2023
+        &nbsp; • &nbsp; Updated on May 1, 2023
+        &nbsp; • &nbsp; 5 min read
+      </div>
+      <div class="guide-tags">
+        <a class="guide-tag" href="#">Getting Started</a>
+        <a class="guide-tag" href="#">Facets</a>
+        <a class="guide-tag" href="#">Entities</a>
+      </div>
+    </div>
+  </div>
 
-  <a href="guides/secret-guide">secret-guide</a>
+  <div class="content" style="width: 650px; margin: 0 auto;">
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores quos laudantium quasi ipsam rem sit, optio fugit doloribus neque. Iure debitis blanditiis perferendis delectus nisi dolorem adipisci unde, officiis vitae.</p>
+
+    <h2>Introduction</h2>
+    <p>Today, most games offer at least some multiplayer features (e.g. leaderboards) and these require storage of data online. The part of a game responsible for online data is called the game backend.</p>
+
+    <p>This guide shows you, how to use Unisave (a game backend service) for storing information about your players (inventory, achievements, analytics).</p>
+
+    <h2>Prerequisites</h2>
+    
+    <p>In order to follow along with this guide, you'll need to have Unisave set up in your game. You can set up an account and download the open-source Unity asset for free. Read the installation documentation page for more instructions.</p>
+
+    <a href="guides/public-guide">public-guide</a>
+    <a href="guides/secret-guide">secret-guide</a>
+  </div>
 
 </body>
 </html>

@@ -1,0 +1,71 @@
+@import "../../partials/variables";
+
+// body:before {
+//   content: "";
+//   position: absolute;
+//   display: block;
+//   z-index: -50;
+//   top: 0;
+//   width: 100%;
+//   height: 300px;
+//   background-color: #fff6de;
+// }
+
+.guide-hero-container {
+  // border-top: 1px solid $color-gray-light;
+  background: linear-gradient(#fff6de, white);
+
+  box-shadow: inset 0px 20px 5px -20px #0000002b;
+}
+
+.guide-hero {
+  padding-top: 100px;
+  margin: 0 auto;
+  max-width: 864px;
+
+  padding-bottom: 100px;
+
+  text-align: center;
+
+  h1 {
+    margin: 0;
+    margin-bottom: 20px;
+    padding: 0;
+
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-58;
+  }
+}
+
+.guide-author, .guide-dates {
+  margin: 0;
+  margin-bottom: 10px;
+
+  color: $color-text-body;
+  font-family: $font-family;
+  font-weight: $font-weight-regular;
+  font-size: $font-size-16;
+}
+
+.guide-tags {
+  margin-top: 15px;
+  display: block;
+  word-spacing: 10px;
+
+  .guide-tag {
+    display: inline-block;
+    word-spacing: normal;
+    padding: 4px 8px;
+    
+    border-radius: 3px;
+    // border-radius: 20px;
+    background: $color-primary-light;
+
+    color: #835f00;
+    font-family: $font-family;
+    font-size: $font-size-16;
+    text-decoration: none;
+  }
+}
