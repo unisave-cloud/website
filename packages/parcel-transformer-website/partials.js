@@ -3,7 +3,7 @@ const fs = require('fs/promises');
 const path = require('path');
 
 async function resolveIncludeDirectives(filePath, originalCode) {
-  const regex = /@include\(["']([a-zA-Z0-9\/\-_.]*)["']\)/g;
+  const regex = /\<INCLUDE src\=["']([a-zA-Z0-9\/\-_.]*)["'] ?\/\>/g;
   const resolvedCode = [];
   const dependencyPaths = [];
   

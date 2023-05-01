@@ -1,0 +1,59 @@
+////////////
+// Layout //
+////////////
+
+$spacing-8: 8px;
+$spacing-16: 16px;
+$spacing-32: 32px;
+
+
+////////////////
+// Typography //
+////////////////
+
+$font-family: "Fira Sans", sans-serif;
+
+$font-size-16: 16px;
+$font-size-18: 18px;
+$font-size-20: 20px;
+// ???
+$font-size-48: 48px;
+$font-size-58: 58px;
+$font-size-64: 64px;
+
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+
+////////////
+// Colors //
+////////////
+
+// primary
+
+$color-primary-900: #483400; // primary colored text
+$color-primary-700: #b67300;
+$color-primary-500: #fbbf24; // THE primary color (text, accents, buttons)
+$color-primary-300: #fccc50; // glare over primary (lighetend accent)
+$color-primary-100: #fddf92; // tag background
+
+$color-primary-dark:    $color-primary-900;
+$color-primary-darker:  $color-primary-700;
+$color-primary:         $color-primary-500;
+$color-primary-lighter: $color-primary-300;
+$color-primary-light:   $color-primary-100;
+
+// gray
+
+$color-gray-800: #353535; // THE gray (logo, heading text)
+$color-gray-600: #616161; // regular text color
+$color-gray-100: #e8e8e8; // light background objects
+
+$color-gray:         $color-gray-800; 
+$color-gray-lighter: $color-gray-600;
+$color-gray-light:   $color-gray-100;
+
+$color-text-heading:      $color-gray-600;
+$color-text-body:         $color-gray-600;
+$color-text-over-primary: $color-primary-900;

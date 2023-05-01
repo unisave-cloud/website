@@ -1,0 +1,155 @@
+@import "../_variables.scss";
+
+$breakpoint-mobile: 950px;
+$nav-font-size: $font-size-18;
+
+.nav {
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: stretch;
+
+  height: 120px;
+
+  @media (max-width: $breakpoint-mobile) {
+    flex-direction: column;
+    height: auto;
+  }
+}
+
+//////////////
+// Nav Head //
+//////////////
+
+.nav-head {
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo {
+  display: block;
+  padding: 32px 0;
+  flex: 1;
+}
+
+.nav-burger {
+  display: none;
+
+  @media (max-width: $breakpoint-mobile) {
+    display: flex;
+  }
+
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  cursor: pointer;
+
+  span {
+    display: block;
+    width: 35px;
+    height: 2px;
+    margin: 5px 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: $color-text-body;
+  }
+}
+
+
+//////////////
+// Nav Body //
+//////////////
+
+.nav-body {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+
+  @media (max-width: $breakpoint-mobile) {
+    flex-direction: column;
+    align-items: stretch;
+
+    &.mobile-hidden {
+      display: none;
+    }
+  }
+}
+
+.nav-link, .nav-button {
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-link {
+  padding-right: $spacing-32;
+
+  a {
+    display: block;
+    position: relative;
+
+    color: $color-text-body;
+    text-decoration: none;
+
+    font-size: $nav-font-size;
+    font-family: $font-family;
+    font-weight: $font-weight-regular;
+
+    &:hover {
+      color: $color-text-over-primary;
+
+      text-decoration: underline;
+      text-decoration-color: $color-primary;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+    }
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    padding: 0;
+
+    a {
+      padding: $spacing-8 0;
+    }
+  }
+}
+
+.nav-button {
+  a {
+    display: block;
+    position: relative;
+
+    padding: $spacing-8 $spacing-16;
+    
+    color: $color-text-body;
+    text-decoration: none;
+
+    font-size: $nav-font-size;
+    font-family: $font-family;
+    font-weight: $font-weight-regular;
+
+    border: 2px solid $color-primary;
+    border-radius: 3px;
+
+    &:hover {
+      color: $color-text-over-primary;
+      background: $color-primary-lighter;
+      border-color: $color-primary-lighter;
+    }
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    text-align: center;
+
+    a {
+      margin: $spacing-8 0;
+      margin-top: $spacing-16;
+    }
+  }
+}

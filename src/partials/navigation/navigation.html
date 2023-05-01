@@ -1,0 +1,48 @@
+<script>
+  function toggleMobileNav() {
+    let menu = document.querySelector(".nav .nav-body");
+    menu.classList.toggle("mobile-hidden");
+  }
+</script>
+
+<!-- keeps max width on desktop -->
+<!-- does nothing on mobile -->
+<div class="container-padded">
+  
+  <nav class="nav">
+  
+    <!-- head is logo and mobile burger -->
+    <div class="nav-head">
+      <a class="nav-logo" href="/">
+        <img src="/src/partials/navigation/logo.svg" alt="Unisave Logo">
+      </a>
+      <a class="nav-burger" onclick="toggleMobileNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </a>
+    </div>
+
+    <!-- body are the links and the call to action button -->
+    <ul class="nav-body mobile-hidden">
+      <li class="nav-link">
+        <a href="pricing">Pricing</a>
+      </li>
+      <li class="nav-link">
+        <a href="guides">Guides</a>
+      </li>
+      <li class="nav-link">
+        <a href="docs">Documentation</a>
+      </li>
+      <li class="nav-link">
+        <a href="login">Login</a>
+      </li>
+
+      <li class="nav-button">
+        <a href="register">Create Account</a>
+      </li>
+    </ul>
+
+  </nav>
+
+</div>
