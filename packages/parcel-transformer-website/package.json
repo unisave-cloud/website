@@ -9,6 +9,7 @@
     "@parcel/plugin": "^2.8.3",
     "marked": "^4.3.0",
     "js-yaml": "^4.1.0",
-    "node-html-parser": "^6.1.5"
+    "node-html-parser": "^6.1.5",
+    "glob": "^10.2.2"
   }
 }

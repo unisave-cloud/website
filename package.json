@@ -8,7 +8,8 @@
   "source": [
     "src/sitemap.txt",
     "src/index.html",
-    "src/lunr-index.json"
+    "src/lunr-index.json",
+    "src/docs/index.html"
   ],
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {

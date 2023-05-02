@@ -1,6 +1,8 @@
 const { marked } = require("marked");
 const yaml = require("js-yaml");
 const { parse: parseHtml } = require("node-html-parser");
+const TextualContent = require("./TextualContent");
+const renderGuideDates = require("./renderGuideDates");
 
 class ArticlePage {
   constructor(contents) {
@@ -14,14 +16,13 @@ class ArticlePage {
 
     this.domBody = parseHtml(this.htmlBody);
 
+    this.textualContent = new TextualContent(this.domBody);
+
     // TODO: extract ToC
 
-    // TODO: extract lunr headings, sections and build the index
+    // TODO: build the lunr index
 
-    // TODO: render given template by replacing keyword terms
-
-    this.addHeaderAnchors();
-    this.addTitle();
+    this.formatHeadings();
   }
 
   parseYamlHeader() {
@@ -35,7 +36,7 @@ class ArticlePage {
     }
   }
 
-  addHeaderAnchors() {
+  formatHeadings() {
     const headers = this.domBody.querySelectorAll("h2, h3, h4");
 
     for (const header of headers) {
@@ -45,22 +46,33 @@ class ArticlePage {
     }
   }
 
-  addTitle() {
-    const title = this.header.title;
+  buildOutputHtml(templateHtml) {
+    const articleBody = this.domBody.outerHTML;
+
+    const meta = this.buildArticlePageMeta();
     
-    if (!title)
-      return;
-
-    const firstNode = this.domBody.firstChild;
-    firstNode.replaceWith(
-      `<h1>${title}</h1>\n\n`,
-      firstNode
+    templateHtml = templateHtml.replaceAll(
+      `<ARTICLE_BODY/>`, articleBody
     );
-  }
+    templateHtml = templateHtml.replaceAll(
+      `<ARTICLE_TITLE_TEXT/>`, meta.title
+    );
+    templateHtml = templateHtml.replaceAll(
+      `<ARTICLE_TITLE_HTML/>`, meta.title.replaceAll("\n", "<br>")
+    );
+    templateHtml = templateHtml.replaceAll(
+      `<AUTHOR_NAME/>`, meta.author
+    );
 
-  buildOutputHtml() {
-    // TODO: render into a template
-    return this.domBody.outerHTML;
+    templateHtml = templateHtml.replaceAll(
+      `<GUIDE_DATES/>`, renderGuideDates(meta, this.textualContent)
+    );
+
+    // templateHtml = templateHtml.replaceAll(
+    //   `<TEXTUAL_CONTENT_DEBUG/>`, JSON.stringify(this.textualContent.sections, null, 2)
+    // );
+
+    return templateHtml;
   }
 
   buildArticlePageMeta() {
@@ -71,7 +83,8 @@ class ArticlePage {
       url: this.header.url || "untitled-article",
       tags: this.header.tags || [],
       author: this.header.author || null,
-      date: this.header.date || null
+      datePublished: this.header.datePublished || null,
+      dateUpdated: this.header.dateUpdated || null
     }
   }
 }

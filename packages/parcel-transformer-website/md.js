@@ -7,21 +7,32 @@ exports.default = new Transformer({
     
     asset.type = "html";
 
-    const templatePath = path.join(options.projectRoot, "src/docs/_template.html");
-    const templateHtml = await options.inputFS.readFile(templatePath, "utf-8");
+    // resolve template path
+    let templatePath = null;
+    const relativeFilePath = path.relative(options.projectRoot, asset.filePath);
+    if (relativeFilePath.startsWith("src/docs")) {
+      templatePath = path.join(options.projectRoot, "src/docs/_template/docs-template.html");
+    }
+    if (relativeFilePath.startsWith("src/guides")) {
+      templatePath = path.join(options.projectRoot, "src/guides/_template/guides-template.html");
+    }
+    if (templatePath === null) {
+      throw new Error(`Unknown template for file ${relativeFilePath}`);
+    }
 
+    // load template
+    const templateHtml = await options.inputFS.readFile(templatePath, "utf-8");
     asset.invalidateOnFileChange(templatePath);
 
+    // parse markdown page
     const page = new ArticlePage(
       await asset.getCode()
     );
-    const htmlBody = page.buildOutputHtml();
+    const pageHtml = page.buildOutputHtml(templateHtml);
     const articlePage = page.buildArticlePageMeta();
-
-    const pageHtml = templateHtml.replace("@docBody", htmlBody);
     
+    // update the parcel asset
     asset.setCode(pageHtml);
-
     asset.meta.articlePage = articlePage;
 
     return [asset];

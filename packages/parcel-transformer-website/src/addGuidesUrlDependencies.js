@@ -1,9 +1,12 @@
 const path = require('path');
+const { glob } = require("glob");
 
 async function addGuidesUrlDependencies(asset, projectRoot) {
-  const guideNames = (await asset.fs.readdir(
-    path.join(projectRoot, "src", "guides")
-  )).filter(n => n.endsWith(".md"));
+  const guideNames = (await glob(
+    path.join(projectRoot, "src/guides/**/*.md")
+  )).map(p => path.relative(
+    path.join(projectRoot, "src/guides"), p
+  ));
 
   const dependencyIds = guideNames.map(guideName => {
     asset.invalidateOnFileChange(

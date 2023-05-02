@@ -1,25 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <INCLUDE src="../../partials/common-head.html"/>
+  <INCLUDE src="/src/partials/common-head.html"/>
   
-  <link rel="stylesheet" href="../../partials/navigation/navigation.scss">
+  <link rel="stylesheet" href="/src/partials/navigation/navigation.scss">
+  <link rel="stylesheet" href="/src/partials/content.scss">
+
+  <link rel="stylesheet" href="/src/guides/_template/guides.scss">
   
-  <title>??? - Unisave</title>
+  <title><ARTICLE_TITLE_TEXT/> - Unisave</title>
 </head>
 <body>
 
-  <INCLUDE src="../../partials/navigation/navigation.html"/>
+  <INCLUDE src="/src/partials/navigation/navigation.html"/>
 
-  <h1>Unisave</h1>
+  <div class="guide-hero-container">
+    <div class="guide-hero">
+      <h1><ARTICLE_TITLE_HTML/></h1>
+      <div class="guide-author"><AUTHOR_NAME/></div>
+      <div class="guide-dates">
+        <GUIDE_DATES/>
+      </div>
 
-  @docBody
-  
-  <a href="sitemap.txt">sitemap</a>
+      <!-- Tags will be added in the future: -->
+      <!-- <div class="guide-tags">
+        <a class="guide-tag" href="#">Getting Started</a>
+        <a class="guide-tag" href="#">Facets</a>
+        <a class="guide-tag" href="#">Entities</a>
+      </div> -->
 
-  <a href="docs">documentation</a>
+    </div>
+  </div>
 
-  <a href="guides">guides</a>
+  <div class="content" style="width: 650px; margin: 0 auto;">
+    <ARTICLE_BODY/>
+  </div>
 
 </body>
 </html>
