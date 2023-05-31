@@ -48,7 +48,284 @@ A document is identified by its `_key`. It has to be unique within the collectio
 
 ## Writing data
 
+The following code can be used to insert new documents into a collection.
+
 ```cs
+using System;
+using UnityEngine;
+using Unisave.Heapstore;
+
+class MyController : MonoBehaviour
+{
+    public void LogEvent(string name)
+    {
+        this.Collection("events")
+            .Add(new Dictionary<string, object> {
+                ["name"] = name,
+                ["time"] = DateTime.UtcNow
+            });
+    }
+}
+```
+
+Notice the `using Unisave.Heapstore;` statement. It is needed for the `this.Collection(...)` method to be available.
+
+
+### Handling the response
+
+If you want to get the created document back and store it in a variable, you can define a `Then` callback to be called after the operation finishes.
+
+```cs
+using System;
+using UnityEngine;
+using Unisave.Heapstore;
+
+class MyController : MonoBehaviour
+{
+    public void LogEvent(string name)
+    {
+        Debug.Log("Storing event...");
+
+        this.Collection("events")
+            .Add(new Dictionary<string, object> {
+                ["name"] = name,
+                ["time"] = DateTime.UtcNow
+            })
+            .Then(document => {
+                Debug.Log(document);
+            });
+        
+        Debug.Log("End of the function.");
+    }
+}
+```
+
+Don't forget that the operation takes some time (around 0.1 seconds). The `Then` callback only registers the code to be called after the operation finishes. This code is called long after the function finishes. The log from the code above would be:
+
+```
+[18:16:55] Storing event...
+[18:16:55] End of the function.
+(~0.1 second pause)
+[18:16:56] {"name":"levelFinished","time":"2023-05-31T18:56:34.000Z"}
+```
+
+
+### Asynchronous programming
+
+> **TODO:** Asnyc-await description should be moved to a separate documentation page
+
+Using the `Then` callback might be ok for simple operations, but when you want to chain a series of operations, the code would get really messy:
+
+```cs
+void MyFunction()
+{
+    DoSomething()
+        .Then(a => {
+            DoSomething()
+                .Then(b => {
+                    DoSomething()
+                        .Then(c => {
+                            // oh, man!
+                        });
+                });
+        });
+}
+```
+
+What you really want is something like this:
+
+```cs
+void MyFunction()
+{
+    var a = DoSomething();
+    var b = DoSomething();
+    var c = DoSomething();
+}
+```
+
+Luckily, C# has the keywords `async` and `await` that let you write asynchronous code almost like the regular synchronous code you are used to. You just need to mark `MyFunction` to be an `async` (asynchronous) function and then `await` all the inner operations:
+
+```cs
+async void MyFunction()
+{
+    var a = await DoSomething();
+    var b = await DoSomething();
+    var c = await DoSomething();
+}
+```
+
+The C# compiler translates this to something very similar to the `Then` chain.
+
+> **Note:** If you are familiar with Unity coroutines, then think of `async void` like `IEnumerable` and similarly of `await` like `yield return`. Unity executes asynchronous functions just like coroutines, except that they cooperate better with C#.
+
+We can now rewrite our document inserting code to use `async-await`:
+
+```cs
+using System;
+using UnityEngine;
+using Unisave.Heapstore;
+
+class MyController : MonoBehaviour
+{
+    // /!\ async /!\
+    public async void LogEvent(string name)
+    {
+        Debug.Log("Storing event...");
+
+        //              /!\ await /!\
+        Document document = await this.Collection("events")
+            .Add(new Dictionary<string, object> {
+                ["name"] = name,
+                ["time"] = DateTime.UtcNow
+            });
+        
+        Debug.Log(document);
+        
+        Debug.Log("End of the function.");
+    }
+}
+```
+
+The log from the code above will be:
+
+```
+[18:16:55] Storing event...
+(~0.1 second pause inside 'await')
+[18:16:56] {"name":"levelFinished","time":"2023-05-31T18:56:34.000Z"}
+[18:16:56] End of the function.
+```
+
+When using Heapstore, it is common that you want to make a series of operations, one after the other. Say, fetching a document, reading its content, then fetching some other document. For this reason will the rest of this documentation use only the `async-await` approach.
+
+
+### Writing individual documents
+
+You can create or overwrite a document:
+
+```cs
+Document document = await this
+    .Collection("events")
+    .Document("john")
+    .Set(new Dictionary<string, object> {
+        ["name"] = "John Doe",
+        ["score"] = 42
+    });
+```
+
+You can modify a document you have downloaded earlier:
+
+```cs
+this.Document(document.Id)
+    .Set(new Dictionary<string, object> {
+        ["name"] = "John Doe",
+        ["score"] = 42
+    });
+```
+
+
+## Reading individual documents
+
+```cs
+// by knowing the ID
+Document document = await this
+    .Collection("players")
+    .Document("john")
+    .Get();
+
+// by knowing the ID directly
+Document document = await this
+    .Document("players/john")
+    .Get();
+```
+
+
+## Quick API showcase
+
+
+### Read a specific document
+
+```cs
+Document document = await this
+    .Collection("players")
+    .Document("john")
+    .Get();
+
+// alternatively
+Document document = await this
+    .Document("players/john")
+    .Get();
+
+Debug.Log(document.Collection); // "players"
+Debug.Log(document.Key); // "john"
+Debug.Log(document.Id); // "players/john"
+Debug.Log(document.Data); // JsonObject, e.g. {"score":42}
+```
+
+Convert to a custom class instance:
+
+```cs
+class MyPlayer
+{
+    public int score;
+}
+```
+
+```cs
+MyPlayer player = document.As<MyPlayer>();
+Debug.Log(player.score); // 42
+```
+
+
+### Insert a new document into collection
+
+```cs
+Document document = await this
+    .Collection("myCollection")
+    .Add(new Dictionary<string, object> {
+        ["foo"] = "bar"
+    });
+```
+
+
+### Set a document (create or overwrite)
+
+```cs
+Document writtenDoc = await this
+    .Document("players/john")
+    .Set(new Dictionary<string, object> {
+        ["score"] = 42
+    });
+```
+
+
+### Get all documents in a collection
+
+```cs
+List<Document> docs = await this
+    .Collection("players")
+    .Get();
+```
+
+
+### Filter documents
+
+```cs
+List<Document> docs = await this
+    .Collection("players")
+    .Filter("score", ">", 10)
+    .Get();
+```
+
+
+### Get the first document of a query
+
+```cs
+Document doc = await this
+    .Collection("players")
+    .Filter("email", "==", email)
+    .First();
+
+// null if no such document
 ```
 
 
