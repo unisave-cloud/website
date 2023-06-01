@@ -25,13 +25,13 @@ A database document is a [JSON](https://www.json.org/json-en.html) object, stori
 
 ```json
 {
-  "_id": "players/567349",
-  "_key": "567349",
-  "_rev": "_fJRP0i---",
-  "name": "John Doe",
-  "score": 42,
-  "isBanned": false,
-  "createdAt": "2023-05-31T08:21:40Z"
+    "_id": "players/567349",
+    "_key": "567349",
+    "_rev": "_fJRP0i---",
+    "name": "John Doe",
+    "score": 42,
+    "isBanned": false,
+    "registeredAt": "2023-05-31T08:21:40Z"
 }
 ```
 
@@ -359,3 +359,269 @@ Identifies a list of documents in the database. It can be used to retrive them f
 Represents the value of a query at a specific point in time. It conains extra metadata about changes from a possible previous snapshot. It is never `null`. Analogous to `DocumentSnapshot`, but for multiple documents. Implicitly castable to `List<DocumentSnapshot>`.
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Interacting with Heapstore `TODO`
+
+Use this.something from mono behaviours. Async, await, etc.
+
+
+## Working with a document
+
+A document is fully identified by its ID. We can use IDs to read and write specific documents. We can either get to a document in two steps, specifying a collection and the key, or in one step, specifying only the ID:
+
+```cs
+using System;
+using UnityEngine;
+using Unisave.Heapstore;
+
+class MyController : MonoBehaviour
+{
+    async void Start()
+    {
+        // specify collection and document key separately
+        var result = await this
+            .Collection("players")
+            .Document("john")
+            .DO_SOME_ACTION(); // Get, Set, Delete
+        
+        // or specify only the document ID
+        var result = await this
+            .Document("players/john")
+            .DO_SOME_ACTION(); // Get, Set, Delete
+        
+        Debug.Log(result);
+    }
+}
+```
+
+
+### Get
+
+To read a document, you use the `Get()` method:
+
+```cs
+Document document = await this
+    .Document("players/john")
+    .Get();
+```
+
+If the document does not exist, the method will return a `null`. If the document exists, the returned object can be used to retrieve the document contents.
+
+You can get the document metadata:
+
+```cs
+Debug.Log(document.Id); // "players/john"
+Debug.Log(document.Collection); // "players"
+Debug.Log(document.Key); // "john"
+```
+
+> **Note:** If the collection does not exist, it is treated like if the document did not exist and `null` is returned.
+
+
+### Converting document to custom type
+
+Imagine this is what the database document looks like:
+
+```json
+{
+    "_id": "players/john",
+    "_key": "john",
+    "_rev": "_fJRP0i---",
+    "name": "John Doe",
+    "score": 42,
+    "isBanned": false,
+    "registeredAt": "2023-05-31T08:21:40Z"
+}
+```
+
+The fetched document contains information about a player. You can define a `Player` class and convert the document into that class instance.
+
+```cs
+using System;
+using Unisave;
+
+class Player
+{
+    [SerializeAs("_id")]
+    public string id;
+
+    public string name;
+    public int score;
+    public bool isBanned;
+    public DateTime registeredAt;
+}
+```
+
+To convert the document, use the `As<T>()` method:
+
+```cs
+Document document = await this
+    .Document("players/john")
+    .Get();
+
+Player player = document.As<Player>();
+
+Debug.Log(player.name); // "John Doe"
+Debug.Log(player.id); // "players/john"
+```
+
+It is not necessary to specify the `id` field in the `Player` class, but it is useful if you want to later save the document, because for saving you need the document ID again.
+
+The `[SerializeAs("...")]` attribute lets you name the C# class fields differently than the JSON object fields.
+
+
+### Working with raw JSON data
+
+You can also work directly with the returned `Document` object and read and modify it as raw JSON. You can use the `Data` property that returns the document contents as a `JsonObject`:
+
+```cs
+Document document = await this
+    .Document("players/john")
+    .Get();
+
+// read
+string playerName = document.Data["name"];
+int playerScore = document.Data["score"];
+
+// modify
+document.Data["isBanned"] = true;
+```
+
+Unisave uses the [LightJson](https://github.com/MarcosLopezC/LightJson) library and the `JsonObject` allows data access and modification.
+
+The `Data` object does not contain the metadata fields, like `_id`, it contains only the user data.
+
+
+### Set
+
+To write a document to the database you use the `Set(...)` method:
+
+```cs
+Document storedDocument = await this
+    .Document("players/john")
+    .Set(new JsonObject {
+        ["name"] = "Johnny Doey",
+        ["score"] = 100
+    });
+```
+
+The `Set` method creates the document if it doesn't exist yet. Otherwise it replaces the existing document with the new content. This means that all other fields not specified in the `Set` method will be removed.
+
+> **Note:** If the collection does not exist, it gets automatically created.
+
+The method also returns the state of the document after the write operation finishes. This is useful if you need to get the new `_rev` (revision) value.
+
+The `Set` method accepts any value that can be serialized to a JSON object. This means you can use your custom `Player` class as well:
+
+```cs
+Player john = new Player {
+    name = "John Doe",
+    score = 100
+};
+
+await this
+    .Document("players/john")
+    .Set(john);
+```
+
+Special database fields (`_id`, `_key`) that would be present in the `Set` method body will be ignored. The true ID used is the ID passed to the `Document` method:
+
+```cs
+await this
+    .Document("players/john") // this one matters
+    .Set(new JsonObject {
+        ["_id"] = "players/peter", // ignored
+        ["name"] = "John"
+    });
+```
+
+
+### Update
+
+The method `Update` is similar to `Set`, but it updates only the fields that are provided and leaves the others untouched.
+
+```cs
+Document updatedDocument = await this
+    .Document("players/john")
+    .Set(new JsonObject {
+        ["name"] = "Johnny Doey"
+        // score and other fields stay untouched
+    });
+
+Debug.Log(updatedDocument.Data["score"]); // 42
+```
+
+If the document does not exist, it will be created with the specified fields.
+
+
+### Add
+
+So far, we only created documents with fixed IDs. While this might be useful sometimes, in most cases you want to generate document IDs dynamically and then look up documents dynamically by other fields (e.g. looking up players by emails or logins). When a new player registers, you want to generate a new, random ID for them. We can let the database generate the ID for us.
+
+The `Add` method lets you insert a new document into a collection.
+
+```cs
+Document peter = await this
+    .Collection("players")
+    .Add(new JsonObject {
+        ["name"] = "Peter",
+        ["score"] = 0
+    });
+
+Debug.Log(peter.Id); // "players/231687"
+```
+
+
+### Delete
+
+You can also delete a document by its ID, using the `Delete` method:
+
+```cs
+bool wasDeleted = await this
+    .Document("players/231687")
+    .Delete();
+
+Debug.Log(wasDeleted); // true
+```
+
+The method returns `true` if the document existed and was actually deleted. If the document didn't exist, then no action was performed and `false` is returned instead.
+
+
+## Document queries
+
+### Reading entire collection
+
+### Filter
+
+### Sort
+
+### Limit
+
+
+## Stuff to be figured out
+
+- security rules
+- collection creation & indexes
+- connectivity outage exceptions
+- offline mode
+- query listening
+- interop with entities (createdAt, updatedAt) and entities over any collection name
+- define a Unisave `AsyncOperation` instead of `FacetCall`
+- set/delete carefully that checks revisions and works only in online mode
