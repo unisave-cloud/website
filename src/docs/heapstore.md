@@ -655,3 +655,56 @@ Identifies a list of documents in the database. It can be used to retrive them f
 
 **`QuerySnapshot`**<br>
 Represents the value of a query at a specific point in time. It conains extra metadata about changes from a possible previous snapshot. It is never `null`. Analogous to `DocumentSnapshot`, but for multiple documents. Implicitly castable to `List<DocumentSnapshot>`.
+
+
+## Exception Codes
+
+Any Heapstore operation might throw a `Unisave.Heapstore.Backend.HeapstoreException`. This exception has the `ErrorNumber` integer value, that identifies what has gone wrong:
+
+
+### General errors
+
+**0 - ERROR_NO_ERROR**<br>
+No error has occured.
+
+**1 - ERROR_FAILED**<br>
+Will be raised when a general error occured.
+
+**2 - ERROR_INTERNAL**<br>
+Will be raised when an internal error occured.
+
+**3 - ERROR_FORBIDDEN**<br>
+Will be raised when you are missing permissions for the operation.
+
+**4 - ERROR_DISABLED**<br>
+Will be raised when the Heapstore system is disabled. Typically raised when you forget to enable uploading of the Heapstore backend folder.
+
+**5 - ERROR_CANNOT_CONNECT**<br>
+Will be raised when the server cannot be reached.
+
+**6 - ERROR_NOT_IMPLEMENTED**<br>
+Will be raised when the requested operation is not implemented.
+
+
+### Document API errors
+
+**1000 - ERROR_DOCUMENT_MISSING**<br>
+Will be raised when working with a document that does not exist (operations Get, Set, Update) and throwing is enabled. It is thrown either when the document does not exist, or the collection does not exist.
+
+**1001 - ERROR_COLLECTION_MISSING**<br>
+Will be raised when adding a document into a collection that does not exist (operation Add) and throwing is enabled.
+
+
+### Query API errors
+
+**2000 - ERROR_QUERY_...**
+
+
+### Query validation errors
+
+**2100 - ERROR_QUERY_...**
+
+
+### Security rules errors
+
+**3000 - ERROR_RULE_...**
