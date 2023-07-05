@@ -55,10 +55,20 @@ class TextualContent {
   countWords() {
     let words = 0;
 
-    // TODO: what about code blocks?
-    
-    for (let section of this.sections) {
-      words += section.content.split().length;
+    const text = this.domBody.innerText;
+    let inWord = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (c.toLowerCase() != c.toUpperCase()) {
+        // is letter
+        if (!inWord) {
+          inWord = true;
+          words += 1;
+        }
+      } else {
+        // is not a letter
+        inWord = false;
+      }
     }
 
     return words;

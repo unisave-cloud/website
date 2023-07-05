@@ -1,24 +1,12 @@
 @import "../../partials/variables";
 
-// body:before {
-//   content: "";
-//   position: absolute;
-//   display: block;
-//   z-index: -50;
-//   top: 0;
-//   width: 100%;
-//   height: 300px;
-//   background-color: #fff6de;
-// }
 
-.guide-hero-container {
-  // border-top: 1px solid $color-gray-light;
-  background: linear-gradient(#fff6de, white);
-
-  box-shadow: inset 0px 20px 5px -20px #0000002b;
-}
+////////////////
+// Guide Hero //
+////////////////
 
 .guide-hero {
+  position: relative;
   padding-top: 100px;
   margin: 0 auto;
   max-width: 864px;
@@ -36,6 +24,15 @@
     font-family: $font-family;
     font-weight: $font-weight-bold;
     font-size: $font-size-58;
+    line-height: 1.3;
+
+    em {
+      font-style: normal;
+      text-decoration: underline;
+      text-decoration-color: $color-primary;
+      text-underline-offset: 10px;
+      text-decoration-thickness: 5px;
+    }
   }
 }
 
@@ -49,23 +46,164 @@
   font-size: $font-size-16;
 }
 
-.guide-tags {
-  margin-top: 15px;
+.guide-hero-particles {
+  position: relative;
   display: block;
-  word-spacing: 10px;
+  z-index: -10;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+
+////////////////
+// Guide Body //
+////////////////
+
+$guide-sidebar-width: 225px;
+$guide-sidebar-space: 100px;
+
+.guide-body-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.guide-body-left {
+  margin: 0;
+  margin-right: $guide-sidebar-space;
+  width: $guide-sidebar-width;
+
+  nav {
+    position: sticky;
+    top: 50px;
+  }
+
+  h2 {
+    margin: $spacing-16 0;
+    margin-bottom: $spacing-32;
+
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-size: $font-size-16;
+    font-weight: $font-weight-medium;
+    letter-spacing: 1px;
+  }
+
+  ol {
+    list-style: disc;
+    color: $color-primary;
+    margin: 0;
+    padding: 0;
+    padding-left: $spacing-16;
+  }
+
+  a {
+    display: block;
+    margin: $spacing-16 0;
+    color: $color-text-body;
+    text-decoration: none;
+
+    font-family: $font-family;
+    font-size: $font-size-16;
+    font-weight: $font-weight-regular;
+
+    &:hover {
+      color: $color-text-heading;
+    }
+  }
+}
+
+.guide-body-center {
+  max-width: 650px;
+}
+
+.guide-body-right {
+  margin: 0;
+  margin-left: $guide-sidebar-space;
+  width: $guide-sidebar-width;
+}
+
+
+////////////////
+// Guide Tags //
+////////////////
+
+.guide-tags {
+  font-size: 0;
+
+  h2 {
+    margin: $spacing-16 0;
+
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-size: $font-size-16;
+    font-weight: $font-weight-medium;
+    letter-spacing: 1px;
+  }
 
   .guide-tag {
     display: inline-block;
-    word-spacing: normal;
     padding: 4px 8px;
+    margin-bottom: 8px;
+    margin-right: 8px;
     
     border-radius: 3px;
-    // border-radius: 20px;
     background: $color-primary-light;
 
     color: #835f00;
     font-family: $font-family;
-    font-size: $font-size-16;
+    font-size: $font-size-14;
     text-decoration: none;
+
+    // disable the link for now, since tag groups are not implemented
+    pointer-events: none;
+  }
+}
+
+
+/////////////////
+// Sales Pitch //
+/////////////////
+
+.sales-pitch {
+  border: 2px solid $color-primary;
+  // border-radius: 3px;
+  padding: $spacing-16;
+  margin-top: $spacing-32;
+
+  p {
+    margin: 0;
+    margin-bottom: $spacing-16;
+
+    font-family: $font-family;
+    font-size: $font-size-16;
+    color: $color-text-body;
+    font-weight: $font-weight-regular;
+    line-height: 1.4;
+  }
+
+  a {
+    display: flex;
+
+    font-family: $font-family;
+    font-size: $font-size-14;
+    color: $color-text-over-primary;
+    font-weight: $font-weight-medium;
+    letter-spacing: 2px;
+    text-decoration: none;
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 20;
+      font-size: 14px;
+      padding-left: 4px;
+    }
+
+    &:hover {
+      color: $color-primary;
+    }
   }
 }

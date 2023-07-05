@@ -58,12 +58,11 @@ class ArticlePage {
       `<ARTICLE_TITLE_TEXT/>`, meta.title
     );
     templateHtml = templateHtml.replaceAll(
-      `<ARTICLE_TITLE_HTML/>`, meta.title.replaceAll("\n", "<br>")
+      `<ARTICLE_TITLE_HTML/>`, meta.titleHtml
     );
     templateHtml = templateHtml.replaceAll(
       `<AUTHOR_NAME/>`, meta.author
     );
-
     templateHtml = templateHtml.replaceAll(
       `<GUIDE_DATES/>`, renderGuideDates(meta, this.textualContent)
     );
@@ -80,6 +79,7 @@ class ArticlePage {
       header: this.header,
 
       title: this.header.title || "Untitled article",
+      titleHtml: this.header.titleHtml || "Untitled article",
       url: this.header.url || "untitled-article",
       tags: this.header.tags || [],
       author: this.header.author || null,

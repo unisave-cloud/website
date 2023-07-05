@@ -4,7 +4,7 @@
   <INCLUDE src="/src/partials/common-head.html"/>
   
   <link rel="stylesheet" href="/src/partials/navigation/navigation.scss">
-  <link rel="stylesheet" href="/src/partials/content.scss">
+  <link rel="stylesheet" href="/src/partials/markdown.scss">
 
   <link rel="stylesheet" href="/src/guides/_template/guides.scss">
   
@@ -14,26 +14,68 @@
 
   <INCLUDE src="/src/partials/navigation/navigation.html"/>
 
-  <div class="guide-hero-container">
-    <div class="guide-hero">
-      <h1><ARTICLE_TITLE_HTML/></h1>
-      <div class="guide-author"><AUTHOR_NAME/></div>
-      <div class="guide-dates">
-        <GUIDE_DATES/>
-      </div>
+  <div class="guide-hero">
+    <div class="guide-hero-particles">
+      <img src="/src/guides/_template/cube.svg" alt="Cube"
+        style="top: 5px; left: -132px;">
+      <img src="/src/guides/_template/cross.svg" alt="Cross"
+        style="top: 133px; left: -202px;">
+      <img src="/src/guides/_template/cross.svg" alt="Cross"
+        style="top: 19px; left: auto; right: -171px;">
+      <img src="/src/guides/_template/cube.svg" alt="Cube"
+        style="top: 127px; left: auto; right: -95px;">
+    </div>
 
-      <!-- Tags will be added in the future: -->
-      <!-- <div class="guide-tags">
-        <a class="guide-tag" href="#">Getting Started</a>
-        <a class="guide-tag" href="#">Facets</a>
-        <a class="guide-tag" href="#">Entities</a>
-      </div> -->
+    <h1>
+      <ARTICLE_TITLE_HTML/>
+    </h1>
 
+    <div class="guide-author"><AUTHOR_NAME/></div>
+    <div class="guide-dates">
+      <GUIDE_DATES/>
     </div>
   </div>
 
-  <div class="content" style="width: 650px; margin: 0 auto;">
-    <ARTICLE_BODY/>
+  <div class="guide-body-container">
+    <div class="guide-body-left">
+      
+      <nav>
+        <h2>CONTENTS</h2>
+        <ol>
+          <li><a href="#foo">The HTTP protocol</a></li>
+          <li><a href="#foo">URLs</a></li>
+          <li><a href="#foo">Web APIs</a></li>
+          <li><a href="#foo">JSON</a></li>
+          <li><a href="#foo">Uploading data</a></li>
+        </ol>
+      </nav>
+
+    </div>
+    <div class="guide-body-center">
+
+      <article class="markdown">
+        <ARTICLE_BODY/>
+      </article>
+
+    </div>
+    <div class="guide-body-right">
+      
+      <div class="guide-tags">
+        <h2>TAGS</h2>
+        <a class="guide-tag" href="#">Getting Started</a>
+        <a class="guide-tag" href="#">Facets</a>
+        <a class="guide-tag" href="#">Entities</a>
+      </div>
+
+      <div class="sales-pitch">
+        <p>You're building the next big game. We've got the platform to solve the cloud part. Try Unisave for free.</p>
+        <a href="https://assetstore.unity.com/packages/slug/142705">
+          VIEW ASSET
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+      </div>
+
+    </div>
   </div>
 
 </body>
