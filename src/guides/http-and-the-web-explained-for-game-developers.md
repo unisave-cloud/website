@@ -8,10 +8,6 @@ datePublished: null
 dateUpdated: null
 ---
 
-<!--
-  Careful read time:  30 min
-  Expected read time: 15 min
--->
 
 It is not usual for a game developer to be well-versed in the web and its inner workings, but today, games often interact with web services to become more connected with their players. Discord bots, email newsletters, cloud file storage, and in-app purchases are just some of the features that require integration with external web APIs. This article will explain the basics needed to understand such integrations.
 

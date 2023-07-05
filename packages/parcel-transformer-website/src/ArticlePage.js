@@ -3,6 +3,7 @@ const yaml = require("js-yaml");
 const { parse: parseHtml } = require("node-html-parser");
 const TextualContent = require("./TextualContent");
 const renderGuideDates = require("./renderGuideDates");
+const renderGuideContents = require("./renderGuideContents");
 
 class ArticlePage {
   constructor(contents) {
@@ -17,8 +18,6 @@ class ArticlePage {
     this.domBody = parseHtml(this.htmlBody);
 
     this.textualContent = new TextualContent(this.domBody);
-
-    // TODO: extract ToC
 
     // TODO: build the lunr index
 
@@ -40,9 +39,13 @@ class ArticlePage {
     const headers = this.domBody.querySelectorAll("h2, h3, h4");
 
     for (const header of headers) {
-      let id = header.getAttribute("id")
-      header.replaceWith(`<a name="${id}"></a>\n`, header, "\n")
-      header.removeAttribute("id");
+      let id = header.getAttribute("id");
+      header.innerHTML = `
+        <a
+          href="#${id}"
+          onclick="navigator.clipboard.writeText(this.href);"
+        >${header.innerHTML}</a>
+      `
     }
   }
 
@@ -65,6 +68,9 @@ class ArticlePage {
     );
     templateHtml = templateHtml.replaceAll(
       `<GUIDE_DATES/>`, renderGuideDates(meta, this.textualContent)
+    );
+    templateHtml = templateHtml.replaceAll(
+      `<GUIDE_CONTENTS/>`, renderGuideContents(this.textualContent)
     );
 
     // templateHtml = templateHtml.replaceAll(

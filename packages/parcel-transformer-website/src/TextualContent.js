@@ -11,7 +11,6 @@ class TextualContent {
   constructor(domBody) {
     this.domBody = domBody;
 
-    // [{ title: "foobar", body: "lorem ipsum" }, ...]
     this.sections = [];
     this.parseSections();
 
@@ -36,12 +35,12 @@ class TextualContent {
 
       if (child.tagName.toLowerCase() in headingTags) {
         if (section !== null) {
-          section.content = section.content.join("\n");
           this.sections.push(section);
         }
         section = {
           id: child.getAttribute("id"),
           title: child.innerText,
+          tag: child.tagName.toLowerCase(),
           content: []
         }
       }
@@ -49,6 +48,9 @@ class TextualContent {
       if (child.tagName.toLowerCase() in contentTags && section !== null) {
         section.content.push(child.innerText);
       }
+    }
+    if (section !== null) {
+      this.sections.push(section);
     }
   }
 
