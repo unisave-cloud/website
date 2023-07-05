@@ -7,16 +7,12 @@ datePublished: null
 dateUpdated: null
 ---
 
+<!--
+  Careful read time:  30 min
+  Expected read time: 15 min
+-->
 
-It is not usual for a game developer to be well-versed in the web and its inner workings, so to have a reference point, I will quickly explain the basics of the HTTP protocol. I will do so with focus to things you might encounter the most with respect to game development (so, I won't talk about website styling and javascript, I will talk about APIs and JSON).
-
-Examples:
-- send emails via mailgun
-- have a mailing list in mailchimp
-- send SMS or push notifications via OneSignal
-- integrate discord server via a bot
-- store files in object storage
-- integrate in-app purchases in Google Play or Steam
+It is not usual for a game developer to be well-versed in the web and its inner workings, but today, games often interact with web services to become more connected with their players. Discord bots, email newsletters, cloud file storage, and in-app purchases are just some of the features that require integration with external web APIs. This article will explain the basics needed to understand such integrations.
 
 
 ## The HTTP protocol
@@ -30,7 +26,7 @@ HTTP is built on top of TCP and defines that:
 1. The binary data will be interpreted as text in the ASCII encoding. Another words, we will think of the connection as sending text, not bytes.
 2. The one who initiates the connection (called *the client*, typically your computer) will send data first and this first batch of data is called *the request*.
 3. The one who was waiting for connections (called *the server*, say `example.com`) will read the entire *request* and then respond with a block of data, called the *response*.
-4. Then the underlying TCP connection will be closed by both sides.
+4. Then the underlying TCP connection is closed by both sides.
 
 > **Note:** This is a simplification, if you want to be pedantic, [read this instead](https://www.w3.org/Protocols/rfc2616/rfc2616.html).
 
@@ -112,15 +108,15 @@ Then there are response headers, specifying metadata about the requested web pag
 
 ## URLs
 
-The text you type into a web browser (e.g. `https://example.com/`) is called a *Uniform Resource Locator* (URL). We already talked about it a bit and I would like to explain its structure after the server name.
+The text you type into a web browser (e.g. `https://example.com/`) is called a *Uniform Resource Locator* (URL). We already talked about it a bit and I would like to explain its structure right of the server name.
 
-When we access a page at `https://example.com/forum/post/42` we call this part the *path*:
+When we access a page at `https://example.com/forum/post/42` we call this part *the path*:
 
 ```
 /forum/post/42
 ```
 
-It behaves like a path in a file system, but typically does not correspond to any files on the server filesystem. Here, the number `42` is an ID of an article, that is actually stored in some database. But the similarity is exploited in some cases to make the URLs easier to understand:
+It behaves like a path in a file system, but typically does not correspond to any files on the server filesystem. Here, the number `42` is an ID of an article, that is actually stored in some database. But the similarity is exploited in some cases to make URLs easier to understand:
 
 ```
 /forum/post/42/title-image.jpg
@@ -132,18 +128,18 @@ The path might also contain something, called *the query*. It starts with the `?
 /forum/post?page=2&count=20
 ```
 
-The URL above may display a dynamic web page, that shows 20 posts at a time and we are looking at the second page out of all the posts.
+The URL above displays a dynamic web page, that shows 20 posts at a time and we are looking at the second page out of all the posts.
 
-The URL might also contain a hash `#`, but that is typically used to identify elements inside a web page, to which the browser should scroll after loading the page. But, this is not very useful in the context of game development.
+The URL might also contain a hash `#`, but that is typically used to identify elements inside a web page, to which the browser should scroll after loading the page.
 
-Since the characters `?#&=/` have a special meaning, we have to replace them with escape characters when we want to use them in the URL. This process is called *url encoding*, and you might come across terms like a *url-encoded string*. Below is an example of what URL-encoding looks like:
+Since the characters `?#&=/` have special meaning, we have to replace them with escape characters when we want to use them in the URL. This process is called *url encoding*, and you might come across terms like a *url-encoded string*. Below is an example of what URL-encoding looks like:
 
 ```
 RAW TEXT: Marks & Spencer
 ENCODED:  Marks%20%26%20Spencer
 ```
 
-Notice that space is encoded as `%20`, but it may in some cases be also encoded as `+`.
+Notice that space is encoded as `%20` and the ampersand as `%26`. Space can also be encoded as `+`, which is more readable.
 
 
 ## Web APIs
@@ -217,7 +213,7 @@ When JSON is transfered over HTTP, the `Content-Type` header is set to `applicat
 
 ## Uploading data
 
-Sometimes you may want to send data to a web server, instead of downloading it. For example, posting a message to Discord via a Discord bot webhook. When you create a webhook bot in Discord, you will get a URL similar to this:
+Sometimes you may want to send data to a web server, instead of downloading it. For example, posting a message to Discord via a Discord bot webhook. When you create a webhook bot in Discord, you get a URL similar to this:
 
 ```
 https://discord.com/api/webhooks/9513435431951/Liaa5j42ei3-4ke39-23
@@ -253,7 +249,7 @@ The body of the request will contain the message to create and it will look roug
 
 ## Form URL encoded
 
-Nowadays, most APIs use JSON for both returning and uploading data, but in the early days of the world wide web, data uploading was only performed via HTML forms (using the `<form>` tag).
+Nowadays, most APIs use JSON for both returning and uploading data, but in the early days of the World Wide Web, data uploading was only performed via HTML forms (using the `<form>` tag).
 
 [HTML forms](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form) can be used to create, say a login form, with a username field and a password field. When this form is submitted, the browser sends a `POST` request to a specified URL and sends the form contents in the request body.
 
@@ -302,7 +298,7 @@ REST technically means something greater and more abstract, but most people mean
 
 So far, we have not considered restricting URL access only to some users. In practise, this happens all the time.
 
-The process of identifying a user is called *authentication*. You probably know authorization by username and a password. The username specifies who you are, and the password proves it. When the web server receives the two values, it can be certain it's you, who is making the request.
+The process of identifying a user is called *authentication*. You probably know authentication by username and password. The username specifies who you are, and the password proves it. When the web server receives the two values, it can be certain it's you, who is making the request.
 
 *Authorization* is then the process of giving access only to some users (and which access to whom).
 
@@ -314,25 +310,21 @@ If you don't have access to a URL, the server will respond with one of these sta
 
 When a URL is not available to everyone, there are a few options how the server might want to receive your identity:
 
-- in the URL
-  - tokens
-  - signatures
-- in an HTTP header
-  - basic auth
-  - bearer token
-- in a cookie
+- In the URL (tokens and signatures)
+- In an HTTP header (basic auth and bearer tokens)
+- In a cookie
 
 
 ### URL
 
-The simplest option is to put the identity into the URL. The Discord webhook example used this approach. There, a webhook ID together with a token acted like a username and a password. This is mostly used for singular URLs used for one purpose.
+The simplest option is to put the identity into the URL. The Discord webhook example used this approach. There, a webhook ID together with a token acted like a username and a password. This is mostly used for singular URLs meant for one purpose.
 
-Since APIs aren't used by humans, we don't use the word "password", but instead the word "token" or "key". Both a token or a key (they mean the same thing) can fulfill the purpose of both the username and password, or just the password alone. You might also stumble on terms like "API key", "access token", "authentication token", which again mean the same thing.
+> **Note:** Since APIs aren't used by humans, we don't use the word "password", but instead the word "token" or "key". Both a token or a key (they mean the same thing) can fulfill the purpose of both the username and password, or just the password alone. You might also stumble on terms like "API key", "access token", "authentication token", which again mean the same thing.
 
 Sometimes an API might give temporary access to a resource in the form of a signed URL. That's a URL that contains a signature and an expiration date. Such URLs can be used by anyone, since they require no authentication and are ideal for:
 
 - sharing an upload link (into a file storage)
-- allowing temporary action (like resetting password)
+- allowing temporary action (like password reset links in email)
 
 
 ### Header
@@ -366,7 +358,7 @@ The token contains a signature that can be verified and it makes the token secur
 
 The token is generated by the server during login and has and expiration time after which it is no longer valid (effectively acting as the logout). You might request a URL like `POST /login` and provide the username and password, and the server sends back a new JWT token that you can use for further API calls.
 
-Lastly, authentication can be performed via cookies (which are special HTTP headers sent with each request), but this is rarely used in APIs. It's used mostly in human-oriented web pages so I will not cover this here.
+Lastly, authentication can be performed via cookies (which are special HTTP headers sent with each request), but this is rarely used in APIs. It's used mostly in human-oriented web pages so I will not cover it here. But also, it's very similar to the bearer token scheme, we just call the token a *session ID*.
 
 
 ## Conclusion
