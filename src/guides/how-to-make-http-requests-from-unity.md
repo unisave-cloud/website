@@ -1,27 +1,15 @@
 ---
 title: "How to make HTTP requests from Unity"
 url: "guides/how-to-make-http-requests-from-unity"
-tags: []
+tags: ["http", "unity"]
 author: "Jiří Mayer"
 datePublished: null
 dateUpdated: null
 ---
 
-There are many reasons why you might want to interact with the Web from your Unity game. You may want to redirect your player to your website, download configuration data from your website, create a Discord bot, store user-generated content, or implement a chat or a real-time notification service. Each of these usecases has different requirements and thus should be solved by the best-fitting tool Unity provides. This article helps you with choosing the right tool.
+There are many reasons why you might want to interact with the Web from your Unity game. You may want to redirect your player to your website, download configuration data from your website, create a Discord bot, store user-generated content, or implement a chat, or a real-time notification service. Each one of these usecases has different requirements and thus should be solved by the best-fitting tool Unity provides. This article helps you with choosing the right tool.
 
-
-## What is HTTP and what it allows
-
-> **Note:** If you know what the following HTTP terms are, you may skip this section: client, server, request, response, method, status code, request body, URL, query parameters, headers, body, JSON.
-
-...
-
-- tcp
-- http
-- methods
-- browsers, redirects
-- APIs
-- JSON, query, etc
+TODO: link the http article
 
 
 ## Open a website with `Application.OpenURL`
