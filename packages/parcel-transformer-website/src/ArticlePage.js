@@ -5,6 +5,7 @@ const TextualContent = require("./TextualContent");
 const renderGuideDates = require("./renderGuideDates");
 const renderGuideContents = require("./renderGuideContents");
 const renderGuideTags = require("./renderGuideTags");
+const renderGuideHeadElements = require("./renderGuideHeadElements");
 
 class ArticlePage {
   constructor(contents) {
@@ -77,6 +78,9 @@ class ArticlePage {
     );
     templateHtml = templateHtml.replaceAll(
       `<GUIDE_TAGS/>`, renderGuideTags(meta)
+    );
+    templateHtml = templateHtml.replaceAll(
+      `<GUIDE_HEAD_ELEMENTS/>`, renderGuideHeadElements(meta)
     );
 
     // templateHtml = templateHtml.replaceAll(
