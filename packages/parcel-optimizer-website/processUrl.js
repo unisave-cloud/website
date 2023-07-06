@@ -25,7 +25,10 @@ function processUrl(url) {
   }
 
   // add leading server name to absolute URLs (URLs starting with slash)
-  // TODO...
+  const websiteUrlPrefix = process.env.WEBSITE_URL_PREFIX || ""
+  if (url.startsWith("/")) {
+    url = websiteUrlPrefix + url;
+  }
 
   // DEBUG
   // console.log(originalUrl + " -> " + url);

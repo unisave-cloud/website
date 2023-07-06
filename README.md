@@ -8,6 +8,33 @@ Notes:
 - https://betterprogramming.pub/how-to-make-your-static-website-interactively-searchable-ab0091db63b1
 
 
+## Development
+
+Clone the repo, run:
+
+```
+npm install
+
+npm run start
+```
+
+and visit http://localhost:1234
+
+
+## Building docker images
+
+Simply run:
+
+```
+make build-prod
+make push-prod
+
+# or
+make build-local
+make push-local
+```
+
+
 ## How the building process works
 
 First, take a look at the structure of [Parcel plugin system](https://parceljs.org/plugin-system/overview/).

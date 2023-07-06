@@ -13,8 +13,8 @@
   ],
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "start": "rm -rf dist .parcel-cache && parcel",
-    "build": "rm -rf dist .parcel-cache && parcel build --public-url ./"
+    "start": "rm -rf dist .parcel-cache && parcel --public-url /",
+    "build": "rm -rf dist .parcel-cache && parcel build --public-url /"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.8.3",
