@@ -2,7 +2,7 @@
 title: "Markdown Test"
 titleHtml: "<em>Markdown</em> Test"
 url: "guides/markdown-test"
-tags: ["markdown", "test"]
+tags: ["markdown-test"]
 author: "Jiří Mayer"
 datePublished: null
 dateUpdated: null

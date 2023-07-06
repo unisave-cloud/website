@@ -4,6 +4,7 @@ const { parse: parseHtml } = require("node-html-parser");
 const TextualContent = require("./TextualContent");
 const renderGuideDates = require("./renderGuideDates");
 const renderGuideContents = require("./renderGuideContents");
+const renderGuideTags = require("./renderGuideTags");
 
 class ArticlePage {
   constructor(contents) {
@@ -19,9 +20,11 @@ class ArticlePage {
 
     this.textualContent = new TextualContent(this.domBody);
 
-    // TODO: build the lunr index
+    // TODO: build the lunr index from this.textualContent.sections
 
     this.formatHeadings();
+
+    // TODO: format code blocks
   }
 
   parseYamlHeader() {
@@ -71,6 +74,9 @@ class ArticlePage {
     );
     templateHtml = templateHtml.replaceAll(
       `<GUIDE_CONTENTS/>`, renderGuideContents(this.textualContent)
+    );
+    templateHtml = templateHtml.replaceAll(
+      `<GUIDE_TAGS/>`, renderGuideTags(meta)
     );
 
     // templateHtml = templateHtml.replaceAll(

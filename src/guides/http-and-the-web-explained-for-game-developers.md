@@ -2,7 +2,7 @@
 title: "HTTP and the Web explained for game developers"
 titleHtml: "<em>HTTP</em> and <em>the Web</em> explained<br>for game developers"
 url: "guides/http-and-the-web-explained-for-game-developers"
-tags: ["http"]
+tags: ["http", "web"]
 author: "Jiří Mayer"
 datePublished: null
 dateUpdated: null
