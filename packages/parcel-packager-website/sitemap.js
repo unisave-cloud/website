@@ -1,6 +1,7 @@
 const { Packager } = require("@parcel/plugin");
 const { replaceURLReferences } = require("@parcel/utils");
 const path = require('path');
+const processUrl = require("@unisave/parcel-optimizer-website/processUrl");
 
 module.exports.default = new Packager({
   async package({ bundle, bundleGraph, logger }) {
@@ -31,6 +32,9 @@ module.exports.default = new Packager({
 
     // replace dependency IDs with URLs
     ({ contents } = replaceURLReferences({ bundle, bundleGraph, contents }));
+
+    // post-process URLs
+    contents = contents.split("\n").map(processUrl).join("\n");
 
     return { contents };
   }

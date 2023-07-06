@@ -9,5 +9,8 @@
   "packagers": {
     "sitemap.txt": "@unisave/parcel-packager-website/sitemap",
     "lunr-index.json": "@unisave/parcel-packager-website/lunr-index"
+  },
+  "optimizers": {
+    "*.html": ["@unisave/parcel-optimizer-website/optimizer"]
   }
 }
