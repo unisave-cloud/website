@@ -8,17 +8,164 @@
 .markdown {
 
   font-family: $font-family;
+  color: $color-text-body;
+  font-weight: $font-weight-regular;
+
+  & *::selection {
+    background: $color-primary-light;
+  }
 
   p {
     margin: 0;
-    margin-bottom: 1em;
+    margin-bottom: $spacing-16;
 
-    line-height: 1.5;
+    line-height: 1.55;
 
     color: $color-text-body;
     font-family: $font-family;
     font-weight: $font-weight-regular;
     font-size: $font-size-16;
+  }
+
+  a {
+    color: $color-primary;
+    text-underline-offset: 0.3em;
+
+    &:hover {
+      color: $color-primary-light;
+    }
+  }
+
+  code {
+    padding: 0.1em 0.2em;
+    background: $color-gray-50;
+    font-family: $font-family-code;
+  }
+
+  pre {
+    margin-bottom: $spacing-16;
+    padding: $spacing-24 $spacing-24;
+
+    background: $color-gray-50;
+    font-family: $font-family-code;
+    font-size: $font-size-14;
+    color: $color-text-over-primary;
+
+    overflow-x: auto;
+
+    code {
+      padding: 0;
+      background: none;
+      color: inherit;
+      font-family: inherit;
+    }
+  }
+
+  blockquote {
+    margin: 0;
+    margin-bottom: $spacing-16;
+    padding: $spacing-16 $spacing-32;
+    
+    background: $color-gray-50;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  ul, ol {
+    padding-left: $spacing-32;
+  }
+
+  li {
+    margin: 0;
+    margin-bottom: $spacing-4;
+
+    line-height: 1.55;
+
+    color: $color-text-body;
+    font-family: $font-family;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-16;
+
+    &::marker {
+      color: $color-primary;
+    }
+  }
+
+  // H1 should not be used inside article bodies
+  h1 {
+    &:before {
+      color: red;
+      background: black;
+      content: "Dont use H1 inside articles!";
+      margin-right: 10px;
+      padding: 5px 20px;
+    }
+  }
+
+  h2 {
+    margin: $spacing-48 0 $spacing-32 0;
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-30;
+  }
+
+  h3 {
+    margin: $spacing-24 0 $spacing-24 0;
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-24;
+  }
+
+  h4 {
+    margin: $spacing-24 0 $spacing-8 0;
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-18;
+  }
+
+  h5 {
+    margin: $spacing-24 0 $spacing-8 0;
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-16;
+  }
+
+  h6 {
+    margin: $spacing-24 0 $spacing-8 0;
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-12;
+  }
+
+  // header link behaviour
+  h2, h3, h4 {
+    a {
+      color: inherit;
+      text-decoration: inherit;
+
+      &:before {
+        content: "#";
+        position: absolute;
+        margin-left: -1em;
+        color: $color-primary-light;
+        font-weight: $font-weight-regular;
+      }
+
+      &:hover {
+        color: $color-text-over-primary;
+
+        &:before {
+          color: $color-primary;
+        }
+      }
+    }
   }
 
 }

@@ -2,9 +2,22 @@
 // Layout //
 ////////////
 
+$spacing-4: 4px;
 $spacing-8: 8px;
+$spacing-12: 12px;
 $spacing-16: 16px;
+$spacing-24: 24px;
 $spacing-32: 32px;
+$spacing-48: 48px;
+$spacing-64: 64px;
+$spacing-96: 96px;
+$spacing-128: 128px;
+$spacing-192: 192px;
+$spacing-256: 256px;
+$spacing-384: 384px;
+$spacing-512: 512px;
+$spacing-640: 640px;
+$spacing-768: 768px;
 
 
 ////////////////
@@ -12,6 +25,7 @@ $spacing-32: 32px;
 ////////////////
 
 $font-family: "Fira Sans", sans-serif;
+$font-family-code: "Fira Code", monospace;
 
 $font-size-12: 12px;
 $font-size-14: 14px;
@@ -53,6 +67,8 @@ $color-primary-light:   $color-primary-100;
 $color-gray-800: #353535; // THE gray (logo, heading text)
 $color-gray-600: #616161; // regular text color
 $color-gray-100: #e8e8e8; // light background objects
+$color-gray-50:  #f4f2f1; // gray background surface
+$color-gray-10:  #fbfaf9; // light gray background surface
 
 $color-gray:         $color-gray-800; 
 $color-gray-lighter: $color-gray-600;

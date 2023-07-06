@@ -30,11 +30,11 @@ HTTP is built on top of TCP and defines that:
 The most common usecase is to download web pages from web servers. When we enter `https://example.com/` into a web browser (Chrome, Safari, Firefox, ...), this is roughly what happens:
 
 1. The `https://` part is understood as "Open an HTTP connection, that will be encrypted via SSL". I won't go into the encryption part as it's not important for HTTP itself.
-2. The `example.com` part is used to find the one computer on the internet that it identifies and the browser opens a TCP connection to it. The other side is already running and waiting for connections.
+2. The `example.com` part is used to find the one computer on the internet that it identifies and the browser opens a TCP connection to it. The other side is already running and waiting for connections. This part of the address is called *the hostname*, because the waiting machine is sometimes called *the host*.
 3. The browser sends *the request*, specifying that it wants to view the web page at `/`.
 4. The server sends *the response*, containing some metadata and then the web page file.
 
-The CURL command, awailable in Linux and Mac, can be used to see the sent text.
+The CURL command, available in Linux and Mac, can be used to see the sent text.
 
 ```bash
 curl -v https://example.com/
@@ -47,7 +47,7 @@ GET / HTTP/1.1
 Host: example.com
 User-Agent: curl/7.58.0
 Accept: */*
-
+                          <- empty line
 ```
 
 The `GET` keyword specifies the request *method*, i.e. that we want to view the web page (not upload, delete, or modify).
@@ -98,7 +98,7 @@ The first line contains the text `200 OK`. This is the *status code* and *status
 - `4xx` are problems with the request (the client is asking for something non-sensical)
 - `5xx` are problems with the server (there is some crash/outage on the server-side)
 
-The full list of status codes is available on the [Mozilla developer network](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
+The full list of status codes is available on the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
 
 Then there are response headers, specifying metadata about the requested web page. The two most interesting are the `Content-Type` and `Content-Length`. The `Content-Type` header specifies that the *response body* (the text below the empty line) is a `text/html` file encoded in the UTF-8 text encoding. The `Content-Length` header states the length of the *response body* in bytes (not text characters). When the headers and the empty line are read, the browser reads the specified number of bytes from the underlying TCP connection and then interprets them according to the content type. This way we can send binary data (like images) over HTTP as well.
 
@@ -287,6 +287,7 @@ An API that wouldn't be considered REST-like, could look like this:
 - `GET /list-users`
 - `POST /create-user`
 - `GET /show-user?id=42`
+- `POST /delete-user?id=42`
 
 REST technically means something greater and more abstract, but most people mean this, when they say the word, so you can start with that.
 

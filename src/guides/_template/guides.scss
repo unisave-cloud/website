@@ -65,6 +65,7 @@
 
 $guide-sidebar-width: 225px;
 $guide-sidebar-space: 100px;
+$guide-center-width: 650px;
 
 .guide-body-container {
   display: flex;
@@ -118,7 +119,7 @@ $guide-sidebar-space: 100px;
 }
 
 .guide-body-center {
-  max-width: 650px;
+  width: $guide-center-width;
 }
 
 .guide-body-right {
