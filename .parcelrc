@@ -1,7 +1,6 @@
 {
   "extends": "@parcel/config-default",
   "transformers": {
-    "*.html": ["@unisave/parcel-transformer-website/partials", "..."],
     "*.md": ["@unisave/parcel-transformer-website/md"],
     "sitemap.txt": ["@unisave/parcel-transformer-website/sitemap"],
     "lunr-index.json": ["@unisave/parcel-transformer-website/lunr-index"]

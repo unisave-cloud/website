@@ -20,6 +20,9 @@
     "@parcel/transformer-sass": "^2.8.3",
     "@unisave/parcel-namer-website": "file:packages/parcel-namer-website",
     "@unisave/parcel-transformer-website": "file:packages/parcel-transformer-website",
-    "parcel": "^2.8.3"
+    "parcel": "^2.8.3",
+    "posthtml-doctype": "^1.1.1",
+    "posthtml-include": "^1.7.4",
+    "posthtml-shorten": "^1.0.0"
   }
 }
