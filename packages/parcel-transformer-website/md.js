@@ -26,7 +26,9 @@ exports.default = new Transformer({
 
     // parse markdown page
     const page = new ArticlePage(
-      await asset.getCode()
+      asset,
+      await asset.getCode(),
+      options
     );
     const pageHtml = page.buildOutputHtml(templateHtml);
     const articlePage = page.buildArticlePageMeta();

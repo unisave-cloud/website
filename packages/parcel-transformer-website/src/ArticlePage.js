@@ -6,10 +6,13 @@ const renderGuideDates = require("./renderGuideDates");
 const renderGuideContents = require("./renderGuideContents");
 const renderGuideTags = require("./renderGuideTags");
 const renderGuideHeadElements = require("./renderGuideHeadElements");
+const path = require("path");
 
 class ArticlePage {
-  constructor(contents) {
+  constructor(asset, contents, options) {
+    this.parcelAsset = asset; // the parcel .md asset
     this.markdownBody = contents;
+    this.parcelOptions = options; // parcel options object
     
     this.yamlHeader = null;
     this.parseYamlHeader();
@@ -100,7 +103,13 @@ class ArticlePage {
       tags: this.header.tags || [],
       author: this.header.author || null,
       datePublished: this.header.datePublished || null,
-      dateUpdated: this.header.dateUpdated || null
+      dateUpdated: this.header.dateUpdated || null,
+
+      // e.g. "/src/guides/foo/foo.md"
+      parcelAssetPath: "/" + path.relative(
+        this.parcelOptions.projectRoot,
+        this.parcelAsset.filePath
+      )
     }
   }
 }

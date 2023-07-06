@@ -20,8 +20,8 @@ function processHtml(contents) {
     
     var options = {
       shortener: shortener,
-      tag: ['a', 'link'],
-      attribute: ['href'],
+      tags: ['a', 'link'],
+      attributes: ['href'],
     };
 
     posthtml()
