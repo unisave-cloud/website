@@ -5,7 +5,7 @@
     "sitemap.txt": ["@unisave/parcel-transformer-website/sitemap"],
     "lunr-index.json": ["@unisave/parcel-transformer-website/lunr-index"]
   },
-  "namers": ["@unisave/parcel-namer-website/html", "..."],
+  "namers": ["@unisave/parcel-namer-website/namer", "..."],
   "packagers": {
     "sitemap.txt": "@unisave/parcel-packager-website/sitemap",
     "lunr-index.json": "@unisave/parcel-packager-website/lunr-index"

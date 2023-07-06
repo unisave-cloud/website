@@ -37,6 +37,8 @@ OUTPUT: http://localhost:1234/guides/foo-bar
 
 Anotherwords, it removes the `/index.html` suffix and prepends the server address, so that `link` tags make crawlers happy that it provides absolute URLs.
 
+> **Note:** Parcel adds hot-reload code to every page, thus spamming the dist folder with lots of additional files during development. If you see some additional files, try doing a production build, it may be the files are dev-only.
+
 
 ### Sitemap
 
