@@ -2,12 +2,12 @@
 title: "How to store player data online with Unity"
 titleHtml: "How to <em>store player data<br>online</em> with Unity"
 url: "guides/how-to-store-player-data-online-with-unity"
+image: "media-image.png"
 tags: ["getting-started", "facets", "entities"]
 author: "Jiří Mayer"
 datePublished: "2022-11-04"
 dateUpdated: null
 ---
-
 
 Today, most games offer at least some multiplayer features (e.g. leaderboards) and these require storage of data online. The part of a game responsible for online data is called the game backend.
 
