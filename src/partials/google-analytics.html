@@ -1,0 +1,27 @@
+<!-- Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQ0FH717SY"></script> -->
+<script>
+  if (/unisave\.cloud/.test(window.location.hostname)) {
+    
+    // load the script
+    var head = document.getElementsByTagName('head')[0];
+    var js = document.createElement("script");
+    js.type = "text/javascript";
+    js.src = "https://www.googletagmanager.com/gtag/js?id=G-ZQ0FH717SY";
+    head.appendChild(js);
+
+    // true GA code
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZQ0FH717SY');
+
+  } else {
+    
+    // fake GA code
+    function gtag(){
+      console.log("[DEV] Google analytics event: ", arguments);
+    }
+
+  }
+</script>
