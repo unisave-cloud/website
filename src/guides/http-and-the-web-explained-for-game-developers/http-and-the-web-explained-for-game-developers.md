@@ -63,7 +63,7 @@ The list of headers is terminated by an empty line. After that line there may be
 
 When the server receives this, it sends back *the response*:
 
-```
+```html
 HTTP/1.1 200 OK
 Age: 315842
 Cache-Control: max-age=604800
@@ -338,7 +338,7 @@ Authorization: Basic am9objpzZWNyZXQxMjM=
 
 The `Basic` keyword specifies the scheme to be the *HTTP Basic Auth*. The string is a [base64](https://en.wikipedia.org/wiki/Base64) encoding of the username, colon, and the password:
 
-```
+```yaml
 USERNAME: john
 PASSWORD: secret123
 JOINED:   john:secret123

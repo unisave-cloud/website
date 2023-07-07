@@ -23,7 +23,6 @@
     "@unisave/parcel-optimizer-website": "file:packages/parcel-optimizer-website",
     "@unisave/parcel-transformer-website": "file:packages/parcel-transformer-website",
     "parcel": "^2.8.3",
-    "posthtml-doctype": "^1.1.1",
     "posthtml-include": "^1.7.4",
     "posthtml-shorten": "^1.0.0"
   }
