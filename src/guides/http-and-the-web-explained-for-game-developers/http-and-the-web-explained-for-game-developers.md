@@ -5,7 +5,7 @@ url: "guides/http-and-the-web-explained-for-game-developers"
 image: "media-image.png"
 tags: ["http", "web"]
 author: "Jiří Mayer"
-datePublished: null
+datePublished: "2023-07-07"
 dateUpdated: null
 ---
 
