@@ -93,6 +93,13 @@
     }
   }
 
+  img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+    margin-bottom: $spacing-16;
+  }
+
   // H1 should not be used inside article bodies
   h1 {
     &:before {
