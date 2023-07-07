@@ -16,6 +16,9 @@ class TextualContent {
 
     // number of words
     this.wordCount = this.countWords();
+
+    // description used for meta tags
+    this.articleDescription = this.extractDescription();
   }
 
   parseSections() {
@@ -28,7 +31,13 @@ class TextualContent {
       "p": true, "blockquote": true, "ul": true, "ol": true
     };
 
-    let section = null;
+    // pre-section that has no heading, but has content
+    let section = {
+      id: null,
+      title: null,
+      tag: null,
+      content: []
+    };
     for (let child of this.domBody.childNodes) {
       if (child.nodeType !== NodeType.ELEMENT_NODE)
         continue;
@@ -74,6 +83,18 @@ class TextualContent {
     }
 
     return words;
+  }
+
+  extractDescription() {
+    const MAX_LENGTH = 130;
+    
+    for (let section of this.sections) {
+      for (let text of section.content) {
+        return text.substring(0, MAX_LENGTH) + "...";
+      }
+    }
+
+    return null;
   }
 }
 

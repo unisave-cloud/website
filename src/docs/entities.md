@@ -1,6 +1,7 @@
 ---
 title: "Entities"
 url: "docs/entities"
+image: NO_IMAGE
 tags: []
 author: "Jiří Mayer"
 datePublished: "2021-02-12"

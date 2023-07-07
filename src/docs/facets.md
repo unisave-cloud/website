@@ -1,6 +1,7 @@
 ---
 title: "Facets"
 url: "docs/facets"
+image: NO_IMAGE
 tags: []
 author: "Jiří Mayer"
 datePublished: "2023-04-30"

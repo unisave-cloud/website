@@ -19,6 +19,10 @@ function renderGuideContents(textualContent) {
   let depth = 2
 
   for (const section of textualContent.sections) {
+    if (section.tag === null) {
+      continue; // skip the pre-section
+    }
+    
     const thisDepth = getTagDepth(section.tag);
     while (depth < thisDepth) {
       parts.push("<ol>");

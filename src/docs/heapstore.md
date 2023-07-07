@@ -1,6 +1,7 @@
 ---
 title: "Heapstore"
 url: "docs/heapstore"
+image: NO_IMAGE
 tags: []
 author: "Jiří Mayer"
 datePublished: null

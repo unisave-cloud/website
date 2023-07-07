@@ -100,6 +100,7 @@ class ArticlePage {
       title: this.header.title || "Untitled article",
       titleHtml: this.header.titleHtml || "Untitled article",
       url: this.header.url || "untitled-article",
+      image: this.header.image || null,
       tags: this.header.tags || [],
       author: this.header.author || null,
       datePublished: this.header.datePublished || null,
@@ -109,7 +110,8 @@ class ArticlePage {
       parcelAssetPath: "/" + path.relative(
         this.parcelOptions.projectRoot,
         this.parcelAsset.filePath
-      )
+      ),
+      articleDescription: this.textualContent.articleDescription
     }
   }
 }

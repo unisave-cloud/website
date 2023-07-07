@@ -14,6 +14,7 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "start": "rm -rf dist .parcel-cache && parcel --public-url /",
+    "start-with-prefix": "WEBSITE_URL_PREFIX=http://localhost:1234 npm run start",
     "build": "rm -rf dist .parcel-cache && parcel build --public-url /"
   },
   "devDependencies": {
