@@ -411,7 +411,7 @@ The method `Update` is similar to `Set`, but it updates only the fields that are
 ```cs
 Document updatedDocument = await this
     .Document("players/john")
-    .Set(new JsonObject {
+    .Update(new JsonObject {
         ["name"] = "Johnny Doey"
         // score and other fields stay untouched
     });
