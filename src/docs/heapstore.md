@@ -618,6 +618,8 @@ It's better to be explicit, when C# allows it and the code is more readable:
 
 ## Security rules
 
+> **🚧 Under Construction:** Heapstore security rules are currently being implemented so they don't work yet. This documentation describes how they're going to work once completed.
+
 When you first enable Heapstore, it gives you full access to the database from any client. This saves time during development, but is not suitable for production. A malicious user could inspect the code of your game and reverse-engineer custom Heapstore requests that would let them view and modify any data in your database. Possibly deleting your players and ruining your business.
 
 > **Note:** Speaking from experience, about one in 30K players will try to break your game somehow. 💣
@@ -834,9 +836,6 @@ Now the condition is more complicated so we extract it into a separate `IsAdmin`
 For more information on how to use Heapstore in the backend code, see [Using Heapstore in your backend code](#using-heapstore-in-your-backend-code).
 
 
-### Explicit document key
-
-
 ### Field-level readability
 
 
@@ -854,6 +853,9 @@ TODO: query versus get, read and the value-domain conditions
 #### Delete
 
 
+### Explicit document key
+
+
 ### Rule specificity
 
 - by selector
@@ -862,6 +864,8 @@ TODO: query versus get, read and the value-domain conditions
 
 
 ## Using Heapstore in your backend code
+
+> **🚧 Under Construction:** Backend-code API is currently being implemented so it doesn't work yet. This documentation describes how it's going to work once completed.
 
 TODO: see `Accessing database inside the condition` to get started.
 
