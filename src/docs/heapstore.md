@@ -1,5 +1,6 @@
 ---
 title: "Heapstore"
+titleHtml: "Heapstore"
 url: "docs/heapstore"
 image: NO_IMAGE
 tags: []
@@ -8,8 +9,6 @@ datePublished: null
 dateUpdated: "2023-06-01"
 ---
 
-
-## Introduction
 
 Heapstore is a Unisave component that lets you access the database directly from the game client. It is the best choice for storage of data, when you don't need complicated database queries or backend logic. As it can be used together with [facets](facets) and [entities](entities), it's best to start using Unisave with Heapstore and then learn the other, lower-level approaches when needed.
 

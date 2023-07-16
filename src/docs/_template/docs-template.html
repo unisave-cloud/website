@@ -14,23 +14,68 @@
   
   <include src="src/partials/navigation/navigation.html"></include>
 
-  <div class="docs-page">
-    <aside class="docs-aside-left">
-      left aside<br>
-      docs navigation
-    </aside>
-    <article class="docs-content">
+  <div class="docs-hero">
+    <h1><ARTICLE_TITLE_HTML/></h1>
+  </div>
+
+  <div class="docs-body-container">
+    <div class="docs-body-left">
+      
+      <nav>
+        <h2>GETTING STARTED</h2>
+        <ol>
+          <li><a href="#foo">Features</a></li>
+          <li><a href="#foo">Installation</a></li>
+          <li><a href="#foo">Introduction</a></li>
+        </ol>
+
+        <h2>CORE</h2>
+        <ol>
+          <li><a href="#foo">Features</a></li>
+          <li><a href="#foo">Installation</a></li>
+          <li><a href="#foo">Introduction</a></li>
+        </ol>
+
+        <p>TODO: do unrolling navigation with headers like gitbook?</p>
+      </nav>
+
+    </div>
+    <article class="docs-body-center">
       <div class="markdown">
-        <h1><ARTICLE_TITLE_HTML/></h1>
         <ARTICLE_BODY/>
       </div>
     </article>
-    <aside class="docs-aside-right">
-      right aside<br>
-      search<br>
-      table of contents
-    </aside>
+    <div class="docs-body-right">
+
+      <div class="docs-body-right__inner">
+      
+        <h2>SEARCH (TODO)</h2>
+
+        <nav>
+          <h2>ON THIS PAGE</h2>
+          <ol>
+            <!-- <li><a href="#foo">Foo</a></li> -->
+            <GUIDE_CONTENTS/>
+          </ol>
+        </nav>
+
+      </div>
+
+    </div>
   </div>
+
+  <!-- TODO: add the same footer as on index with $color-gray-10 background -->
+  <div style="height: 200px"></div>
+
+  <script src="https://abouolia.github.io/sticky-sidebar/js/sticky-sidebar.js"></script>
+  <script>
+    var stickySidebar = new StickySidebar('.docs-body-right', {
+			topSpacing: 50,
+			bottomSpacing: 50,
+			containerSelector: '.docs-body-container',
+			innerWrapperSelector: '.docs-body-right__inner'
+		});
+  </script>
 
 </body>
 </html>

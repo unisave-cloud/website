@@ -5,11 +5,14 @@
     ------------------------------------------------
 */
 
+$breakpoint-heading-hashes: 740px;
+
 .markdown {
 
   font-family: $font-family;
   color: $color-text-body;
   font-weight: $font-weight-regular;
+  overflow-wrap: break-word; // break words that are longer than the screen
 
   & *::selection {
     background: $color-primary-light;
@@ -163,6 +166,10 @@
         margin-left: -1em;
         color: $color-primary-light;
         font-weight: $font-weight-regular;
+
+        @media (max-width: $breakpoint-heading-hashes) {
+          display: none;
+        }
       }
 
       &:hover {
