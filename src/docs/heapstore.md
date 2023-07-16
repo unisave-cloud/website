@@ -50,7 +50,7 @@ A document is identified by its `_key`. It has to be unique within the collectio
 
 ## Enabling Heapstore
 
-Heapstore is by default disabled, since without any security rules, it allows unrestricted access to the database.
+Heapstore is by default disabled, since without any [security rules](#security-rules), it allows unrestricted access to the database.
 
 To enable Heapstore, open the Unisave window `Tools > Unisave > Unisave Window`, go to the `Backend Code` tab, and in the list of disabled backend folders enable `HeapstoreBackend`.
 
@@ -64,7 +64,7 @@ Alternatively you can navigate to the backend folder definition file and set upl
 Assets/Plugins/Unisave/Heapstore/Backend/HeapstoreBackend.asset
 ```
 
-> **Warning:** Make sure you specify proper security rules before you release your game. Without security rules, any client can modify and read all documents in the database.
+> **Warning:** Make sure you specify proper [security rules](#security-rules) before you release your game. Without security rules, any client can modify and read all documents in the database.
 
 
 ## Interacting with Heapstore
@@ -616,9 +616,254 @@ It's better to be explicit, when C# allows it and the code is more readable:
 ```
 
 
-### Large responses and chunking `TODO`
+## Security rules
 
-TODO: design some API that will return `AsyncEnumerable<T>`, allow changing chunk size and do the paging by "last document ID", so that collection modifications do no re-iterate some elements (simple `Limit` would be vulnerable).
+When you first enable Heapstore, it gives you full access to the database from any client. This saves time during development, but is not suitable for production. A malicious user could inspect the code of your game and reverse-engineer custom Heapstore requests that would let them view and modify any data in your database. Possibly deleting your players and ruining your business.
+
+> **Note:** Speaking from experience, about one in 30K players will try to break your game somehow. 💣
+
+Security rules let you control, who has access to what data. They are statements like these:
+
+- Nobody can view or modify registered players.
+- The logged-in player can view and modify themselves.
+- The logged-in player cannot modify their `isBanned` field.
+
+These three example rules are translated to actual security rules like this:
+
+```cs
+Match("players", "*") // collection name, document key (any)
+    .Disallow(Operation.All)
+    .Comment("Nobody can view or modify registered players.");
+
+Match("players", "*") // collection name, document key (any)
+    .Allow(Operation.Read | Operation.Update)
+    .If(ctx => Auth.Id() != null && ctx.Document.Id == Auth.Id())
+    .Comment("The logged-in player can view and modify themselves.");
+
+Match("players", "*", "isBanned") // collection, document, field
+    .Disallow(Operation.Update)
+    .If(ctx => Auth.Id() != null && ctx.Document.Id == Auth.Id())
+    .Comment("The logged-in player can view and modify themselves.");
+```
+
+Each rule starts with a *selector* `Match(...)` that states which collection, document, and field this rule applies to. If it applies to all collections, documents, or fields, you use the asterisk symbol `"*"`.
+
+Security rules have different *specificity*, so that when you acces a random player, the first, most-general rule applies, but when you access yourself, the second, more specific rule takes precendence.
+
+Each rule has a *flag*, that is either `ALLOW` or `DISALLOW`. When the most specific rule is chosen, its flag determines whether the operation is permitted.
+
+The rule also states which operation types it applies to (reads, writes, etc.) and the rule is ignored if the arriving Heapstore request is of different type.
+
+A rule may contain a *condition* `.If(...)` and if that condition fails, the rule is ignored. If it succeeds, the rule is applied, which typically overrides some other, more general rule. The condition is evaluated each time a Heapstore request arrives to the server and is about to be handled.
+
+The condition shown in the example uses the [Authentication system](authentication) of Unisave. The condition checks that someone is logged in `Auth.Id() != null` and that the logged-in player ID is the ID of the document we are trying to read or update `ctx.Document.Id == Auth.Id()`. If both conditions hold, we are the logged-in player who is trying to access their own player document and thus we are allowed to perform the operation.
+
+The final `.Comment(...)` section is useful to make sense of the rule quickly and also for debugging purposes. It is optional, but highly recommended.
+
+
+### Creating security rules
+
+Security rules are enforced on the backend server, which means they need to be uploaded to Unisave during backend server compilation. Unisave automatically uploads code that is located in so-called *backend* folders. You can create a backend folder in your `Assets` folder by right-clicking and choosing `Create > Unisave > Backend folder`.
+
+Inside your backend folder, create a new C# file `SecurityRules.cs` with this content:
+
+```cs
+using System;
+using Unisave;
+using Unisave.Facades;
+using Unisave.Heapstore.Backend;
+
+public class SecurityRules : HeapstoreBootstrapper
+{
+    protected override void DefineSecurityRules()
+    {
+        Match("*", "*")
+            .Disallow(Operation.All)
+            .Comment("The database is locked by default.");
+
+        // ... place your security rules here ...
+    }
+}
+```
+
+You put your security rules inside the `DefineSecurityRules` method, like the one already defined there.
+
+
+### Locking the database
+
+When there are no security rules, any operation is permitted. In practise we want to go the other way around. Forbid everything and then allow only what is needed. For this reason, the first rule that we want to create is a rule that disallows all operations on the database:
+
+```cs
+Match("*", "*")
+    .Disallow(Operation.All)
+    .Comment("The database is locked by default.");
+```
+
+The rule matches all collections and all documents inside those collections and prevents everyone reading and writing data.
+
+Later when we want some data to be publicly readable, we can add more specific rules that allow that. Say we have some configuration data in the `configs` collection. We can make the collection readable:
+
+```cs
+Match("configs", "*")
+    .Allow(Operation.Read)
+    .Comment("Configuration is publicly readable.");
+```
+
+The collection cannot be written or deleted because of the first rule. That rule still prevents all operations on all collections, unless overriden by a more specific rule.
+
+> **Important:** The rest of the documentation assumes the database is locked (the first rule is present). Therefore we will define rules such as *"anyone can read player nicknames"*, implicitly assuming that reading any other field is disallowed because of the first security rule.
+
+
+### Static rules
+
+Static rules are the rules without any `.If(...)` condition. They apply whenever the selector matches the incomming operation. They are useful for controlling what is accessible by the public (meaning players that are not logged in), but not only for that.
+
+Here are a few examples of such rules:
+
+```cs
+Match("configs", "*")
+    .Allow(Operation.Read)
+    .Comment("Configuration is publicly readable.");
+```
+
+```cs
+Match("errors", "*")
+    .Allow(Operation.Create)
+    .Comment("Anyone can report runtime errors, but not read them.");
+```
+
+```cs
+Match("players", "*", "nickname")
+    .Allow(Operation.Read)
+    .Comment("Player nickname is publicly readable");
+```
+
+```cs
+Match("players", "*", "password")
+    .Disallow(Operation.Read)
+    .Comment("Player's password hash never leaves the server.");
+
+// NOTE: Even if the player is ourselves and we can read ourselves,
+// this rule is more specific than such a rule.
+```
+
+
+### Dynamic rules
+
+Dynamic rules contain the `.If(...)` condition and that makes them applicable in certain contexts. A dynamic rule typically grants access to some data if something holds. For example, if the client making the request is the owner of that data.
+
+
+#### The authentication system
+
+In most cases, the condition will involve the logged-in player and so we need a login system. In Unisave, this is handled by the [Authentication system](authentication). The system is accessible inside the backend code via the `Auth` facade and its only job is to remember "who is talking to us - who is sitting in front of the computer". The authentication system remembers the "who" part, by remembering a document ID in the database. The document with that ID represents the "person" or the "account", so this is typically some document from the `players` collection.
+
+This knowledge is gained by the player logging-in somehow. Either filling out email and password, or using Steam authentication, or plenty of other ways. These credentials are verified by the backend server and when everything is fine the verification logic calls `Auth.Login("players/123456")`. It tells the authentication system, that this is the player that is now logged in.
+
+We can then somewhere else (say in our security rules) ask the authentication system, who is logged in right now:
+
+```cs
+string documentId = Auth.Id(); // players/123456
+```
+
+If nobody is logged in, the authentication system returns `null`.
+
+> **Note:** Notice that the authentication system does not verify passwords, or talk to Steam. It really only remembers a document ID. That verification logic is complicated and depends on the authentication method, so it's split up into separate systems that you can choose to use, or implement on your own. Heapstore is, however, not capable enough to implement this, so you will need to use [Facets](facets) instead.
+
+
+#### Login-based restrictions
+
+We already have the database [locked](#locking-the-database), so nobody can read any player data. Now we want to let the logged-in player to read themselves. We can define the following security rule:
+
+```cs
+Match("players", "*")
+    .Allow(Operation.Read)
+    .If(ctx => Auth.Id() != null && ctx.Document.Id == Auth.Id())
+    .Comment("A player can read themselves.");
+```
+
+Without the `.If(...)` condition, this rule would grant access to everyone to read any player they want. But this condition checks the incoming read request and asks, what is the ID of the document we are trying to read `ctx.Document.Id`. And if that ID is the same ID as the player currently logged-in, the read is allowed.
+
+> **Note:** The variable `ctx` means *context*, i.e. the context of the incoming Heapstore request (what operation, what document(s), etc...).
+
+The part `Auth.Id() != null` is strictly not necessary, because there will never be a document with ID `null`. But it explicitly states the fact that we want someone to be logged in, which may be necessary in other login-related security rules. So it's a good practise to include the check.
+
+Similarly, we might have documents that are "owned" by some player. Say a player owns some motorbikes. We can allow the logged-in player to read their own motorbikes:
+
+```cs
+Match("motorbikes", "*")
+    .Allow(Operation.Read)
+    .If(ctx => Auth.Id() != null && ctx.Document["owner"] == Auth.Id())
+    .Comment("A player can read their own motorbikes.");
+```
+
+The part `ctx.Document["owner"]` returns the value of the `owner` field of the document about to be read.
+
+> **Note:** Notice that the `Auth.Id() != null` check here makes sense. Say we have some motorbikes that are not owned by anyone (say they have been confiscated and belong to the game developer). It's logical that their owner is `null`. Not adding this check would give the non-authenticated player access to these motorbikes.
+
+
+#### Accessing database inside the condition
+
+When a Heapstore operation comes to the server, the `.If(...)` condition is executed once for every rule that matches that operation. This means if there are 10 related rules, there are 10 condition executions. Even for queries that return hundreds of documents, see [Query operation](#query-operation) for more info. This means we can safely access the database from inside the rules and the performance won't suffer.
+
+This lets us, for example, get the role of the logged-in player to test for more complicated situations. Say, an admin player can read and modify everything about all players:
+
+```cs
+async Task<bool> IsAdmin(SecurityRuleContext ctx)
+{
+    // someone has to be logged-in
+    if (Auth.Id() == null)
+        return false;
+    
+    // get the logged-in player
+    Document player = await ctx.Heapstore
+        .Document(Auth.Id())
+        .Get();
+    
+    // is the logged-in player an admin?
+    return player.Data["isAdmin"] == true;
+}
+
+Match("players", "*")
+    .Allow(Operation.Read | Operation.Update)
+    .If(IsAdmin)
+    .Comment("Admins can read and modify every player.");
+```
+
+Now the condition is more complicated so we extract it into a separate `IsAdmin` function. We can access the database via the same Heapstore interface like we do from the game client, we just do `await ctx.Heapstore` instead of `await this` inside a `MonoBehaviour`. Since we are running inside the backend server this database request will bypass security rules and can access anything. Lastly, because now we need to `await` the database call, the `IsAdmin` function is `async`. So instead of returning `bool` we return `Task<bool>` (the same thing, just for an asynchronous function).
+
+For more information on how to use Heapstore in the backend code, see [Using Heapstore in your backend code](#using-heapstore-in-your-backend-code).
+
+
+### Explicit document key
+
+
+### Field-level readability
+
+
+### Query operation
+
+TODO: query versus get, read and the value-domain conditions
+
+
+### Writing operations
+
+#### Create
+
+#### Update
+
+#### Delete
+
+
+### Rule specificity
+
+- by selector
+- has condition
+- order
+
+
+## Using Heapstore in your backend code
+
+TODO: see `Accessing database inside the condition` to get started.
 
 
 ## Limitations
@@ -633,19 +878,6 @@ TODO: design some API that will return `AsyncEnumerable<T>`, allow changing chun
     - for `IN` and `NOT IN`, the array can have at most 20 items
 - Sort
     - sort at most by 20 fields
-
-
-## Stuff to be figured out
-
-- security rules
-    - allow for field filtering (e.g. you can see other players, but only partially)
-- collection creation & indexes
-- connectivity outage exceptions
-- offline mode
-- query listening
-- interop with entities (createdAt, updatedAt) and entities over any collection name
-- set/delete carefully that checks revisions and works only in online mode
-- serialization of anonymous types `new { foo = 42 }`
 
 
 ## API Reference
@@ -737,3 +969,32 @@ Will be raised if the sort clause contains too many fields to sort by.
 ### Security rules errors
 
 **3000 - ERROR_RULE_...**
+
+
+## Developer notes
+
+> 🚧 This section lists what could be added in the future (but also may never be added).
+
+**Large responses and chunking**<br>
+Design some API that will return `AsyncEnumerable<T>`, allow changing chunk size and do the paging by "last document ID", so that collection modifications do no re-iterate some elements (simple `Limit` would be vulnerable).
+
+**Connectivity outage exceptions**<br>
+There already are such exceptions, see [General errors](#general-errors). What is needed is some documentation section that will go into the detail on the strategy of handling connection outages properly and describes what can typically go wrong.
+
+**Offline mode**<br>
+Firebase lets the client operate event when the connection to the server is lost. It stores modifications locally and syncs when the connection is regained. This would be a useful feature for mobile games.
+
+**Query listening**<br>
+The ability to get changes to a query result in real time, as writes reach the database. When the change can be propagated immediately, it would use broadcasting. It would then use periodic polls (say 30s) to sync with external database changes (that don't go through Heapstore or are difficult to judge their impact on documents and queries).
+
+**Server-side API**<br>
+Make unrestricted Heapstore calls from inside backend code. With similar API as the client code.
+
+**Collection creation & indexes**<br>
+When an ArangoDB collection is created, it has no indices and is a document collection by default. There should be a configuration option to specify the collection type and also list the desired indexes to be created (and kept synchronized with the configuration).
+
+**Other smaller things**<br>
+
+- interop with entities (createdAt, updatedAt) and entities over any collection name
+- set/delete carefully that checks revisions and works only in online mode
+- serialization of anonymous types `new { foo = 42 }`
