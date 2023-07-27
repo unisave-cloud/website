@@ -2,12 +2,14 @@
 title: "Why not to build game backend server with MySQL and PHP"
 titleHtml: "Why <em>not</em> to build game <em>backend server</em> with <em>MySQL and PHP</em>"
 url: "guides/why-not-to-build-game-backend-server-with-mysql-and-php"
-image: null
+image: "media-image.png"
 tags: ["getting-started", "http", "web"]
 author: "Jiří Mayer"
 datePublished: null
 dateUpdated: null
 ---
+
+<img src="hero-image.png" alt="A guy next to PHP and MySQL cubes with Unity cube behind him.">
 
 When you try googling for saving game data online, you will find answers suggesting you to use PHP and MySQL. You might be tempted to pursue this path, as you may already have some experience with building websites. But a website is not the same as a game backend server and you will encounter lots of problems that will take plenty of your time to solve. This article attempts to list the major problems you will encounter. Instead, consider using a dedicated game backend service like [Unisave](https://unisave.cloud/), I believe you will be better off at the end.
 
@@ -15,6 +17,8 @@ When you try googling for saving game data online, you will find answers suggest
 ## Communicating with the server
 
 Having a backend server that stores all your player accounts is only a part of the puzzle. You also need to communicate with it. You want to download the stored data and trigger actions like registering players, logging them in, etc. For this communication, the HTTP protocol is used.
+
+<img src="web-request-image.png" alt="A guy pressing a UnityWebRequest button.">
 
 
 ### The HTTP Protocol
@@ -87,6 +91,8 @@ Inside your game, you store data in variables of various types. These variables 
 
 Converting your variables to such a format is called *serialization* and retrieving the values back from such a format is called *deserialization*. When developing a backend server yourself, you will need to choose (or build) a serialization library that you use each time you send or receive data in your game.
 
+<img src="serialization-image.png" alt="Serialization conveyor belt analogy.">
+
 With Unisave, this serialization layer is already included and acts completely transparently. You can *"just send"* strings, numbers, lists, or your own types:
 
 ```cs
@@ -106,6 +112,8 @@ Imagine you're building a friend system for your game. You have two friends, pla
 ❗This simple interaction cannot be built using plain HTTP and PHP!❗
 
 When the first friend sent the friend request, it has been registered in the database. But then the server needs to immediately tell the other friend that a new request has been created. Otherwise the second player would need to refresh their game to get the new list of friend requests from the sever (and all the solutions like this are ugly).
+
+<img src="rabbitmq-image.png" alt="Distributing player action to others immediately.">
 
 > **Note:** Notice that the same problem arises when we try to implement an in-game chat.
 
