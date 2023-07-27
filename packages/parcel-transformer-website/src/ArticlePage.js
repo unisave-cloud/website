@@ -60,30 +60,33 @@ class ArticlePage {
     const articleBody = this.domBody.outerHTML;
 
     const meta = this.buildArticlePageMeta();
+
+    // disables regex special replacement characters ($ signs)
+    const disableSpecials = (text) => (() => text);
     
     templateHtml = templateHtml.replaceAll(
-      `<ARTICLE_BODY/>`, articleBody
+      `<ARTICLE_BODY/>`, disableSpecials(articleBody)
     );
     templateHtml = templateHtml.replaceAll(
-      `<ARTICLE_TITLE_TEXT/>`, meta.title
+      `<ARTICLE_TITLE_TEXT/>`, disableSpecials(meta.title)
     );
     templateHtml = templateHtml.replaceAll(
-      `<ARTICLE_TITLE_HTML/>`, meta.titleHtml
+      `<ARTICLE_TITLE_HTML/>`, disableSpecials(meta.titleHtml)
     );
     templateHtml = templateHtml.replaceAll(
-      `<AUTHOR_NAME/>`, meta.author
+      `<AUTHOR_NAME/>`, disableSpecials(meta.author)
     );
     templateHtml = templateHtml.replaceAll(
-      `<GUIDE_DATES/>`, renderGuideDates(meta, this.textualContent)
+      `<GUIDE_DATES/>`, disableSpecials(renderGuideDates(meta, this.textualContent))
     );
     templateHtml = templateHtml.replaceAll(
-      `<GUIDE_CONTENTS/>`, renderGuideContents(this.textualContent)
+      `<GUIDE_CONTENTS/>`, disableSpecials(renderGuideContents(this.textualContent))
     );
     templateHtml = templateHtml.replaceAll(
-      `<GUIDE_TAGS/>`, renderGuideTags(meta)
+      `<GUIDE_TAGS/>`, disableSpecials(renderGuideTags(meta))
     );
     templateHtml = templateHtml.replaceAll(
-      `<GUIDE_HEAD_ELEMENTS/>`, renderGuideHeadElements(meta)
+      `<GUIDE_HEAD_ELEMENTS/>`, disableSpecials(renderGuideHeadElements(meta))
     );
 
     // templateHtml = templateHtml.replaceAll(
