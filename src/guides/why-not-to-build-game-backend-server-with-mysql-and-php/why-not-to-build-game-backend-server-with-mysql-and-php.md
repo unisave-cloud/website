@@ -5,7 +5,7 @@ url: "guides/why-not-to-build-game-backend-server-with-mysql-and-php"
 image: "media-image.png"
 tags: ["getting-started", "http", "web"]
 author: "Jiří Mayer"
-datePublished: null
+datePublished: "2023-07-28"
 dateUpdated: null
 ---
 
@@ -127,7 +127,7 @@ There are three approaches used:
 
 Both WebSockets and SSE are not supported by Unity. You will need to find or buy a suitable library for this. Implementing Long Polling in Unity is complicated and will need a completely separate solution for the WebGL platform (I did that for Unisave, it was a pain).
 
-While the client-side can be solved, the server side with PHP is way worse. PHP is not really suited for handling long-running requests, because one request always consumes one execution thread. This means that with about 20 concurrent users the PHP machine runs out of worker threads and no more player can connect. That's not good...
+While the client-side can be solved, the server side with PHP is way worse. PHP is not really suited for handling long-running requests, because one request always consumes one execution thread. This means that with about 20 concurrent users the PHP machine runs out of worker threads and no more players can connect. That's not good...
 
 In addition, you need a system that lets you track connected players and then send messages to some of them. Another words, you need some routing system. That's easy. Just set up a [RabbitMQ](https://www.rabbitmq.com/) message broker, figure out the [AMQP protocol](https://www.amqp.org/) for PHP, then get rid of PHP for the threading problems and use Javascript or Python instead.
 
@@ -193,9 +193,9 @@ But a game backend resembles more a social network than a bank. Most players int
 
 ### Schema
 
-In MySQL, you have to define the tables and their columns first, before you insert any data. This definition is called the *schema*. This makes it difficult for someone to insert invalid data, but complicates the game development and schema evolution later in the game's lifetime.
+In MySQL, you have to define the tables and their columns first, before you insert any data. This definition is called the *schema*. This makes it difficult for someone to insert invalid data, but complicates the game development and schema evolution later during the game's lifetime.
 
-ArangoDB is a schema-less database, meaning it stores whatever data you give it. This means that when adding a "steam login" system to your game, that needs to store a `steamId` for each player, you don't need to go over all players and create this field. Some players will have it and for some not. Those that don't have it will not be able to login via Steam. The integration of this system into your game has now been much faster thanks to this feature.
+ArangoDB is a schema-less database, meaning it stores whatever data you give it. This means that when adding a "steam login" system to your game, that needs to store a `steamId` for each player, you don't need to go over all players and create this field. Some players will have it and some will not. Those that don't have it will not be able to login via Steam. The integration of this system into your game has now been much faster thanks to this feature.
 
 
 ### Scalability
@@ -216,7 +216,7 @@ This means that if you know MySQL tables, you will very quickly understand the d
 
 ## Infrastructure
 
-If you build your backend server with PHP, you need to run the server somewhere. Website hosting the first option, but that won't scale well. You need something that will grow, if your player base grows. But managing custom servers is a whole different job. Not to mention managing a database server, which requires much more care and attention.
+If you build your backend server with PHP, you need to run the server somewhere. Website hosting the first option, but that won't scale well. You need something that will grow, if your playerbase grows. But managing custom servers is a whole different job. Not to mention managing a database server, which requires much more care and attention.
 
 On your own servers, you will also need to manage DNS, set up custom SSL certificates and worry about load balancing. It all gets complicated fast.
 
