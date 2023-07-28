@@ -216,7 +216,7 @@ This means that if you know MySQL tables, you will very quickly understand the d
 
 ## Infrastructure
 
-If you build your backend server with PHP, you need to run the server somewhere. Website hosting the first option, but that won't scale well. You need something that will grow, if your playerbase grows. But managing custom servers is a whole different job. Not to mention managing a database server, which requires much more care and attention.
+If you build your backend server with PHP, you need to run the server somewhere. Website hosting is the first option, but that won't scale well. You need something that will grow, if your playerbase grows. But managing custom servers is a whole different job. Not to mention managing a database server, which requires much more care and attention.
 
 On your own servers, you will also need to manage DNS, set up custom SSL certificates and worry about load balancing. It all gets complicated fast.
 
