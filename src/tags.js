@@ -26,6 +26,18 @@ const tags = [
     id: "getting-started",
     title: "Getting Started"
   },
+  {
+    id: "authentication",
+    title: "Authentication"
+  },
+  {
+    id: "steam",
+    title: "Steam"
+  },
+  {
+    id: "epic-games",
+    title: "Epic Games"
+  }
 ];
 
 module.exports = tags;
