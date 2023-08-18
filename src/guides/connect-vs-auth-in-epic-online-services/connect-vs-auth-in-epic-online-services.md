@@ -192,11 +192,11 @@ The EOS documentation states that we should be careful about creating a PUID wit
 
 ## Distributing to Steam and Epic Store
 
-If you plan to distribute to multiple platforms simultaneously, the currect login behaviour depends on if and how you want to use the *EOS Gaming Services*.
+If you plan to distribute to multiple platforms simultaneously, the correct login behaviour depends on if and how you want to use the *EOS Gaming Services*.
 
 If you plan to use a third-party service (like [Unisave](https://unisave.cloud/)) for storing player progression, achievements, and leaderboards, then you can keep this simple login flow (and in fact, make it even simpler). What you want to do in such a case is to have Steam player log in into Unisave via Steam, and Epic players log in into Unisave via Epic. This way Steam players definitely have a *Steam Account*, and Epic players definitely have an *Epic Account*. This means you can only use [the Auth interface](https://dev.epicgames.com/docs/epic-account-services/auth/auth-interface) for this and completely ignore *EOS Game Services* as they will be replaced by Unisave. If you still want to use *EOS Game Services* (say to synchronize the leaderboards with Unisave), you can use the exact same login flow as desribed earlier.
 
-If you want even the Steam players to show up in the *EOS Game Services* leaderboards, you now have to create PUIDs for them and use the [the Connect interface](https://dev.epicgames.com/docs/game-services/eos-connect-interface) in the complicated fashion. Now you need to worry about [account linking](https://dev.epicgames.com/docs/game-services/eos-connect-interface#linking-an-external-account), but that is outside the scope of this article.
+If you want even the Steam players to show up in the *EOS Game Services* leaderboards, you now have to create PUIDs for them and use [the Connect interface](https://dev.epicgames.com/docs/game-services/eos-connect-interface) in the complicated fashion. Now you need to worry about [account linking](https://dev.epicgames.com/docs/game-services/eos-connect-interface#linking-an-external-account), but that is outside the scope of this article.
 
 
 ## Conclusion
