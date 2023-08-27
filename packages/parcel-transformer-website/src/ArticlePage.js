@@ -7,6 +7,7 @@ const renderGuideContents = require("./renderGuideContents");
 const renderGuideTags = require("./renderGuideTags");
 const renderGuideHeadElements = require("./renderGuideHeadElements");
 const path = require("path");
+const formatCodeBlocks = require("./formatCodeBlocks");
 
 class ArticlePage {
   constructor(asset, contents, options) {
@@ -28,7 +29,7 @@ class ArticlePage {
 
     this.formatHeadings();
 
-    // TODO: format code blocks
+    formatCodeBlocks(this.domBody);
   }
 
   parseYamlHeader() {

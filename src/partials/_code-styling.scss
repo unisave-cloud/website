@@ -1,0 +1,142 @@
+/*
+  Color theme for the code blocks
+*/
+
+@import "./_variables.scss";
+
+$theme-background: $color-gray-800;
+$theme-text: $color-gray-100;
+$theme-comments: #858585;
+$theme-orange: $color-primary-300;
+$theme-orange-light: $color-primary-100;
+$theme-purple: #df8cb9;
+$theme-green: #7fc17f;
+
+
+
+//////////////////////
+// Container Styles //
+//////////////////////
+
+pre {
+  margin-bottom: $spacing-16;
+  padding: $spacing-24 $spacing-24;
+
+  background: $theme-background;
+  font-family: $font-family-code;
+  font-size: $font-size-14;
+  color: $theme-text;
+
+  overflow-x: auto;
+
+  code {
+    padding: 0;
+    background: none;
+    color: inherit;
+    font-family: inherit;
+  }
+
+  ::selection {
+    color: black;
+  }
+}
+
+
+///////////////////////
+// Code Highlighting //
+///////////////////////
+
+.token {
+
+  // === Defaults set for C# ===
+  
+  &.comment {
+    color: $theme-comments;
+  }
+
+  &.punctuation {
+    color: $theme-text;
+  }
+
+  &.keyword {
+    color: $theme-purple;
+  }
+
+  &.class-name {
+    color: $theme-orange;
+  }
+
+  &.string {
+    color: $theme-green;
+  }
+
+  &.operator {
+    color: $theme-purple;
+  }
+
+  &.number {
+    color: $theme-purple;
+  }
+  
+  &.boolean {
+    color: $theme-purple;
+  }
+
+  &.function {
+    color: $theme-orange-light;
+    font-style: italic;
+  }
+
+
+  // === JSON ===
+
+  &.property {
+    color: $theme-orange-light;
+  }
+
+
+  // === BASH ===
+
+  &.parameter.variable {
+    color: $theme-purple;
+  }
+
+
+  // === HTML & XML ===
+
+  &.doctype {
+    color: $theme-orange-light;
+  }
+
+  &.tag {
+    color: $theme-purple;
+
+    .namespace {
+      font-style: italic;
+    }
+  }
+
+  &.attr-name {
+    color: $theme-orange-light;
+  }
+
+  &.attr-value {
+    color: $theme-green;
+
+    .punctuation {
+      color: $theme-green;
+    }
+
+    .attr-equals {
+      color: $theme-text;
+    }
+  }
+
+
+  // === YAML ===
+
+  &.key.atrule {
+    color: $theme-purple;
+  }
+
+}

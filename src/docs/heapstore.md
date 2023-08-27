@@ -182,7 +182,7 @@ The C# compiler translates this to something very similar to the `Then` chain.
 
 > **Note:** If you are familiar with Unity coroutines, then think of `async void` like `IEnumerable` and similarly of `await` like `yield return`. Unity executes asynchronous functions just like coroutines, except that they cooperate better with C#.
 
-We can now rewrite our document inserting code to use `async-await`:
+We can now rewrite our document-inserting code to use `async-await`:
 
 ```cs
 using System;

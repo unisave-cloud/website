@@ -83,9 +83,9 @@ Inside your game, you store data in variables of various types. These variables 
 
 ```json
 {
-  "id":"12345",
-  "email":"john@doe.com",
-  "score":0
+  "id": "12345",
+  "email": "john@doe.com",
+  "score": 0
 }
 ```
 
