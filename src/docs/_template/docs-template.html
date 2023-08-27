@@ -14,42 +14,23 @@
   
   <include src="src/partials/navigation/navigation.html"></include>
 
-  <div class="docs-hero">
-    <h1><ARTICLE_TITLE_HTML/></h1>
-  </div>
-
   <div class="docs-body-container">
     <div class="docs-body-left">
-      
-      <nav>
-        <h2>GETTING STARTED</h2>
-        <ol>
-          <li><a href="#foo">Features</a></li>
-          <li><a href="#foo">Installation</a></li>
-          <li><a href="#foo">Introduction</a></li>
-        </ol>
 
-        <h2>CORE</h2>
-        <ol>
-          <li><a href="#foo">Features</a></li>
-          <li><a href="#foo">Installation</a></li>
-          <li><a href="#foo">Introduction</a></li>
-        </ol>
-
-        <p>TODO: do unrolling navigation with headers like gitbook?</p>
-      </nav>
+      <include src="src/docs/_template/_docs-nav.html"></include>
 
     </div>
     <article class="docs-body-center">
+
+      <h1><ARTICLE_TITLE_HTML/></h1>
       <div class="markdown">
         <ARTICLE_BODY/>
       </div>
+      
     </article>
     <div class="docs-body-right">
 
       <div class="docs-body-right__inner">
-      
-        <h2>SEARCH (TODO)</h2>
 
         <nav>
           <h2>ON THIS PAGE</h2>

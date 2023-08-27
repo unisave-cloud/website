@@ -1,0 +1,167 @@
+$breakpoint-tablet: 1350px;
+$breakpoint-mobile: 950px;
+
+.docs-nav {
+  @media (max-width: $breakpoint-mobile) {
+    width: auto;
+
+    border-bottom: 1px solid $color-gray-100;
+  }
+
+
+  //////////////
+  // Nav Head //
+  //////////////
+
+  &.mobile-open {
+    .docs-nav-head .chevron {
+      transform: rotate(180deg);
+    }
+  }
+
+  .docs-nav-head {
+    h2 {
+      margin: $spacing-16 0;
+      margin-bottom: $spacing-32;
+
+      color: $color-text-heading;
+      font-family: $font-family;
+      font-size: $font-size-16;
+      font-weight: $font-weight-medium;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: $spacing-24;
+
+      h2 {
+        margin: 0;
+        flex-grow: 1;
+      }
+
+      .chevron {
+        display: block;
+        padding: $spacing-16;
+        cursor: pointer;
+        font-size: 0;
+  
+        transition: transform 0.2s;
+  
+        &::before {
+          content: "";
+          display: inline-block;
+          
+          // arrow down
+          $arrow-size: 6px;
+          width: 0;
+          height: 0;
+          border-left: $arrow-size solid transparent;
+          border-right: $arrow-size solid transparent;
+          border-top: $arrow-size solid $color-text-body;
+        }
+  
+        &.invisible::before {
+          border-color: transparent;
+        }
+      }
+    }
+  }
+
+
+  //////////////
+  // Nav Body //
+  //////////////
+
+  @media (max-width: $breakpoint-mobile) {
+    .docs-nav-body {
+      display: none;
+    }
+  }
+
+  &.mobile-open {
+    .docs-nav-body {
+      display: block;
+    }
+  }
+
+  .docs-nav-body {
+    @media (max-width: $breakpoint-mobile) {
+      padding: $spacing-24;
+      padding-top: 0;
+    }
+
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    ol ol {
+      padding-left: $spacing-16;
+      display: none;
+    }
+
+    a {
+      display: inline-block;
+      padding: $spacing-8;
+      padding-left: 0;
+
+      color: $color-text-body;
+      font-family: $font-family;
+      font-size: $font-size-16;
+      text-decoration: none;
+
+      &:hover {
+        color: $color-text-heading;
+      }
+    }
+
+    .chevron {
+      display: inline-block;
+      padding: $spacing-8;
+      cursor: pointer;
+
+      transition: transform 0.2s;
+
+      &::before {
+        content: "";
+        display: inline-block;
+        
+        // arrow left
+        $arrow-size: 6px;
+        width: 0;
+        height: 0;
+        border-top: $arrow-size solid transparent;
+        border-bottom: $arrow-size solid transparent;
+        border-left: $arrow-size solid $color-text-body;
+      }
+
+      &.invisible::before {
+        border-color: transparent;
+      }
+    }
+
+    li.active {
+      & > a {
+        color: $color-text-heading;
+        text-decoration: underline;
+        text-decoration-color: $color-primary;
+        text-underline-offset: 0.1em;
+        text-decoration-thickness: 2px;
+      }
+    }
+
+    li.open {
+      & > ol {
+        display: block;
+      }
+
+      & > .chevron {
+        transform: rotate(90deg);
+      }
+    }
+  }
+}

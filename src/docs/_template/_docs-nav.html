@@ -1,0 +1,83 @@
+<nav class="docs-nav">
+  <div class="docs-nav-head">
+    <h2>DOCUMENTATION</h2>
+    <span class="chevron"></span>
+  </div>
+  <div class="docs-nav-body">
+    <ol>
+      <li>
+        <span class="chevron"></span>
+        <a href="/src/docs/installation.md">Features</a>
+        <ol>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/broadcasting.md">Lorem</a>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <span class="chevron"></span>
+        <a href="/src/docs/entities.md">Heapstore</a>
+        <ol>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/facets.md">Writing Data</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/heapstore.md">Security Rules</a>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </div>
+</nav>
+
+<script>
+
+function bootUpDocsNav() {
+  let docsNav = document.querySelector(".docs-nav");
+  let docsHead = docsNav.querySelector(".docs-nav-head");
+  let lis = docsNav.querySelectorAll("li");
+  
+  lis.forEach(li => {
+    let chevron = li.querySelector(".chevron");
+    let a = li.querySelector("a");
+    let ol = li.querySelector("ol");
+
+    // hide chevrons for non-group links
+    if (!ol) {
+      chevron.classList.add("invisible")
+    }
+
+    // handle chevron clicks
+    if (ol) {
+      chevron.addEventListener("click", () => {
+        li.classList.toggle("open");
+      });
+    }
+
+    // highlight the active link
+    if (new URL(a.href, location.href).pathname === location.pathname) {
+      li.classList.add("active");
+    }
+  });
+
+  // open groups, going up from the active link
+  let pointer = docsNav.querySelector("li.active");
+  while (pointer && pointer !== docsNav) {
+    if (pointer.tagName.toLocaleLowerCase() === "li") {
+      pointer.classList.add("open");
+    }
+    pointer = pointer.parentElement;
+  }
+
+  // controlling the mobile navigation openness
+  docsHead.addEventListener("click", () => {
+    docsNav.classList.toggle("mobile-open");
+  });
+}
+
+bootUpDocsNav();
+
+</script>

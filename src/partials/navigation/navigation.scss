@@ -3,6 +3,16 @@
 $breakpoint-mobile: 950px;
 $nav-font-size: $font-size-18;
 
+.nav-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  @media (max-width: $breakpoint-mobile) {
+    background: $color-gray-10;
+  }
+}
+
 .nav {
   padding: 0;
   margin: 0;
@@ -33,6 +43,14 @@ $nav-font-size: $font-size-18;
   display: block;
   padding: 32px 0;
   flex: 1;
+
+  @media (max-width: $breakpoint-mobile) {
+    padding: 20px 0;
+
+    img {
+      height: 36px;
+    }
+  }
 }
 
 .nav-burger {
@@ -49,9 +67,9 @@ $nav-font-size: $font-size-18;
 
   span {
     display: block;
-    width: 35px;
+    width: 30px;
     height: 2px;
-    margin: 5px 0;
+    margin: 4px 0;
     padding: 0;
     box-sizing: border-box;
     background: $color-text-body;
@@ -73,6 +91,7 @@ $nav-font-size: $font-size-18;
   @media (max-width: $breakpoint-mobile) {
     flex-direction: column;
     align-items: stretch;
+    padding-bottom: 16px;
 
     &.mobile-hidden {
       display: none;
