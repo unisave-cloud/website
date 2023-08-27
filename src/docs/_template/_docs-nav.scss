@@ -139,6 +139,10 @@ $breakpoint-mobile: 950px;
         border-left: $arrow-size solid $color-text-body;
       }
 
+      &.invisible {
+        cursor: default;
+      }
+
       &.invisible::before {
         border-color: transparent;
       }

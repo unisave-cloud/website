@@ -33,6 +33,10 @@ function formatSingleCodeBlockPre(pre) {
   // if the language is not specified, we do no formatting
   if (!language)
     return;
+
+  // skip AQL language as there is no grammar
+  if (language === "aql")
+    return;
   
   // format the given code block
   const styledContent = Prism.highlight(

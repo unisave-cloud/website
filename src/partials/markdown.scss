@@ -89,6 +89,12 @@ $breakpoint-heading-hashes: 740px;
     max-width: 100%;
     margin-bottom: $spacing-16;
     border-radius: 3px;
+
+    // if the image is too white and fades in with the rest of the page
+    // (needed for UI screenshots)
+    &.with-border {
+      border: 1px solid #e8e8e8;
+    }
   }
 
   // H1 should not be used inside article bodies

@@ -97,10 +97,14 @@ pre {
   }
 
 
-  // === BASH ===
+  // === BASH & ENV ===
 
   &.parameter.variable {
     color: $theme-purple;
+  }
+
+  &.assign-left.variable {
+    color: $theme-orange-light;
   }
 
 

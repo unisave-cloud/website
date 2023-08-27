@@ -5,27 +5,111 @@
   </div>
   <div class="docs-nav-body">
     <ol>
-      <li>
+      <li class="dont-activate">
         <span class="chevron"></span>
-        <a href="/src/docs/installation.md">Features</a>
+        <a href="/src/docs/features/features.md">Getting Started</a>
         <ol>
           <li>
             <span class="chevron"></span>
-            <a href="/src/docs/broadcasting.md">Lorem</a>
+            <a href="/src/docs/features/features.md">Features</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/installation/installation.md">Installation</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/introduction.md">Introduction</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/workflow/workflow.md">Workflow</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/faq.md">FAQ</a>
+          </li>
+        </ol>
+      </li>
+      <li class="dont-activate">
+        <span class="chevron"></span>
+        <a href="/src/docs/facets.md">The Basics</a>
+        <ol>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/facets.md">Facets</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/entities.md">Entities</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/authentication.md">Authentication</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/session.md">Session</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/logging.md">Logging</a>
           </li>
         </ol>
       </li>
       <li>
         <span class="chevron"></span>
-        <a href="/src/docs/entities.md">Heapstore</a>
+        <a href="/src/docs/modules.md">Modules</a>
         <ol>
           <li>
             <span class="chevron"></span>
-            <a href="/src/docs/facets.md">Writing Data</a>
+            <a href="/src/docs/email-authentication/email-authentication.md">Email Authentication</a>
           </li>
           <li>
             <span class="chevron"></span>
-            <a href="/src/docs/heapstore.md">Security Rules</a>
+            <a href="/src/docs/steam-authentication.md">Steam Authentication</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/steam-microtransactions.md">Steam<br/>Microtransactions</a>
+          </li>
+        </ol>
+      </li>
+      <li class="dont-activate">
+        <span class="chevron"></span>
+        <a href="/src/docs/heapstore.md">Advanced</a>
+        <ol>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/database.md">Database</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/http-client.md">HTTP Client</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/broadcasting.md">Broadcasting</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/environments.md">Environments</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/mail.md">Mail</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/push-notifications.md">Push Notifications</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/serialization.md">Serialization</a>
+          </li>
+          <li>
+            <span class="chevron"></span>
+            <a href="/src/docs/heapstore.md">Heapstore</a>
           </li>
         </ol>
       </li>
@@ -59,7 +143,10 @@ function bootUpDocsNav() {
 
     // highlight the active link
     if (new URL(a.href, location.href).pathname === location.pathname) {
-      li.classList.add("active");
+      // if it's not disabled
+      if (!li.classList.contains("dont-activate")) {
+        li.classList.add("active");
+      }
     }
   });
 
