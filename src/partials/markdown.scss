@@ -43,6 +43,7 @@ $breakpoint-heading-hashes: 740px;
     padding: 0.1em 0.2em;
     background: $color-gray-50;
     font-family: $font-family-code;
+    border-radius: 3px;
   }
 
   // pre
@@ -54,6 +55,8 @@ $breakpoint-heading-hashes: 740px;
     padding: $spacing-16 $spacing-32;
     
     background: $color-gray-50;
+
+    border-radius: 3px;
 
     p {
       margin: 0;
@@ -85,6 +88,7 @@ $breakpoint-heading-hashes: 740px;
     height: auto;
     max-width: 100%;
     margin-bottom: $spacing-16;
+    border-radius: 3px;
   }
 
   // H1 should not be used inside article bodies
