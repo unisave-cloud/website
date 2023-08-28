@@ -1,5 +1,8 @@
 @import "./_variables.scss";
 
+$breakpoint-tablet: 1350px;
+$breakpoint-mobile: 950px;
+
 /*
     Style definitions for markdown content (.markdown)
     ------------------------------------------------
@@ -32,7 +35,8 @@ $breakpoint-heading-hashes: 740px;
 
   a {
     color: $color-primary;
-    text-underline-offset: 0.3em;
+    text-underline-offset: 0.2em;
+    font-weight: $font-weight-medium;
 
     &:hover {
       color: $color-primary-light;
@@ -114,6 +118,10 @@ $breakpoint-heading-hashes: 740px;
     font-family: $font-family;
     font-weight: $font-weight-regular;
     font-size: $font-size-30;
+
+    @media (max-width: $breakpoint-mobile) {
+      margin: $spacing-32 0 $spacing-12 0;
+    }
   }
 
   h3 {
@@ -122,6 +130,10 @@ $breakpoint-heading-hashes: 740px;
     font-family: $font-family;
     font-weight: $font-weight-bold;
     font-size: $font-size-24;
+
+    @media (max-width: $breakpoint-mobile) {
+      margin: $spacing-24 0 $spacing-12 0;
+    }
   }
 
   h4 {
