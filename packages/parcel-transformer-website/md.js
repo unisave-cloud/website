@@ -10,10 +10,10 @@ exports.default = new Transformer({
     // resolve template path
     let templatePath = null;
     const relativeFilePath = path.relative(options.projectRoot, asset.filePath);
-    if (relativeFilePath.startsWith("src/docs")) {
+    if (relativeFilePath.startsWith(path.join("src/docs"))) {
       templatePath = path.join(options.projectRoot, "src/docs/_template/docs-template.html");
     }
-    if (relativeFilePath.startsWith("src/guides")) {
+    if (relativeFilePath.startsWith(path.join("src/guides"))) {
       templatePath = path.join(options.projectRoot, "src/guides/_template/guides-template.html");
     }
     if (templatePath === null) {

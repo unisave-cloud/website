@@ -8,6 +8,7 @@ const renderGuideTags = require("./renderGuideTags");
 const renderGuideHeadElements = require("./renderGuideHeadElements");
 const path = require("path");
 const formatCodeBlocks = require("./formatCodeBlocks");
+const { EOL } = require("os");
 
 class ArticlePage {
   constructor(asset, contents, options) {
@@ -33,12 +34,13 @@ class ArticlePage {
   }
 
   parseYamlHeader() {
+    const separator = "---" + EOL;
     const contents = this.markdownBody;
-    if (contents.startsWith("---\n")) {
-      let i = contents.indexOf("---\n", 4);
+    if (contents.startsWith(separator)) {
+      let i = contents.indexOf(separator, separator.length);
       if (i > 0) {
-        this.yamlHeader = contents.substring(4, i);
-        this.markdownBody = contents.substring(i + 4);
+        this.yamlHeader = contents.substring(separator.length, i);
+        this.markdownBody = contents.substring(i + separator.length);
       }
     }
   }
