@@ -129,9 +129,8 @@ Let's first connect the demo to your own *Epic Product*:
 8. Transfer the selected permissions into the `BasicEOSSDKComponent` as the `ScopeFlags`. Make sure you select the exact same flags as the permissions you have granted. No more, no less. If you don't set this right, the game will just not work with cryptic messages and freeze on play-mode exit. Yay!
     <img src="eos-application-permissions.png" alt="Permission settings for the application" />
     <img src="sdk-component-scope-flags.png" alt="Scope flags for the EOS SDK component" />
-9. Lastly fill out your game name and version into the `BasicEOSSDKComponent`. You can also adjust the logging level, or disable it completely. The SDK logs a lot of errors even if everything works (because it has to do workarounds when running in the Unity Editor).
-
-**\[TODO\] is the name and version only informative? Can I take it from the Unity project settings?**
+9. Lastly fill out your game name and version into the `BasicEOSSDKComponent`. These values are only informative and don't need to match anything in the *Developer Portal*. You can tick the checkbox to get the values from Unity *Project Settings* instead.
+10. You can also adjust the logging level, or disable it completely. The SDK logs a lot of errors even if everything works (because it has to do workarounds when running in the Unity Editor).
 
 With everything filled out, you can enter the play mode again. The demo should behave the same, except that now the EOS SDK is logging into your game, not the *Unisave Integration Testing* demo game.
 
@@ -151,6 +150,8 @@ When you launch this tool, it asks you for a port. Enter the port:
 Then you can click "Log in" to create a new credential. Log into your *Epic Account* and name the new credential `me`. The credential will be used by the `BasicEOSSDKComponent` to log you in automatically, instead of displaying the overlay. The credential has to be called `me`, this is what the `BasicEOSSDKComponent` expects.
 
 Using this tool speeds up testing and clears up error logs from the console (since using the other methods inside Unity Editor logs tons of errors as various attempts fail).
+
+<img src="./dev-auth-tool.png" alt="Screenshot of the developer auth tool" class="with-border" />
 
 
 ### Understanding the code
@@ -281,13 +282,88 @@ public class EpicAuthBootstrapper : EpicAuthBootstrapperBase
 
 ## Basic EOS SDK Component
 
-TODO: where is it found
+The `BasicEOSSDKComponent` is a `MonoBehaviour` scripts responsible for loading and managing the EOS SDK and for initializing a `PlatformInterface` instance used for the interaction with EOS. The script is located in [`Assets/Plugins/UnisaveEpicAuthentication/Scripts/BasicEOSSDKComponent.cs`](https://github.com/unisave-cloud/epic-authentication/blob/master/Assets/Plugins/UnisaveEpicAuthentication/Scripts/BasicEOSSDKComponent.cs)
 
-TODO: copy and modify if you need to
+It is meant as a reasonable default for most games that want to integrate with *Epic Online Services*, so you can just drop it into your game and use it as is. If you, however, need some additional features, you can always copy its code into a new component and modify it as you see fit.
 
-TODO: what methods it offers
+> **Note:** Do not modify the code of the component directly, do make a copy first (you can call it `MyEOSSDKComponent`) and move it outside the `UnisaveEpicAuthentication` folder. If you modify the component directly, it will be hard for you to update this module, when new version comes out.
 
-TODO: what is its lifetime
+The component calls `DontDestroyOnLoad` on itself, so you only need to include it in your startup scene.
+
+The configuration of this component is explained in detail in the section [Connecting with your Epic Product](#connecting-with-your-epic-product).
+
+If you need to set the configuration fields programatically, you can delay the platform initialization to the `Start` method by ticking the corresponding checkbox and setting the other public fields during `Awake` (by having a reference to the component created in the Unity Editor).
+
+To get hold of the instance from anywhere in your game after it has been initialized, you can use the `Instance` static property:
+
+```cs
+BasicEOSSDKComponent sdkComponent = BasicEOSSDKComponent.Instance;
+```
+
+You can then use it to access the lower-level EOS SDK `PlatformInterface`:
+
+```cs
+PlatformInterface platform = sdkComponent.PlatformInterface;
+```
+
+It will return `null` if the interface has not been initialized yet, or has failed initializing.
+
+
+### Auth interface login methods
+
+The component exposes a couple of login methods, that log the game client into EOS via the Auth interface. The most capable one is `AuthLogin()` which tries all the other methods one by one (auth tool, epic launcher, account portal).
+
+```cs
+Epic.OnlineServices.Auth.LoginCallbackInfo info
+    = await sdkComponent.AuthLogin();
+
+if (info.ResultCode == Result.Success)
+    Debug.Log("Your EpicAccoundId: " + info.LocalUserId);
+else
+    Debug.Log("Login failed: " + info.ResultCode);
+```
+
+Note that the player can cancel the login procedure, in which case the `Result.Canceled` is returned. The method does not throw any exceptions.
+
+The other login methods are used in the same way:
+
+```cs
+LoginCallbackInfo info = await sdkComponent.AuthLoginViaDeveloperAuthTool();
+
+LoginCallbackInfo info = await sdkComponent.AuthLoginViaEpicLauncher();
+
+LoginCallbackInfo info = await sdkComponent.AuthLoginViaAccountPortal();
+```
+
+The *Account Portal* login almost never fails and can be used as a fallback when all the other options aren't available. It shouldn't be used as a default though, as it may ask the player for a 2FA verification code each time they log in.
+
+The *Epic Launcher* method will return `Result.AuthExchangeCodeNotFound` if the game was not launched via the *Epic Launcher*. It works by reading an *Exchange Code* from the command-line arguments passed in by the *Epic Launcher*. This method should be used shortly after the game is launched, becase the *Exchange Code* expires and after that this method also returns `Result.AuthExchangeCodeNotFound`.
+
+You can use these methods if you want to implement the login yourself:
+
+```cs
+bool isEpicLaunched = sdkComponent.IsLaunchedViaEpicLauncher();
+
+string? exchangeCode = sdkComponent.GetExchangeCode();
+```
+
+The *Developer Auth Tool* method can be customized with these arguments:
+
+```cs
+LoginCallbackInfo info = await sdkComponent.AuthLoginViaDeveloperAuthTool(
+    host: "localhost:6547",
+    credentialName: "me"
+);
+```
+
+### Connect interface login methods
+
+TODO
+
+
+## MonoBehaviour extensions
+
+TODO
 
 
 ## Epic Auth Bootstrapper
