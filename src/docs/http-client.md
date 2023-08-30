@@ -142,10 +142,10 @@ You can add additional headers to the request using the `WithHeaders` method:
 
 ```cs
 var response = Http.WithHeaders(
-    new Dictionary<string, string>(
+    new Dictionary<string, string>() {
         ["X-First"] = "foo",
         ["X-Second"] = "bar"
-    )
+    }
 ).Post("http://test.com/do-something");
 ```
 

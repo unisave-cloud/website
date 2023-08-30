@@ -104,6 +104,7 @@ You can send messages anywhere from your server-side code using the `Broadcast` 
 using Unisave;
 using Unisave.Facades;
 using Unisave.Facets;
+using Unisave.Broadcasting;
 
 public class ChatFacet : Facet
 {

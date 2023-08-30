@@ -92,6 +92,7 @@ bool someoneIsLoggedIn = Auth.Check();
 Oftentimes you want only authenticated players to call facet methods. You can enforce this by specifying an authentication middleware for the facet:
 
 ```cs
+using Unisave;
 using Unisave.Facades;
 using Unisave.Facets;
 using Unisave.Authentication.Middleware;

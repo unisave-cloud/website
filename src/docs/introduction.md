@@ -56,7 +56,7 @@ public class HomeSceneController : MonoBehaviour
     async void Start()
     {
         PlayerEntity player = await OnFacet<HomeFacet>
-            .Call<PlayerEntity>(
+            .CallAsync<PlayerEntity>(
                 nameof(HomeFacet.GetPlayerEntity)
             );
 
