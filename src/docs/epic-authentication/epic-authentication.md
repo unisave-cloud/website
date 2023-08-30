@@ -109,21 +109,81 @@ To see a reasonable initial implementation, take a look at the *SimpleDemo* prov
 
 ## Installation
 
-TODO
+First, you should have Unisave installed in you Unity project with backend uploading set up and working. If not, see the [installation instructions](../installation/installation.md).
 
-- You have your game connected with Unisave
-- Import this Unity package (this integration asset)
-- Set up EOS account via this guide: https://dev.epicgames.com/docs/epic-online-services/eos-get-started/services-quick-start
-- Download the latest EOS SDK and put it into your Unity project (https://dev.epicgames.com/en-US/sdk)
-    - NOTE: General information on how to use the SDK from Unity: https://dev.epicgames.com/docs/epic-online-services/eos-get-started/eossdkc-sharp-getting-started
-    - Put the SDK into the Plugins folder otherwise it won't be seen by this asset (as Plugins are compiled before everything else). If that isn't an option and you need the EOSSDK to be directly in the `Assets` folder, you can move this asset folder outside of the Plugins folder instead.
-    - <img src="https://static-assets-prod.epicgames.com/eos-docs/game-services/c-sharp-getting-started/unity_-2.png">
-- Open the example scene and try it out
+Then, start by importing this Unisave module as a Unity package into your project:
+
+- via the Unity Asset Store **\[TODO\]**
+- or from the `.unitypackage` downloaded from the [GitHub releases page](https://github.com/unisave-cloud/epic-authentication/releases)
+
+Now, create an Epic Games Account, create a Product (your game) and download the C# EOS SDK. You can do so by following [this EOS documentation page](https://dev.epicgames.com/docs/epic-online-services/eos-get-started/services-quick-start).
+
+> **Note:** You don't need to register if you just want to try the demo scene. But you do need it to start integrating your game.
+
+> **Note:** You can download the C# SDK without registration from [the SDK webpage](https://dev.epicgames.com/en-US/sdk).
+
+Extract the downloaded zip file and copy these files and folders to these places in your Unity project:
+
+- `ZIP:/SDK/Bin/EOSSDK-Win64-Shipping.dll` copy to `UNITY:/Assets/Plugins/EOSSDK/EOSSDK-Win64-Shipping.dll` (assuming you target Win64, otherwise you need to use binaries for other platforms)
+- `ZIP:/SDK/Source/Core` copy to `UNITY:/Assets/Plugins/EOSSDK/Core`
+- `ZIP:/SDK/Source/Generated` copy to `UNITY:/Assets/Plugins/EOSSDK/Generated`
+
+<img src="./sdk-in-unity.png" alt="Unity project view with the SDK files." />
+
+> **Note:** You can also read the [official documentation for the SDK integration with Unity](https://dev.epicgames.com/docs/epic-online-services/eos-get-started/eossdkc-sharp-getting-started) to get a better idea of how it works.
+
+
+Notice that we place the SDK into the `Assets/Plugins` folder, not directly to `Assets`. This is because this Unisave module is also in the `Plugins` folder and this folder compiles before everything else. Not having the SDK here would mean this module would not see the SDK C# classes. If you need to have the SDK outside the `Plugins` folder, you have to move the `Assets/Plugins/UnisaveEpicAuthentication` folder outside as well.
+
+
+## Demo project walkthrough
+
+This module comes with an example scene in the folder: `Assets/Plugins/UnisaveEpicAuthentication/Examples/SimpleDemo`
+
+<img src="./demo-files.png" alt="Example project file structure." />
+
+When you open the scene and hit play, you'll see the following screen:
+
+<img src="./demo-started.png" alt="Example project running." />
+
+When you click the orange button, an Epic Account Portal overlay is displayed over your game that asks you to log in. It may also open a browser window with the login portal instead (especially in the Unity Editor the behaviour is iffy - in your final built game the overlay should work fine).
+
+<img src="./demo-portal-overlay.png" alt="Epic login overlay." />
+
+When you follow through, the overlay will close and the authentication will continue. In the end it will display a **Success!** message:
+
+<img src="./demo-success.png" alt="Example project successful login." />
+
+At this point you are logged into Epic in you game (see the *EpicAccountId* `abb69018ac...`) and you are also logged into Unisave via that Epic account as a Unisave player `e_PlayerEntity/8445747209`.
+
+Now, if you make a [facet call](../facets.md) to your backend server, whenever you call `Auth.GetPlayer<T>()`, it will return the document `e_PlayerEntity/8445747209`.
+
+If we open the database and find the player document, we see that it's connected with the Epic Account (see the `epicAccountId` field):
+
+```json
+{
+    "_id": "e_PlayerEntity/8445747209",
+    "_rev": "_giUsKhS---",
+    "_key": "8445747209",
+    "epicAccountId": "abb69018acbf4772b5e194e85794a0cc",
+    "epicProductUserId": null,
+    "lastLoginAt": "2023-08-30T09:02:38.557Z",
+    "CreatedAt": "2023-08-18T13:11:04.382Z",
+    "UpdatedAt": "2023-08-30T09:02:38.576Z"
+}
+```
+
+
+### Connecting with your Epic product
+
 - Now set up your own epic game (https://dev.epicgames.com/docs/epic-account-services/getting-started)
     - Create a "Client" and policy of type "Game Client"
     - Configure an "Application" (link the client to it)
     - Fill out your own keys and tokens
     - Try again
+
+
+### Understanding the code
 
 
 ## EOS SDK initialization
