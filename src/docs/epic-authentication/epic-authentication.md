@@ -9,8 +9,15 @@ datePublished: "2023-08-29"
 dateUpdated: null
 ---
 
+**\[TODO\] clear up TODOs**
 
 This module lets you quickly add "login via Epic Games" functionality to your game. It relies on the *Epic Online Services (EOS) Software Development Kit (SDK)* - a C# library that communicates with EOS. The EOS SDK is responsible for the authentication of the player inside your game client. Once authenticated there, this module will use the EOS SDK to authenticate the same player in Unisave by finding or creating a corresponding player document in the ArangoDB database and calling `Auth.Login(doc)` with that document (learn more about the `Auth` facade [here](authentication#custom-authentication)).
+
+> **Version:** `0.1.0`<br>
+> **Unisave:** `0.12.0` or higher<br>
+> **Asset Store:** to be added<br>
+> **Download:** [unisave-epic-authentication-0.1.0.unitypackage](https://github.com/unisave-cloud/epic-authentication/releases)<br>
+> **GitHub:** [unisave-cloud/epic-authentication](https://github.com/unisave-cloud/epic-authentication)<br>
 
 
 ## Module overview
@@ -27,84 +34,6 @@ This process happens in two phases:
 
 1. Your game client logs into EOS via the EOS SDK (no Unisave interaction).
 2. You call `this.LoginUnisaveViaEpic(...);` in a `MonoBehaviour` which logs the same player in on the backend server.
-
-
-### EOS phase
-
-The first phase only interacts with the EOS SDK. The SDK is needed if you want to use the *Epic Online Services* from your game client (say, listing Epic friends, or giving Epic achievements). We will use the SDK to log the player in inside the game client:
-
-- The EOS *Platform interface* needs to get initialized (a C# object through which you communicate with EOS). Read the [EOS documentation](https://dev.epicgames.com/docs/epic-online-services/eos-get-started/eossdkc-sharp-getting-started) or the [section below](#eos-sdk-initialization) to learn more.
-- You need to authenticate the game client with the EOS SDK (you need to "login via Epic" locally). Read the [EOS documentation](https://dev.epicgames.com/docs/epic-online-services/eos-get-started/eossdkc-sharp-getting-started#signing-in) or the [section below](#eos-sdk-authentication) to learn more.
-
-
-### Epic has two login interfaces
-
-Note that there are two ways to "log into Epic": [the Auth interface](https://dev.epicgames.com/docs/epic-account-services/auth/auth-interface) and [the Connect interface](https://dev.epicgames.com/docs/game-services/eos-connect-interface). The first is for players that have an *Epic Account* and it grants access to the entire EOS ecosystem. The second grants access only to *EOS Game Services*, but can be used even by players that lack an *Epic Account*. What's complicated is that for access to *EOS Game Services*, even players with an *Epic Account* need to also login via the *Connect interface*.
-
-What that means is that if you plan to add a "login via Epic" functionality to your game for players having an *Epic Account*, you will need to log them in twice, once for each interface (in code only, the player doesn't know). It also means that player can have two different Epic identifiers: the *Epic Account ID* for the *Auth interface*, and the *Product User ID (PUID)* for the *Connect interface*.
-
-If this doesn't make sense, try reading my article: [Connect vs Auth in
-Epic Online Services](https://unisave.cloud/guides/connect-vs-auth-in-epic-online-services)
-
-
-### Unisave phase
-
-Once you have your game client logged into EOS, you can use this module to perfom a login inside Unisave. Inside any `MonoBehaviour` you add this using statement:
-
-```cs
-using Unisave.EpicAuthentication;
-```
-
-And then you call the `LoginUnisaveViaEpic` extension method:
-
-```cs
-class MyController : MonoBehaviour
-{
-    async void OnEosLoginDone()
-    {
-        await this.LoginUnisaveViaEpic(platformInterface);
-
-        Debug.Log("You are logged in even in Unisave now.");
-    }
-}
-```
-
-The `platformInterface` is the initialized *Platform interface* object from the EOS SDK, specifically the type `Epic.OnlineServices.Platform.PlatformInterface`.
-
-This module also needs to know, how to find and how to create a player document. For that you need to create a backend bootstrapper that configures this behaviour. You add this class to your backend folder and implement as you need:
-
-```cs
-using System;
-using Unisave.EpicAuthentication.Backend;
-using Unisave.Facades;
-
-public class EpicAuthBootstrapper : EpicAuthBootstrapperBase
-{
-    public override string FindPlayer(
-        string epicAccountId,
-        string epicProductUserId
-    )
-    {
-        // Find the player document by epicAccountId first,
-        // then try epicProductUserId. Return the player's
-        // document ID, e.g. "players/123456".
-        // If there's no such player, return null
-        // and a new player will be registered.
-    }
-
-    public override string RegisterNewPlayer(
-        string epicAccountId,
-        string epicProductUserId
-    )
-    {
-        // Create a new player document and save it
-        // to the database. Return its document ID.
-        // Don't forget to store the Epic identifiers.
-    }
-}
-```
-
-To see a reasonable initial implementation, take a look at the *SimpleDemo* provided with the module. You can view it online [here](https://github.com/unisave-cloud/epic-authentication/blob/master/Assets/Plugins/UnisaveEpicAuthentication/Examples/SimpleDemo/Backend/EpicAuthBootstrapper.cs).
 
 
 ## Installation
@@ -176,24 +105,191 @@ If we open the database and find the player document, we see that it's connected
 
 ### Connecting with your Epic product
 
-- Now set up your own epic game (https://dev.epicgames.com/docs/epic-account-services/getting-started)
-    - Create a "Client" and policy of type "Game Client"
-    - Configure an "Application" (link the client to it)
-    - Fill out your own keys and tokens
-    - Try again
+The example project is by default configured to connect to an *Epic Product* (a game) I&nbsp;created, called *Unisave Integration Testing*. Its credentials are filled out in the `BasicEOSSDKComponent`, which is a component responsible for the EOS communication.
+
+<img src="./demo-scene-sdk-component.png" alt="Hierarchy view with the BasicEOSSDKComponent highlighted" />
+
+<img src="./sdk-component.png" alt="Inspector screenshot of the BasicEOSSDKComponent" />
+
+You can begin your integration by first creating your own *Epic Product* and connecting it with this demo scene. When you get that working, you can start modifying the source code.
+
+Let's first connect the demo to your own *Epic Product*:
+
+1. Create an *Epic Developer Account* and an *Organization* for yourself at [dev.epicgames.com/portal](https://dev.epicgames.com/portal).
+2. In the *Developer Portal* create a new *Product* (a new game)
+    <img src="./eos-create-product.png" alt="Create product dialog">
+3. In the *Product Settings*, when you scroll down, you can see the `ProductID`, `SandboxID`, and `DeploymentID`. Copy these into the `BasicEOSSDKComponent`.
+    <img src="./eos-product-settings.png" alt="Product settings page">
+4. **In the *Clients* tab**, you need to create a new *Client Policy* and a new *Client*. When creating the policy (you can call it `Unity Client Policy`), you set the *Permission Configuration* to `Game Client`. This pre-fills the permissions in a way suitable to a game client (a built game distributed to players, as opposed to a server build). You can, of course, customize the permission set, depending on your needs and usage of *Epic Online Services*. Then you create a new client (you can call it `Unity Client`) with the created client policy. You should end up with this:
+    <img src="./eos-clients.png" alt="Clients tab">
+5. If you go back to the first *Product Settings* tab, you should see the new client. Copy the `ClientID` and the `ClientSecret` into the `BasicEOSSDKComponent`.<br/>*Note: The secret is not really a secret for game clients (builds that you distribute), but it is indeed a secret for server builds. This is because server builds typically have more privileges than game clients (they can access data about any player).*
+6. The last step is to configure an *Application*. It is something that represents your game within *Epic Account Services* (a subset of EOS that we use for authentication). An *Application* with the same name as your *Product* is already created, you just need to configure it. This is done in the *Epic Account Services* page of your *Product*:
+    <img src="./eos-applications.png" alt="Epic Account Services page with the unconfigured application" />
+7. You fill out the brand settings, permissions, and link the *Client* we have created earlier.
+8. Transfer the selected permissions into the `BasicEOSSDKComponent` as the `ScopeFlags`. Make sure you select the exact same flags as the permissions you have granted. No more, no less. If you don't set this right, the game will just not work with cryptic messages and freeze on play-mode exit. Yay!
+    <img src="eos-application-permissions.png" alt="Permission settings for the application" />
+    <img src="sdk-component-scope-flags.png" alt="Scope flags for the EOS SDK component" />
+9. Lastly fill out your game name and version into the `BasicEOSSDKComponent`. You can also adjust the logging level, or disable it completely. The SDK logs a lot of errors even if everything works (because it has to do workarounds when running in the Unity Editor).
+
+**\[TODO\] is the name and version only informative? Can I take it from the Unity project settings?**
+
+With everything filled out, you can enter the play mode again. The demo should behave the same, except that now the EOS SDK is logging into your game, not the *Unisave Integration Testing* demo game.
+
+
+### Epic Auth Tool
+
+So far, when you launched the demo, an *Epic Account Portal* overlay was displayed for the player to log in. In practise, the game is going to be launched via the *Epic Launcher*, so the authentication will require no player interaction (the `BasicEOSSDKComponent` already supports this, but falls back on the overlay in the Unity Editor).
+
+During development, there is a better way to perfom login. You can use the [Developer Authentication Tool](https://dev.epicgames.com/docs/epic-account-services/developer-authentication-tool) that comes with the SDK zip file in the `SDK/Tools` folder.
+
+When you launch this tool, it asks you for a port. Enter the port:
+
+```
+6547
+```
+
+Then you can click "Log in" to create a new credential. Log into your *Epic Account* and name the new credential `me`. The credential will be used by the `BasicEOSSDKComponent` to log you in automatically, instead of displaying the overlay. The credential has to be called `me`, this is what the `BasicEOSSDKComponent` expects.
+
+Using this tool speeds up testing and clears up error logs from the console (since using the other methods inside Unity Editor logs tons of errors as various attempts fail).
 
 
 ### Understanding the code
 
+Now that we know how to configure the demo project, let's look at how it works so that you can transfer it to your game.
 
-## EOS SDK initialization
+<img src="./demo-scene-sdk-component.png" alt="Hierarchy with the SDK component highlighted">
 
-## EOS SDK authentication
+So far, we worked with the `BasicEOSSDKComponent`. This component is responsible for loading and managing the EOS SDK library. You can add this component to your startup scene. It will call `DontDestroyOnLoad` on itself, so that it will always be available in your game.
 
-## Unisave authentication
+The component initializes a [Platform Interface](https://dev.epicgames.com/docs/game-services/eos-platform-interface), which is a C# object that we can use to communicate with the *Epic Online Services* (EOS). You can access this object via a public static property:
+
+```cs
+using Unisave.EpicAuthentication;
+using Epic.OnlineServices.Platform;
+
+// get the BasicEOSSDKComponent instance
+BasicEOSSDKComponent sdkComponent = BasicEOSSDKComponent.Instance;
+
+// get the platform interface
+PlatformInterface platform = sdkComponent.PlatformInterface;
+```
+
+The `BasicEOSSDKComponent` is initialized during `Awake`, so you can use the `PlatformInterface` immediately in the `Start` method of any component.
+
+The `BasicEOSSDKComponent` is used inside the `ExampleLoginController`, which is a top-level controller responsible for the button and the user interface. Let's look at its implementation now:
+
+<img src="./demo-scene-login-controller.png" alt="Hierarchy with the login controller selected" />
+
+> **Note:** You can open its source code [online on GitHub](https://github.com/unisave-cloud/epic-authentication/blob/master/Assets/Plugins/UnisaveEpicAuthentication/Examples/SimpleDemo/ExampleLoginController.cs).
+
+When you click the orange button, the `OnLoginClick` method is called. There, the code first calls `sdkComponent.AuthLogin()`:
+
+```cs
+Epic.OnlineServices.Auth.LoginCallbackInfo info
+    = await sdkComponent.AuthLogin();
+
+if (info.ResultCode == Result.Success)
+    Debug.Log("Your EpicAccoundId: " + info.LocalUserId);
+else
+    Debug.Log("Login failed: " + info.ResultCode);
+```
+
+This method tries log your game client into EOS via the [Auth interface](https://dev.epicgames.com/docs/epic-account-services/auth/auth-interface) using:
+
+1. the *Developer Authentication Tool*
+2. the *Epic Launcher* exchange code passed in via command-line arguments
+3. the *Epic Account Portal* login overlay
+
+If all fail, the method returns the last failure. Otherwise it returns the first success.
+
+This does no talking to Unisave. This only logs in the game client and gets the *Epic Account ID* of the player. After this, you can access Epic Friends and other EOS serivces, but as far as Unsiave is concerned, you are still logged-out.
+
+Then the `sdkComponent.ConnectLoginOrRegister` method is called.
+
+```cs
+using Epic.OnlineServices.Connect; // ??
+
+TODO todo = await sdkComponent.ConnectLoginOrRegister();
+
+// ... TODO TODO TODO ...
+```
+
+This methods performs a similar login to *EOS Game Services* (a subset of EOS), which uses [the Connect interface](https://dev.epicgames.com/docs/game-services/eos-connect-interface) to log in. More specifically, this method registers a *Product User* for the *Epic Account* if there is none, or logs in, if the player already has one.
+
+The reason Epic has these two login interfaces is that you may create *Product User* accounts for players who don't have an *Epic Account* (say, when you distribute to Xbox and don't want players to register at *Epic Games*). If you don't know what I mean, read the article [Connect vs Auth in
+Epic Online Services](/guides/connect-vs-auth-in-epic-online-services).
+
+If you already use *Product User Accounts* without *Epic Accounts*, then you need to modify this step and ask the player if they want to link an existing *Product User Accounts* with their *Epic Account*. But in such a case you already know how to do the low-level EOS SDK communication yourself. For the 95% rest of you, you can keep the code as is and just read the article - especially the [Distributing only to Epic Store](/guides/connect-vs-auth-in-epic-online-services#distributing-only-to-epic-store) section.
+
+After this step, your game is logged into EOS twice, via both the Auth and the Connect interface. Therefore it can access both the [Epic Account Services](https://dev.epicgames.com/docs/epic-account-services) as well as the [EOS Game Services](https://dev.epicgames.com/docs/game-services). But from the Unisave perspective, you are still not logged in.
+
+Now comes the time to log into Unisave via the two already performed Epic logins:
+
+```cs
+using Unisave.EpicAuthentication;
+using Unisave.EpicAuthentication.Backend;
+
+EpicLoginResponse response = await this.LoginUnisaveViaEpic(
+    sdkComponent.PlatformInterface
+);
+
+Debug.Log("Your Unisave player ID: " + response.PlayerId);
+```
+
+The `this.LoginUnisaveViaEpic` is an extension method on `MonoBehaviour` that you can use from any `MonoBehaviour` as long as you have the `using Unisave.EpicAuthentication;` statement in place.
+
+This method uses the platform interface to get the current *Epic Account ID* and *Product User ID* and sends them to the backend server. They are used to find the proper player (or register a new one) and log them in. In the response you get the document ID of the logged-in player.
+
+> **Note:** Note that the method is not just sending the IDs as plain text. It sends [Json Web Tokens](https://jwt.io/) received from EOS, that can be verified server-side to make sure the client is not making things up and attempting to login as someone else.
+
+Because there are many ways to use the database (entities, raw AQL, etc.), you need to specify, how the search and registration take place. For this there is a backend bootstrapper file that implements these methods. The file is at:<br>[`Assets/Plugins/UnisaveEpicAuthentication/Examples/SimpleDemo/Backend/EpicAuthBootstrapper.cs`](https://github.com/unisave-cloud/epic-authentication/blob/master/Assets/Plugins/UnisaveEpicAuthentication/Examples/SimpleDemo/Backend/EpicAuthBootstrapper.cs)
+
+A minimal bootstrapper implements these two methods:
+
+```cs
+using System;
+using Unisave.EpicAuthentication.Backend;
+using Unisave.Facades;
+
+public class EpicAuthBootstrapper : EpicAuthBootstrapperBase
+{
+    public override string FindPlayer(
+        string epicAccountId,
+        string epicProductUserId
+    )
+    {
+        // Find the player document by epicAccountId first,
+        // then try epicProductUserId. Return the player's
+        // document ID, e.g. "players/123456".
+        // If there's no such player, return null
+        // and a new player will be registered.
+    }
+
+    public override string RegisterNewPlayer(
+        string epicAccountId,
+        string epicProductUserId
+    )
+    {
+        // Create a new player document and save it
+        // to the database. Return its document ID.
+        // Don't forget to store the Epic identifiers
+        // inside the created document.
+    }
+}
+```
 
 
-## FAQ
+## Basic EOS SDK Component
 
-**Unity Editor freezes when exiting play mode in the SimpleDemo project.**<br>
-You have to have all the necessary keys and credentials filled out, then it won't freeze. It's probably an Epic SDK bug. Happened to me on SDK 1.15.5.
+TODO: where is it found
+
+TODO: copy and modify if you need to
+
+TODO: what methods it offers
+
+TODO: what is its lifetime
+
+
+## Epic Auth Bootstrapper
+
+TODO: what methods and configuration it offers to modify
