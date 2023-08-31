@@ -228,7 +228,6 @@ Now comes the time to log into Unisave via the two already performed Epic logins
 
 ```cs
 using Unisave.EpicAuthentication;
-using Unisave.EpicAuthentication.Backend;
 
 EpicLoginResponse response = await this.LoginUnisaveViaEpic(
     sdkComponent.PlatformInterface
@@ -249,7 +248,7 @@ A minimal bootstrapper implements these two methods:
 
 ```cs
 using System;
-using Unisave.EpicAuthentication.Backend;
+using Unisave.EpicAuthentication;
 using Unisave.Facades;
 
 public class EpicAuthBootstrapper : EpicAuthBootstrapperBase
