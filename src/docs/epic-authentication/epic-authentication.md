@@ -14,7 +14,7 @@ This module lets you quickly add "login via Epic Games" functionality to your ga
 > **Version:** `0.1.0`<br>
 > **Unisave:** `0.12.0` or higher<br>
 > **Asset Store:** to be added<br>
-> **Download:** [unisave-epic-authentication-0.1.0.unitypackage](https://github.com/unisave-cloud/epic-authentication/releases)<br>
+> **Download:** [unisave-epic-authentication-0.1.0.unitypackage](https://github.com/unisave-cloud/epic-authentication/releases/download/v0.1.0/unisave-epic-authentication-0.1.0.unitypackage)<br>
 > **GitHub:** [unisave-cloud/epic-authentication](https://github.com/unisave-cloud/epic-authentication)<br>
 
 
@@ -68,6 +68,8 @@ Notice that we place the SDK into the `Assets/Plugins` folder, not directly to `
 This module comes with an example scene in the folder: `Assets/Plugins/UnisaveEpicAuthentication/Examples/SimpleDemo`
 
 <img src="./demo-files.png" alt="Example project file structure." />
+
+> **Note:** The scene uses **TextMesh Pro** to render UI text, so you should have it installed. In Unity, click on `Window > TextMeshPro > Import TMP Essential Resources`.
 
 When you open the scene and hit play, you'll see the following screen:
 
