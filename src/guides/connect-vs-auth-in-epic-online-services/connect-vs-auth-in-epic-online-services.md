@@ -158,7 +158,7 @@ void LogInViaConnect(
 
 void CreatePUID(
     PlatformInterface platform,
-    Epic.OnlineServices.Connect.ContinuanceToken continuanceToken
+    Epic.OnlineServices.ContinuanceToken continuanceToken
 )
 {
     var createOptions = new Epic.OnlineServices.Connect.CreateUserOptions() {
