@@ -9,8 +9,6 @@ datePublished: "2023-08-29"
 dateUpdated: null
 ---
 
-**\[TODO\] clear up TODOs**
-
 This module lets you quickly add "login via Epic Games" functionality to your game. It relies on the *Epic Online Services (EOS) Software Development Kit (SDK)* - a C# library that communicates with EOS. The EOS SDK is responsible for the authentication of the player inside your game client. Once authenticated there, this module will use the EOS SDK to authenticate the same player in Unisave by finding or creating a corresponding player document in the ArangoDB database and calling `Auth.Login(doc)` with that document (learn more about the `Auth` facade [here](authentication#custom-authentication)).
 
 > **Version:** `0.1.0`<br>
@@ -38,11 +36,11 @@ This process happens in two phases:
 
 ## Installation
 
-First, you should have Unisave installed in you Unity project with backend uploading set up and working. If not, see the [installation instructions](../installation/installation.md).
+First, you should have Unisave installed in your Unity project with backend uploading set up and working. If not, see the [installation instructions](../installation/installation.md).
 
 Then, start by importing this Unisave module as a Unity package into your project:
 
-- via the Unity Asset Store **\[TODO\]**
+- via the Unity Asset Store **(to be added)**
 - or from the `.unitypackage` downloaded from the [GitHub releases page](https://github.com/unisave-cloud/epic-authentication/releases)
 
 Now, create an Epic Games Account, create a Product (your game) and download the C# EOS SDK. You can do so by following [this EOS documentation page](https://dev.epicgames.com/docs/epic-online-services/eos-get-started/services-quick-start).
@@ -279,10 +277,12 @@ public class EpicAuthBootstrapper : EpicAuthBootstrapperBase
 }
 ```
 
+You can read the section [Epic Auth Bootstrapper](#epic-auth-bootstrapper) to learn more about this.
+
 
 ## Basic EOS SDK Component
 
-The `BasicEOSSDKComponent` is a `MonoBehaviour` scripts responsible for loading and managing the EOS SDK and for initializing a `PlatformInterface` instance used for the interaction with EOS. The script is located in [`Assets/Plugins/UnisaveEpicAuthentication/Scripts/BasicEOSSDKComponent.cs`](https://github.com/unisave-cloud/epic-authentication/blob/master/Assets/Plugins/UnisaveEpicAuthentication/Scripts/BasicEOSSDKComponent.cs)
+The `BasicEOSSDKComponent` is a `MonoBehaviour` script responsible for loading and managing the EOS SDK and for initializing a `PlatformInterface` instance used for the interaction with EOS. The script is located in [`Assets/Plugins/UnisaveEpicAuthentication/Scripts/BasicEOSSDKComponent.cs`](https://github.com/unisave-cloud/epic-authentication/blob/master/Assets/Plugins/UnisaveEpicAuthentication/Scripts/BasicEOSSDKComponent.cs)
 
 It is meant as a reasonable default for most games that want to integrate with *Epic Online Services*, so you can just drop it into your game and use it as is. If you, however, need some additional features, you can always copy its code into a new component and modify it as you see fit.
 
@@ -308,10 +308,8 @@ PlatformInterface platform = sdkComponent.PlatformInterface;
 
 It will return `null` if the interface has not been initialized yet, or has failed initializing.
 
-**TODO: sdkComponent.EpicAccountId and sdkComponent.ProductUserId fields exist, use them, they're null when logged out**
 
-
-### Auth interface login methods
+### Auth interface
 
 The component exposes a couple of login methods, that log the game client into EOS via the Auth interface. The most capable one is `AuthLogin()` which tries all the other methods one by one (auth tool, epic launcher, account portal).
 
@@ -320,12 +318,19 @@ Epic.OnlineServices.Auth.LoginCallbackInfo info
     = await sdkComponent.AuthLogin();
 
 if (info.ResultCode == Result.Success)
-    Debug.Log("Your EpicAccoundId: " + info.LocalUserId);
+    Debug.Log("Your EpicAccoundId: " + sdkComponent.EpicAccountId);
 else
     Debug.Log("Login failed: " + info.ResultCode);
 ```
 
 Note that the player can cancel the login procedure, in which case the `Result.Canceled` is returned. The method does not throw any exceptions.
+
+If the login succeeds, the logged-in *Epic Account ID* becomes available via:
+
+```cs
+// null if nobody logged in
+string? epicAccountId = sdkComponent.EpicAccountId;
+```
 
 The other login methods are used in the same way:
 
@@ -358,16 +363,216 @@ LoginCallbackInfo info = await sdkComponent.AuthLoginViaDeveloperAuthTool(
 );
 ```
 
-### Connect interface login methods
 
-TODO
+### Connect interface
+
+There are additional methods that let you perform login via the Connect interface. The most likely one you are going to use is `ConnectLoginOrRegister()`. It uses the previously established Auth interface login to log into the corresponding *Product User*. If there is no such user for the given *Epic Account*, a new *Product User* is created.
+
+```cs
+Epic.OnlineServices.Result result
+    = await sdkComponent.ConnectLoginOrRegister();
+
+if (result == Result.Success)
+    Debug.Log("Your ProductUserId: " + sdkComponent.ProductUserId);
+else
+    Debug.Log("Login failed: " + result);
+```
+
+The method throws an exception only if there is no *Epic Account* currently logged in.
+
+If the login succeeds, the logged-in *Product User ID* becomes available via:
+
+```cs
+// null if nobody logged in
+string? puid = sdkComponent.ProductUserId;
+```
+
+If you already use EOS and have *Product Users* that don't have corresponding *Epic Accounts*, you need to worry about account linking. There are no methods for this, you have to implement it yourself using the EOS SDK. But you can save some work by utilizing these two helper methods:
+
+```cs
+// only attempts to login via current Epic Account
+// and does nothing if the Product User does not exist
+Epic.OnlineServices.Connect.LoginCallbackInfo loginInfo
+    = await ConnectLoginViaAuth();
+
+// creates a new Product User for the current Epic Account,
+// accepts the continuance token from the failed login
+Epic.OnlineServices.Connect.CreateUserCallbackInfo createInfo
+    = await ConnectCreateProductUser(loginInfo.ContinuanceToken);
+```
+
+According to the EOS SDK documentation, you need to manually refresh the Connect interface session to keep yourself logged in. There are SDK methods to register for notification callbacks. However, the `BasicEOSSDKComponent` already handles this logic for you, so the moment a *Product User* becomes logged in, it starts being automatically refreshed.
 
 
 ## MonoBehaviour extensions
 
-TODO
+This module provides a set of `MonoBehaviour` extension methods, that become available when you add this `using` statement:
+
+```cs
+using Unisave.EpicAuthentication;
+```
+
+
+### Login Unisave via Epic
+
+The most important one of these is the `LoginUnisaveViaEpic` method:
+
+```cs
+using UnityEngine;
+using Unisave.EpicAuthentication;
+
+public class MyController : MonoBehaviour
+{
+    async void Start()
+    {
+        // get the platform interface
+        var sdkComponent = BasicEOSSDKComponent.Instance;
+        var platform = sdkComponent.PlatformInterface;
+
+        // call the extension method
+        EpicLoginResponse response = await this.LoginUnisaveViaEpic(
+            platform
+        );
+
+        Debug.Log(response.PlayerId);
+    }
+}
+```
+
+The method uses the EOS SDK to get the currently logged-in *Epic Account* and/or the logged-in *Product User* and uses them to log the player in inside Unisave. If the IDs are seen for the first time, a new player is registered in the database, otherwise an existing player is found and logged in. The precise way in which the player is looked up or created is defined in the [Epic Auth Bootstrapper](#epic-auth-bootstrapper).
+
+The player has to be logged in either via the Auth interface, or via the Connect interface, or both. It's up to the bootstrapper to decide which ID is going to be prioritized. But typically, you will be logged in via both interfaces and the *Epic Account ID* will be used primarily (with the *PUID* as a fallback).
+
+The EOS SDK allows multiple accounts and users to be logged-in simultaneously. If that's your case, you must specify the *Epic Account ID* and/or the *PUID* to be used for the login:
+
+```cs
+EpicAccountId epicAccountId = ...;
+ProductUserId productUserId = ...;
+
+EpicLoginResponse response = await this.LoginUnisaveViaEpic(
+    platform: platform,
+    epicAccountId: epicAccountId,
+    productUserId: productUserId
+);
+```
 
 
 ## Epic Auth Bootstrapper
 
-TODO: what methods and configuration it offers to modify
+An `EpicAuthBootstrapper` is a class that you must define in your backend folder, which specifies, how this module behaves. It is a configuration file of sorts.
+
+You can start by creating a new class and making it inherit from `EpicAuthBootstrapperBase`:
+
+```cs
+using Unisave.EpicAuthentication;
+
+public class EpicAuthBootstrapper : EpicAuthBootstrapperBase
+{
+    // must be in a backend folder
+}
+```
+
+> **Note:** The class does not need to be called `EpicAuthBootstrapper`, it just has to inherit from the base class. But since there is only going to be this one class, you can stick with the convention.
+
+The base class requires you to implement two abstract methods:
+
+- `FindPlayer`
+- `RegisterNewPlayer`
+
+
+### Find player
+
+The `FindPlayer` method should find a player document in the database, given the *Epic Account ID* and/or the *Product User ID* and return the database document ID (which is the *Player ID*). If there is no player found, the method should return `null`. A reasonable implementation via [entities](entities) might look like this:
+
+```cs
+public override string FindPlayer(
+    string epicAccountId,
+    string epicProductUserId
+)
+{
+    // Find by Epic Account ID, if it was provided
+    if (epicAccountId != null)
+    {
+        PlayerEntity player = DB.TakeAll<PlayerEntity>()
+            .Filter(e => e.epicAccountId == epicAccountId)
+            .First();
+
+        // player is null if there was no such document
+        return player?.EntityId;
+    }
+    
+    // Else find by Product Account ID, if it was provided
+    if (epicProductUserId != null)
+    {
+        PlayerEntity player = DB.TakeAll<PlayerEntity>()
+            .Filter(e => e.epicProductUserId == epicProductUserId)
+            .First();
+
+        // player is null if there was no such document
+        return player?.EntityId;
+    }
+
+    // This code never runs, because at least
+    // one ID is always provided.
+    // (but C# must return something...)
+    return null;
+}
+```
+
+
+### Register new player
+
+The `RegisterNewPlayer` method should create a new player for the given Epic IDs, save it into the database, and return its document ID. It should not return `null`. A reasonable implementation via [entities](entities) might look like this:
+
+```cs
+public override string RegisterNewPlayer(
+    string epicAccountId,
+    string epicProductUserId
+)
+{
+    // create the player entity
+    var player = new PlayerEntity {
+        epicAccountId = epicAccountId,
+        epicProductUserId = epicProductUserId
+        
+        // ... you can do your own initialization here ...
+        // e.g. coins = 100
+    };
+    
+    // insert it to the database to obtain the document ID
+    player.Save();
+
+    // return the document ID
+    return player.EntityId;
+}
+```
+
+
+### Player login event
+
+When a login succeeds, you might want to perform some logic (like modifying a `lastLoginAt` timestamp, sending "welcome back" email, etc.). You can do so in the `PlayerHasLoggedIn` event method:
+
+```cs
+public override void PlayerHasLoggedIn(
+    string documentId,
+    string epicAccountId,
+    string epicProductUserId
+)
+{
+    PlayerEntity player = DB.Find<PlayerEntity>(documentId);
+
+    // store the other ID if it's known during this login attempt,
+    // but is missing in the entity
+    if (player.epicAccountId == null)
+        player.epicAccountId = epicAccountId;
+    if (player.epicProductUserId == null)
+        player.epicProductUserId = epicProductUserId;
+    
+    // update login timestamp
+    player.lastLoginAt = DateTime.UtcNow;
+
+    player.Save();
+}
+```
+
+It is a good idea to also store the other Epic ID, if it is known and is missing in the document. This may happen if you, say, only used *Epic Account Services* at first, but then decided to add *EOS Gaming Services* later. Or maybe one of the two Epic logins failed when the player was registering and now we know only the other one. Or someone accidentally deleted one of the IDs from the database. It's best to assume things do break. We want to recover when we have the option.
