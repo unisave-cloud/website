@@ -95,7 +95,7 @@ If we open the database and find the player document, we see that it's connected
     "_rev": "_giUsKhS---",
     "_key": "8445747209",
     "epicAccountId": "abb69018acbf4772b5e194e85794a0cc",
-    "epicProductUserId": null,
+    "epicProductUserId": "000250ffd94d4291afd94723f9f6b7f8",
     "lastLoginAt": "2023-08-30T09:02:38.557Z",
     "CreatedAt": "2023-08-18T13:11:04.382Z",
     "UpdatedAt": "2023-08-30T09:02:38.576Z"
@@ -190,7 +190,7 @@ Epic.OnlineServices.Auth.LoginCallbackInfo info
     = await sdkComponent.AuthLogin();
 
 if (info.ResultCode == Result.Success)
-    Debug.Log("Your EpicAccoundId: " + info.LocalUserId);
+    Debug.Log("Your EpicAccoundId: " + sdkComponent.EpicAccountId);
 else
     Debug.Log("Login failed: " + info.ResultCode);
 ```
@@ -208,11 +208,12 @@ This does no talking to Unisave. This only logs in the game client and gets the 
 Then the `sdkComponent.ConnectLoginOrRegister` method is called.
 
 ```cs
-using Epic.OnlineServices.Connect; // ??
+Epic.OnlineServices.Result result = await sdkComponent.ConnectLoginOrRegister();
 
-TODO todo = await sdkComponent.ConnectLoginOrRegister();
-
-// ... TODO TODO TODO ...
+if (result == Result.Success)
+    Debug.Log("Your ProductUserId: " + sdkComponent.ProductUserId);
+else
+    Debug.Log("Login failed: " + result);
 ```
 
 This methods performs a similar login to *EOS Game Services* (a subset of EOS), which uses [the Connect interface](https://dev.epicgames.com/docs/game-services/eos-connect-interface) to log in. More specifically, this method registers a *Product User* for the *Epic Account* if there is none, or logs in, if the player already has one.
@@ -306,6 +307,8 @@ PlatformInterface platform = sdkComponent.PlatformInterface;
 ```
 
 It will return `null` if the interface has not been initialized yet, or has failed initializing.
+
+**TODO: sdkComponent.EpicAccountId and sdkComponent.ProductUserId fields exist, use them, they're null when logged out**
 
 
 ### Auth interface login methods
