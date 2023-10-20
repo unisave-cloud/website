@@ -97,6 +97,23 @@ The application can now handle HTTP requests via the middleware components regis
 
 > **TODO:** How to handle exceptions, 4xx, and 5xx errors. Silence stuff?
 
+> **TODO:** Unify this with the facet error handling behaviour. (expected vs. unexpected exceptions, response format, etc...)
+
+
+#### Request Context
+
+When the `AppFunc` delegate of the Unisave Framework gets invoked (the method `Task BackendApplication.Invoke(IOwinContext)`), it immediately constructs `RequestContext` instance. This class is the Unisave object representing the request. It contains the request-scoped service container and all OWIN-related interfaces.
+
+To bind it fully with the underlying OWIN *Environment* dictionary, it registers the following keys:
+
+**unisave.RequestContext**<br>
+Holds the `RequestContext` instance.
+
+**unisave.RequestServices**<br>
+Holds the `IContainer` request-scoped service container.
+
+Most other request-related services (e.g. auth and middleware results) should be available through the request-scoped service container, not the *Environment* dictionary.
+
 
 ### Unisave Request
 
