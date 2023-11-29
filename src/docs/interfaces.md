@@ -82,6 +82,9 @@ An optional property of type [`IDictionary<string, string>`](https://learn.micro
 
 > **Note:** The motivation here is to theoretically allow the hosting of multiple web applications within a single OS process.
 
+**unisave.BackendApplication**<br>
+This property is set by the framework startup class and is exported back up into the server and the host. It contains the `BackendApplication` instance that will be used for request handling. This is used by framework startup tests, not by the Unisave Server (yet).
+
 
 ### HTTP Request
 
