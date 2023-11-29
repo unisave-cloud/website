@@ -90,14 +90,61 @@ The application can now handle HTTP requests via the middleware components regis
 
 #### Asynchronicity & Multi-threading
 
-> **TODO:** What about concurrency, multi-threading and asynchronicity?
+The whole framework should be designed with asynchronicity in mind. The OWIN request handling core uses C# `Task` class to achieve this, and the same approach should be present throughout the whole framework.
+
+This is necessary, because a backend server acts very much like a gateway, receiving requests, and making other requests to other services (the database, broadcasting, external third-party services). Especially the presence of third-party services makes this important, as these requests may take on the order of seconds and block an excecution thread.
+
+**Synchronous single-threading**<br>
+The current system works completely synchronously, only allowing a single request at a time, being processed by one thread. (parallelism may occur between workers though) This suffers from the long-blocking HTTP request problem mentioned above. The goal is to get rid of this system.
+
+**Asynchronous single-threading**<br>
+In this paradigm, there is only one thread, but all the logic is written in the `async`, `await` fashion, which makes all the external requests non-blocking. This allows for multiple requests to be processed simultaneously, using cooperative multitasking. This is the current goal state for the system to be in. The framework is ready for this, but the *Unisave Server* needs to be refactored to support this. This is also the paradigm used by Node.js, Python, and even Unity Engine, as it allows for a responsive, multitasking system, while avoiding the pain of managing multiple threads (synchronization primitives, race conditions, and deadlocks). This paradigm should be the default for all Unisave users as it's the best performance-complexity tradeoff.
+
+**Asynchronous multi-threading**<br>
+This paradigm builds on the previous by allowing multiple threads be used. It is used by the ASP.NET framework and allows for maximum performance. When working in the scope of a single request, the paradigm behaves like the previous one, so not much more complexity is added. The problem arises in singleton services used by multiple requests simultaneously. These need to be designed with thread-safety in mind. This paradigm should be an opt-in variant for advanced Unisave users, who need performance or are dealing with blocking-synchronous code that otherwise starves the cooperative model from before (they need preemptive multitasking). The framework could support this in theory, but all the core services and the service container would need to become thread-safe and be thoroughly tested, that there are no race-conditions hidden inside. This paradigm should be enabled by setting an environment variable that will be parsed by the Unisave Server.
 
 
 #### Error Handling
 
-> **TODO:** How to handle exceptions, 4xx, and 5xx errors. Silence stuff?
+Developers aren't perfect and it may happen that the backned handling logic raises an exception that is not handled by any specialized subsystem (like the facet calling system). The recommended behaviour for production web servers is to return a `500 Internal Server Error` response with minimal body (to not expose any internal logic). The problem is, that the backend server runs behind a gateway and the backend developer would like to see the full error message when a problem occurs.
 
-> **TODO:** Unify this with the facet error handling behaviour. (expected vs. unexpected exceptions, response format, etc...)
+For this reason, I design a *Unisave Error Response*, a standardized JSON response that describes the exception. It can be parsed by the gateway and pruned for sensitive data. The response is identified by an HTTP header:
+
+```
+X-Unisave-Error-Response: 1.0
+```
+
+The header contains the version of the response format. The format is the following:
+
+```json
+{
+    "exception": {
+        "ClassName": "MyException",
+        "Message": "Something went wrong!",
+        "StackTraceString": "  at Program.Main...",
+        ...
+    }
+}
+```
+
+Currently, only the `exception` field is present with the serialized exception instance.
+
+The format is open for more fields to be added in the future, such as:
+
+- tracing IDs
+- error metadata
+- logging output
+
+The request gateway can prune this data during production and return very little information, such as this:
+
+```json
+{
+    "exception": {
+        "ClassName": "System.Exception",
+        "Message": "Internal Server Error",
+    }
+}
+```
 
 
 #### Request Context
