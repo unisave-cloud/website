@@ -67,7 +67,7 @@ $breakpoint-mobile: 950px;
 // Hero Section //
 //////////////////
 
-.hero {
+section.hero {
   position: relative;
   padding: $spacing-128 0;
   margin: 0 auto;
@@ -149,6 +149,148 @@ $breakpoint-mobile: 950px;
       position: absolute;
       top: 0;
       left: 0;
+    }
+  }
+}
+
+
+///////////////////////////
+// We're Growing Section //
+///////////////////////////
+
+section.wegrow {
+  position: relative;
+  padding: $spacing-128 0;
+  margin: 0 auto;
+  max-width: 864px;
+
+  @media (max-width: $breakpoint-mobile) {
+    padding: $spacing-64 $spacing-24;
+  }
+
+  .section-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0;
+
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-58;
+    line-height: 1.2;
+
+    img {
+      margin-right: $spacing-48;
+      margin-left: -78px; // compensate for the width of the image
+      // (the text is centered, not the text+image)
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: $font-size-30;
+      flex-direction: row-reverse;
+      justify-content: left;
+
+      img {
+        width: 50px;
+        margin-left: $spacing-24;
+        margin-right: 0;
+      }
+    }
+  }
+
+  .section-text {
+    padding: 0;
+    max-width: 545px;
+    margin: 0 auto;
+    margin-top: $spacing-48;
+
+    color: $color-text-body;
+    font-family: $font-family;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-20;
+    line-height: 1.4;
+    text-align: center;
+
+    @media (max-width: $breakpoint-mobile) {
+      margin: 0;
+      margin-top: $spacing-24;
+      font-size: $font-size-16;
+      text-align: left;
+    }
+  }
+
+  .counters {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: $spacing-48;
+    margin-top: $spacing-48;
+
+    @media (max-width: $breakpoint-mobile) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: $spacing-24;
+      margin-top: $spacing-24;
+    }
+
+    .counter {
+      display: flex;
+      flex-direction: column-reverse;
+      width: 210px;
+
+      @media (max-width: $breakpoint-mobile) {
+        width: auto;
+      }
+
+      .counter-value {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+
+        color: $color-primary;
+        font-family: $font-family;
+        font-weight: $font-weight-bold;
+        font-size: $font-size-48;
+
+        img {
+          margin-right: $spacing-16;
+        }
+
+        @media (max-width: $breakpoint-mobile) {
+          justify-content: left;
+          font-size: $font-size-30;
+
+          img {
+            width: 28px;
+          }
+        }
+      }
+
+      .counter-label {
+        margin: 0;
+        padding: 0;
+        
+        color: $color-text-body;
+        font-family: $font-family;
+        font-weight: $font-weight-regular;
+        font-size: $font-size-20;
+        line-height: 1.4;
+        text-align: center;
+
+        @media (max-width: $breakpoint-mobile) {
+          font-size: $font-size-18;
+          text-align: left;
+          color: $color-text-over-primary;
+        }
+      }
     }
   }
 }
