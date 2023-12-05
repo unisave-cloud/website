@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg8254"
+   width="21.513638"
+   height="24.29915"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs8258" />
+  <sodipodi:namedview
+     id="namedview8256"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1" />
+  <inkscape:clipboard
+     style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#483400;fill-opacity:1;stroke-width:0.99999874;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+     min="763.58933,586.33708"
+     max="785.10297,610.63623"
+     geom-min="763.58933,586.33708"
+     geom-max="785.10297,610.63623" />
+  <g
+     id="g8260"
+     transform="matrix(3.7795276,0,0,3.7795276,-763.58934,-586.33709)">
+    <path
+       class="cls-1"
+       d="m 207.72516,159.63323 v -2.99867 l -2.5973,-1.4994 v 1.15007 l 1.01764,0.5875 c 0.0368,0.0204 0.0378,0.0782 0,0.0985 l -1.20956,0.69819 a 0.1136107,0.1136107 0 0 1 -0.11394,0 l -1.20945,-0.69819 c -0.0369,-0.0202 -0.038,-0.0782 0,-0.0986 l 1.01747,-0.58743 v -1.15018 l -2.59701,1.49956 v 2.99884 l 0.99613,-0.57532 v -1.17509 c -7.3e-4,-0.0421 0.0488,-0.0717 0.0854,-0.049 l 1.2095,0.6982 a 0.11383412,0.11383412 0 0 1 0.057,0.0987 v 1.39639 c 9.5e-4,0.0418 -0.0484,0.0718 -0.085,0.0496 l -1.01786,-0.58744 -0.99613,0.57532 2.59729,1.49939 2.5973,-1.49939 -0.99614,-0.57532 -1.01814,0.58755 c -0.0361,0.0217 -0.0865,-0.006 -0.0852,-0.0494 v -1.39639 a 0.11372241,0.11372241 0 0 1 0.0571,-0.0987 l 1.20939,-0.6982 c 0.036,-0.0219 0.0867,0.006 0.0854,0.0493 v 1.17487 z"
+       id="path177259"
+       style="display:inline;fill:#483400;fill-opacity:1;stroke-width:0.264583" />
+  </g>
+</svg>

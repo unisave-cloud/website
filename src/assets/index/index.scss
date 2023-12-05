@@ -1,0 +1,154 @@
+@import "../../partials/variables";
+
+$breakpoint-tablet: 1350px;
+$breakpoint-mobile: 950px;
+
+*::selection {
+  background: $color-primary-light;
+}
+
+
+///////////////////////
+// Shared Components //
+///////////////////////
+
+.us-button {
+  display: inline-flex;
+  align-items: center;
+
+  padding: $spacing-8 $spacing-16;
+  
+  color: $color-text-over-primary;
+  text-decoration: none;
+
+  font-size: $font-size-20;
+  font-family: $font-family;
+  font-weight: $font-weight-regular;
+
+  border: 2px solid $color-primary;
+  border-radius: 3px;
+
+  .icon {
+    margin-right: $spacing-8;
+  }
+
+  &:hover {
+    color: $color-text-over-primary;
+    background: $color-primary-lighter;
+    border-color: $color-primary-lighter;
+  }
+
+  &.primary {
+    background: $color-primary;
+    color: $color-text-over-primary;
+
+    &:hover {
+      background: $color-primary-lighter;
+      border-color: $color-primary-lighter;
+    }
+  }
+}
+
+.zigzag {
+  display: block;
+  border: none;
+  height: 13px;
+  margin: $spacing-8 0;
+
+  background-image: url(./zigzag.svg);
+  background-repeat: repeat-x;
+  background-size: contain;
+  background-position-x: center;
+  background-position-y: center;
+}
+
+
+//////////////////
+// Hero Section //
+//////////////////
+
+.hero {
+  position: relative;
+  padding: $spacing-128 0;
+  margin: 0 auto;
+  max-width: 864px;
+
+  @media (max-width: $breakpoint-mobile) {
+    padding: $spacing-64 $spacing-24;
+  }
+
+  h1 {
+    margin: 0;
+    padding: 0;
+
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-64;
+    line-height: 1.2;
+    text-align: center;
+
+    em {
+      color: $color-primary;
+      font-style: normal;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: $font-size-30;
+      text-align: left;
+    }
+  }
+
+  p {
+    padding: 0;
+    max-width: 520px;
+    margin: 0 auto;
+    margin-top: $spacing-48;
+
+    color: $color-text-body;
+    font-family: $font-family;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-20;
+    line-height: 1.4;
+    text-align: center;
+
+    @media (max-width: $breakpoint-mobile) {
+      margin: 0;
+      margin-top: $spacing-24;
+      font-size: $font-size-16;
+      text-align: left;
+    }
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    margin: 0;
+    margin-top: $spacing-48;
+    gap: $spacing-24;
+
+    @media (max-width: $breakpoint-mobile) {
+      margin-top: $spacing-24;
+      justify-content: left;
+    }
+  }
+
+  .hero-particles {
+    position: relative;
+    display: block;
+    z-index: -10;
+
+    @media (max-width: $breakpoint-tablet) {
+      display: none;
+    }
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+}
