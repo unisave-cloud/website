@@ -294,3 +294,173 @@ section.wegrow {
     }
   }
 }
+
+
+//////////////////////
+// Showcase Section //
+//////////////////////
+
+$showcase-card-width: 380px;
+$showcase-card-width-mobile: 320px;
+
+$showcase-image-height: 215px;
+$showcase-image-height-mobile: 181px;
+
+section.showcase {
+  background: $color-gray-light;
+  padding: $spacing-64;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: $spacing-32;
+  align-items: flex-start;
+
+  overflow-x: auto;
+
+  @media (max-width: $breakpoint-mobile) {
+    padding: $spacing-32;
+    gap: $spacing-16;
+  }
+
+  // desktop scrollbar
+  @media (min-width: $breakpoint-mobile) {
+    &::-webkit-scrollbar {
+      height: 5px;
+      background: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(black, 0.1);
+      border-radius: 3px;
+    }
+  }
+
+  .card {
+    width: $showcase-card-width;
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    background: white;
+
+    border-radius: 3px;
+    box-shadow: 0 4px $color-gray-400;
+
+    @media (max-width: $breakpoint-mobile) {
+      width: $showcase-card-width-mobile;
+    }
+
+    .card-image {
+      display: block;
+
+      width: $showcase-card-width;
+      height: $showcase-image-height;
+
+      object-position: center;
+      object-fit: cover;
+
+      @media (max-width: $breakpoint-mobile) {
+        width: $showcase-card-width-mobile;
+        height: $showcase-image-height-mobile;
+      }
+    }
+
+    .card-body {
+      padding: $spacing-32;
+
+      @media (max-width: $breakpoint-mobile) {
+        padding: $spacing-16;
+      }
+    }
+
+    .card-title {
+      padding: 0;
+      margin: 0;
+
+      color: $color-gray;
+      font-family: $font-family;
+      font-weight: $font-weight-medium;
+      font-size: $font-size-20;
+
+      @media (max-width: $breakpoint-mobile) {
+        font-size: $font-size-18;
+      }
+    }
+
+    .card-list {
+      margin: 0;
+      margin-top: $spacing-16;
+      padding: 0;
+      padding-left: $spacing-32;
+
+      list-style-type: none;
+
+      @media (max-width: $breakpoint-mobile) {
+        margin-top: $spacing-8;
+        padding-left: $spacing-24;
+      }
+
+      li {
+        color: $color-text-body;
+        font-family: $font-family;
+        font-weight: $font-weight-regular;
+        font-size: $font-size-18;
+        line-height: 1.5;
+
+        &:before {
+          display: inline-block;
+          content: '✓';
+          width: 1.2em;
+          margin-left: -1.2em;
+          color: $color-primary;
+        }
+
+        @media (max-width: $breakpoint-mobile) {
+          font-size: $font-size-16;
+        }
+      }
+    }
+
+    .card-button {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin-top: $spacing-32;
+
+      @media (max-width: $breakpoint-mobile) {
+        margin-top: $spacing-24;
+        margin-bottom: $spacing-8;
+      }
+
+      a {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        color: $color-text-over-primary;
+        font-family: $font-family;
+        font-weight: $font-weight-medium;
+        font-size: $font-size-20;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+
+        &:hover {
+          color: $color-primary;
+
+          img {
+            // https://stackoverflow.com/a/53336754
+            filter: brightness(0) saturate(100%) invert(80%) sepia(80%) saturate(2419%) hue-rotate(335deg) brightness(98%) contrast(100%);
+          }
+        }
+
+        img {
+          margin-right: $spacing-16;
+          height: 1em;
+          width: 1em;
+        }
+      }
+    }
+  }
+}
