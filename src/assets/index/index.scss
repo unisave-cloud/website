@@ -645,3 +645,73 @@ section.platform {
     }
   }
 }
+
+
+/////////////////////
+// Discord Section //
+/////////////////////
+
+section.discord {
+  position: relative;
+  padding: $spacing-128 $spacing-32;
+
+  @media (max-width: $breakpoint-mobile) {
+    padding: $spacing-64 $spacing-24;
+  }
+
+  .section-title {
+    margin: 0;
+    padding: 0;
+
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-48;
+    line-height: 1.3;
+    text-align: center;
+
+    em {
+      font-style: normal;
+      color: $color-primary;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: $font-size-24;
+      text-align: left;
+    }
+  }
+
+  .discord-button {
+    margin: 0;
+    padding: $spacing-32 0;
+    text-align: center;
+
+    @media (max-width: $breakpoint-mobile) {
+      text-align: left;
+      padding: $spacing-16 0;
+    }
+
+    a {
+      display: inline-block;
+
+      margin: 0;
+      padding: $spacing-16 $spacing-48;
+      background: $color-primary;
+      font-size: 0;
+      
+      border-radius: 3px;
+      box-shadow: 0 4px $color-primary-darker;
+
+      &:hover {
+        transform: translate(0, 3px);
+        box-shadow: 0 1px $color-primary-darker;
+
+        background: $color-primary-lighter;
+      }
+
+      img {
+        filter: invert(100%); // black to white
+      }
+    }
+  }
+}
