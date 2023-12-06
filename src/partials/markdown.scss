@@ -199,4 +199,44 @@ $breakpoint-heading-hashes: 740px;
     }
   }
 
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-spacing: 0;
+
+    margin: 0;
+    margin-bottom: $spacing-16;
+
+    td, th {
+      border: solid $color-gray-light;
+      border-width: 0 0 1px;
+      padding: .5em .75em;
+      vertical-align: top;
+    }
+
+    th {
+      color: $color-gray;
+    }
+
+    th:not([align]) {
+      text-align: inherit;
+    }
+
+    thead {
+      td, th {
+        border-width: 0 0 2px;
+        color: $color-gray;
+      }
+    }
+
+    tbody {
+      tr:last-child {
+        th, td {
+          border-bottom-width: 0;
+        }
+      }
+    }
+  }
+
 }
