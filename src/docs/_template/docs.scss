@@ -18,6 +18,7 @@ $docs-center-width: 650px;
   justify-content: center;
 
   padding-top: 64px;
+  padding-bottom: $spacing-64;
 
   @media (max-width: $breakpoint-tablet) {
     padding-top: 32px;

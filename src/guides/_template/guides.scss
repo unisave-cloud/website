@@ -96,6 +96,7 @@ $guide-center-width: 650px;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  padding-bottom: $spacing-64;
 }
 
 .guide-body-left {

@@ -1,0 +1,114 @@
+@import "../_variables.scss";
+
+$breakpoint-mobile: 950px;
+
+.footer {
+  background: $color-gray-10; // lightest light gray
+  padding-top: $spacing-64;
+
+  @media (max-width: $breakpoint-mobile) {
+    flex-direction: column;
+    padding-top: $spacing-32;
+  }
+
+  .blocks {
+    display: flex;
+    flex-direction: row;
+    max-width: 900px;
+    margin: 0 auto;
+
+    @media (max-width: $breakpoint-mobile) {
+      flex-direction: column;
+    }
+
+    .block {
+      margin: $spacing-32;
+      padding: 0;
+      flex: 1;
+
+      @media (max-width: $breakpoint-mobile) {
+        margin: $spacing-24;
+      }
+
+      h2 {
+        margin: 0;
+        padding: 0;
+
+        color: $color-text-heading;
+        font-family: $font-family;
+        font-weight: $font-weight-medium;
+        font-size: $font-size-16;
+        line-height: 1.4;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+
+        @media (max-width: $breakpoint-mobile) {
+          font-size: $font-size-20;
+          letter-spacing: 1.3px;
+        }
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+        padding-left: $spacing-24;
+        margin-top: $spacing-16;
+
+        @media (max-width: $breakpoint-mobile) {
+          padding-left: $spacing-32;
+        }
+      }
+
+      li {
+        margin-bottom: $spacing-4;
+
+        color: $color-text-body;
+        font-family: $font-family;
+        font-weight: $font-weight-regular;
+        font-size: $font-size-16;
+        line-height: 1.4;
+
+        @media (max-width: $breakpoint-mobile) {
+          font-size: $font-size-18;
+          margin-bottom: $spacing-8;
+        }
+
+        &::marker {
+          color: $color-primary;
+        }
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+
+        &:hover {
+          color: $color-text-over-primary;
+        }
+      }
+    }
+  }
+
+  .copyright {
+    padding-top: $spacing-32;
+    padding-bottom: $spacing-32;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: $color-text-body;
+    font-family: $font-family;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-16;
+    line-height: 1.4;
+
+    img {
+      margin-right: $spacing-32;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      padding: $spacing-24;
+    }
+  }
+}
