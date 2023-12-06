@@ -464,3 +464,184 @@ section.showcase {
     }
   }
 }
+
+
+//////////////////////
+// Platform Section //
+//////////////////////
+
+$platform-card-width: 375px;
+
+section.platform {
+  position: relative;
+  padding: $spacing-128 $spacing-32;
+
+  @media (max-width: $breakpoint-mobile) {
+    padding: $spacing-64 $spacing-24;
+  }
+
+  .section-title {
+    margin: 0;
+    padding: 0;
+
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-48;
+    line-height: 1.2;
+    text-align: center;
+
+    em {
+      font-style: normal;
+      text-decoration: underline;
+      text-decoration-color: $color-primary;
+      text-underline-offset: 10px;
+      text-decoration-thickness: 5px;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: $font-size-30;
+      text-align: left;
+      max-width: 300px; // breaks the text properly
+
+      em {
+        text-underline-offset: 5px;
+        text-decoration-thickness: 2px;
+      }
+    }
+  }
+
+  .section-text {
+    padding: 0;
+    max-width: 494px;
+    margin: 0 auto;
+    margin-top: $spacing-48;
+
+    color: $color-text-body;
+    font-family: $font-family;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-20;
+    line-height: 1.4;
+    text-align: center;
+
+    @media (max-width: $breakpoint-mobile) {
+      margin: 0;
+      margin-top: $spacing-24;
+      font-size: $font-size-16;
+      text-align: left;
+    }
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: $spacing-48;
+    margin-top: $spacing-48;
+
+    @media (max-width: $breakpoint-mobile) {
+      flex-direction: column;
+      gap: $spacing-32;
+      margin-top: $spacing-24;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      
+      padding: $spacing-32;
+      max-width: $platform-card-width;
+      box-sizing: border-box;
+
+      border: 1px solid $color-gray-light;
+      border-radius: 3px;
+      box-shadow: 0 4px $color-gray-light;
+
+      @media (max-width: $breakpoint-mobile) {
+        padding: $spacing-16;
+      }
+
+      .card-title {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+
+        color: $color-text-heading;
+        font-family: $font-family;
+        font-weight: $font-weight-regular;
+        font-size: $font-size-24;
+
+        .card-icon {
+          width: 48px;
+          height: 48px;
+          box-sizing: border-box;
+
+          padding: 0;
+          margin-right: $spacing-16;
+          position: relative;
+
+          border: 2px solid $color-primary;
+          border-radius: 3px;
+
+          img {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(90%);
+          }
+        }
+      }
+
+      .card-text {
+        padding: 0;
+        margin: 0;
+        margin-top: $spacing-16;
+        flex-grow: 1;
+
+        color: $color-text-body;
+        font-family: $font-family;
+        font-weight: $font-weight-regular;
+        font-size: $font-size-16;
+        line-height: 1.4;
+
+        @media (max-width: $breakpoint-mobile) {
+          font-size: $font-size-14;
+        }
+      }
+
+      .card-button {
+        margin-top: $spacing-32;
+
+        @media (max-width: $breakpoint-mobile) {
+          margin-top: $spacing-24;
+          margin-bottom: $spacing-8;
+          text-align: right;
+          padding-right: $spacing-8;
+        }
+
+        a {
+          color: $color-text-over-primary;
+          font-family: $font-family;
+          font-weight: $font-weight-medium;
+          font-size: $font-size-18;
+          text-decoration: none;
+          text-transform: uppercase;
+          letter-spacing: 0.14em;
+
+          &:hover {
+            color: $color-primary;
+            
+            img {
+              // https://stackoverflow.com/a/53336754
+              filter: brightness(0) saturate(100%) invert(80%) sepia(80%) saturate(2419%) hue-rotate(335deg) brightness(98%) contrast(100%);
+            }
+          }
+        }
+      }
+    }
+  }
+}
