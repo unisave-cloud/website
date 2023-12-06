@@ -15,11 +15,7 @@ let lastFrameDate = null;
 let deltaTime = 0.0; // seconds
 
 function start() {
-  console.log("starting");
-
   showcaseElement = document.querySelector("section.showcase");
-
-  console.log(showcaseElement);
   
   lastFrameDate = new Date();
   window.requestAnimationFrame(update);

@@ -17,3 +17,71 @@ body {
   @extend .container;
   padding: 0 20px;
 }
+
+
+///////////////////
+// Cookies Popup //
+///////////////////
+
+.cookies-popup {
+  position: fixed;
+  bottom: $spacing-32;
+  right: $spacing-32;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: $spacing-8;
+
+  border: 1px solid $color-gray-light;
+  border-radius: 3px;
+  background: white;
+  
+  box-shadow: 0 2px $color-gray-light, 0px 8px 7px 0px #0000000f;
+
+  @media (max-width: 450px) {
+    left: $spacing-32;
+  }
+
+  .cookies-text {
+    width: 240px;
+    margin-right: $spacing-24;
+
+    color: $color-text-body;
+    font-family: $font-family;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-14;
+    line-height: 1.4;
+
+    a {
+      color: $color-primary;
+    }
+  }
+
+  .cookies-button {
+    margin: 0;
+    padding: $spacing-8 $spacing-16;
+    margin-bottom: $spacing-4;
+    
+    cursor: pointer;
+    border: 2px solid $color-primary;
+    border-radius: 3px;
+    box-shadow: 0 4px $color-primary;
+    background: white;
+
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-16;
+    line-height: 1.4;
+
+    &:hover {
+      transform: translate(0, 3px);
+      box-shadow: 0 1px $color-primary-darker;
+
+      background: $color-primary-lighter;
+    }
+  }
+}
