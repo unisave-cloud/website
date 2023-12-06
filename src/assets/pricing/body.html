@@ -1,0 +1,255 @@
+<h1>Pricing</h1>
+<p>This page provides details about the Unisave pricing scheme:</p>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#free-development">Free development</a></li>
+<li><a href="#compute-time">Compute time</a></li>
+<li><a href="#shared-databases">Shared databases</a></li>
+<li><a href="#quota-enforcement">Quota enforcement</a></li>
+<li><a href="#pricing">Pricing tiers in detail</a></li>
+<li><a href="#taxes">Taxes</a></li>
+</ul>
+<!--
+TODO:
+- case studies
+- fair use policy
+- network
+- broadcasting
+-->
+
+<h2 id="overview">
+  <a href="#overview" onclick="navigator.clipboard.writeText(this.href);">
+    Overview
+  </a>
+</h2>
+<p>Unisave pricing is based on pricing tiers. You can switch pricing tiers for each of your games independently at any time. Each game starts in the <em>Free</em> tier. Each tier has a fixed price and resource usage quotas. The system will not let your game exceed these quotas. The last tier is auto-scaling, where additional consumption of each resource is charged at an additional price.</p>
+<p>After the end of each calendar month the final price for all games and selected pricing tiers is tallied up and an invoice is generated. This invoice is then automatically paid by charging the payment method on file.</p>
+<p>Each pricing tier has a set price for one hour. The final price at the end of the month is computed as the hourly price, times the number of hours that tier was used. Displayed monthly prices assume a month with 30 days (720 hours).</p>
+<p>All tiers contain quotas for multiple resources, but the primary resource to watch is compute time. Other resource quotas are set in a way to cover the usage of a typical game. These resource quotas are not likely to be reached before the quota on compute time is.</p>
+<p>Displayed prices exclude tax because tax rates differ by country. More information is in <a href="#taxes">the <em>Taxes</em> section</a> below.</p>
+
+<h2 id="free-development">
+  <a href="#free-development" onclick="navigator.clipboard.writeText(this.href);">
+    Free development
+  </a>
+</h2>
+<p>You can try out Unisave and develop your backend for free. The free tier has quotas that should not pose problems during development in a small team.</p>
+<p>The DAU resource (daily active users) is only tracked for requests sent from builds, not from the Unity editor. This lets you test the deployment to production on your first few players for free. For all paid tiers, there are no limits to the number of active users -- you only pay for the hardware resources consumed.</p>
+<p>All features that Unisave provides are available (in some form) in the free tier. There are no features hidden behind a paywall.</p>
+
+<h2 id="compute-time">
+  <a href="#compute-time" onclick="navigator.clipboard.writeText(this.href);">
+    Compute time
+  </a>
+</h2>
+<p>The primary consumed resource is the compute time (execution of facets). When a request comes from your game, a worker instance (a small virtual machine) is claimed and it handles that request. If another request comes, this worker instance is re-used. When there are no requests for 5 minutes, the worker instance is deleted. There may also be multiple instances running if the traffic is high enough.</p>
+<p>The total run time of all worker instances is the compute time resource. The quotas for individual pricing tiers may seem low (e.g. 8 hours per day), but they are based on numbers from real games. A hobby PC game targetting one country will see most of its traffic during the evening which may add up to only 4 hours. A mobile hypercasual game may only make a few requests regarding in-app purchases. Only a worldwide-known game will see requests coming constantly with less than 5-minute separation during all 24 hours of the day.</p>
+<blockquote>
+<p><strong>Note:</strong> A worker instance is a container, not a virtual machine. But it's a good enough analogy.</p>
+</blockquote>
+<p>All worker instances are currently 250 MB in size (RAM). This may, however, change in the future (you will be able to choose various sizes for various tasks). For this reason, Unisave actually works with a resource called <em>worker system allocation</em>. Usage of this resource is computed as the number of seconds of runtime, times the size of the worker instance in gigabytes (unit <code>Gbs</code> gigabyte-seconds). Therefore 1 hour of described compute time actually means 900 Gbs of allocation. But since compute time is easier to imagine, it's used throughout the documentation instead.</p>
+
+<h2 id="shared-databases">
+  <a href="#shared-databases" onclick="navigator.clipboard.writeText(this.href);">
+    Shared databases
+  </a>
+</h2>
+<p>Unisave provides shared virtual ArangoDB databases (the database machine is shared by multiple games). The usage of these databases is tracked via secondary resource usage metrics, namely request count and disk usage.</p>
+<p>Request count quotas are set in a way to not pose problems for most games. Database disk usage is also set in a way to accomodate most games. If you need to store large amounts of data in the database (like files), you should check out a third-party object storage provider (AWS S3, Digital Ocean Spaces) and store only object URLs in the database instead.</p>
+<blockquote>
+<p><strong>Real-world data:</strong></p>
+<ul>
+<li>One facet call makes on average 11 database requests.</li>
+<li>1 MB of database space is roughly 100 - 1 000 entities. The range is so wide because it depends on how big your entities are.</li>
+</ul>
+</blockquote>
+<p>In the professional auto-scaling tier, database disk usage is priced by the amount of disk being used and the duration for which it's used. The professional tier includes 500 Mb of database space. Say you perform a one-time operation that increases the disk usage to 1500 Mb for one hour and then the usage returns below 500 Mb. You've just consumed additional one gigabyte-hour (or 3600 gigabyte-seconds) of disk usage resource, which will be added to the invoice for 0.00139 USD.</p>
+
+<h2 id="quota-enforcement">
+  <a href="#quota-enforcement" onclick="navigator.clipboard.writeText(this.href);">
+    Quota enforcement
+  </a>
+</h2>
+<p>Most quotas are enforced on a daily basis (UTC day). If your game is in a tier that allows 1 hour of compute time per day, the system tracks the usage from the beginning of the day, and when it exceeds the quota, further requests are rejected. When the next day begins, the usage is reset to zero, which is below the quota, therefore requests are accepted again. This approach averages out traffic differences throughout a day.</p>
+<p>There are some quotas that are enforced continuously (such as database disk usage).</p>
+
+<h2 id="pricing-tiers-in-detail">
+  <a href="#pricing-tiers-in-detail" onclick="navigator.clipboard.writeText(this.href);">
+    Pricing tiers in detail
+  </a>
+</h2>
+<p>The text above explained most of the complexities regarding pricing. The following table is an accurate description of all pricing tiers and their quotas:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Free</th>
+<th>Hobby</th>
+<th>Indie</th>
+<th>Professional</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prices</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Price per hour</td>
+<td>0 USD</td>
+<td>0.01111 USD</td>
+<td>0.03472 USD</td>
+<td>0.04861 USD</td>
+</tr>
+<tr>
+<td><em>(Price per 720 hours = 30 days)</em></td>
+<td><em>0 USD</em></td>
+<td><em>8 USD</em></td>
+<td><em>25 USD</em></td>
+<td><em>35 USD</em></td>
+</tr>
+<tr>
+<td><strong>Daily quotas</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>DAU (daily active users)</td>
+<td>10</td>
+<td>unlimited</td>
+<td>unlimited</td>
+<td>unlimited</td>
+</tr>
+<tr>
+<td>Worker system allocation per day</td>
+<td>900 Gbs</td>
+<td>7 200 Gbs</td>
+<td>22 500 Gbs</td>
+<td>28 800 Gbs</td>
+</tr>
+<tr>
+<td><em>(Runtime of default-sized worker instace per day)</em></td>
+<td><em>1 h</em></td>
+<td><em>8 h</em></td>
+<td><em>25 h</em></td>
+<td><em>32 h</em></td>
+</tr>
+<tr>
+<td>Database requests per day</td>
+<td>20 000</td>
+<td>30 000</td>
+<td>100 000</td>
+<td>200 000</td>
+</tr>
+<tr>
+<td><strong>Instantaneous quotas</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Database disk usage</td>
+<td>10 MB</td>
+<td>50 MB</td>
+<td>200 MB</td>
+<td>500 MB</td>
+</tr>
+</tbody>
+</table>
+<!--
+| Broadcasting, messages per day | ? | ? | ? | ? |
+| Total network usage | ? | ? | ? | ? |
+| Broadcasting CCU (concurrent connections) | ? | ? | ? | ? |
+-->
+<p>The last tier provides autoscaling, which means that going over the quota will be added to the invoice based on the resource prices. This is the intended pricing scheme for games with large traffic or games that skew usage towards only a few resources.</p>
+<blockquote>
+<p><strong>Example:</strong> Your game is the entire month in the professional tier and consumes about 30 hours of compute time each day (the quota is 32 hours). On three days the compute time usage was 40 hours. The over-usage on each of these days is therefore 8 hours. Since it's three days in that month the total over-usage at the end of the month is 24 hours. The invoice will contain a line stating these 24 hours of additional compute time and it will cost 0.8 USD.</p>
+</blockquote>
+<p>The following table lists the prices of individual resources in this auto-scaling regime:</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Usage amount</th>
+<th>Price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Actual price per unit</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Worker system allocation</td>
+<td>1 gigabyte-second (Gbs)</td>
+<td>0.000037037037037 USD</td>
+</tr>
+<tr>
+<td>Database requests</td>
+<td>1 request</td>
+<td>0.000000333333333 USD</td>
+</tr>
+<tr>
+<td>Database disk usage</td>
+<td>1 gigabyte-second (Gbs)</td>
+<td>0.000000385802469 USD</td>
+</tr>
+<tr>
+<td><strong>Better exampels</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Runtime of default-sized worker instace</td>
+<td>1 day</td>
+<td>0.8 USD</td>
+</tr>
+<tr>
+<td>Database requests</td>
+<td>1 000 000 requests</td>
+<td>0.33 USD</td>
+</tr>
+<tr>
+<td>Database disk usage</td>
+<td>1 gigabyte for 1 day</td>
+<td>0.03 USD</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="taxes">
+  <a href="#taxes" onclick="navigator.clipboard.writeText(this.href);">
+    Taxes
+  </a>
+</h2>
+<p>Different countries have different rules for collecting taxes. They are all similar in the sense that a business doesn't need to pay taxes in a country unless the sold amount exceeds some threshold. Then a registration needs to be performed and taxes start to be collected and paid on transactions with this country. For this reason, prices listed on the Unisave website exclude taxes. For countries where Unisave is registered to collect a tax, the tax is added to the total amount to be paid on the invoice.</p>
+<blockquote>
+<p><strong>Note:</strong> I am currently a sole trader (sole proprietorship), a natural person doing business. I'm registered in the trade register of the Czech Republic (a member state of the European Union). I'm registered for the VAT tax in the EU, with an exception for Czech customers.</p>
+</blockquote>
+<p>Taxes sometimes also depend on the customer type (a consumer or another business). If you are a registered business, you should provide your tax ID via the web console to remove certain taxes from your invoices (for example a business customer from the EU is required to pay the VAT tax themselves via the reverse charge mechanism).</p>
+<p>The following is a list of countries with tax details (regarding Unisave). If your country is not listed, no taxes need to be paid. Should I become registered for taxes in a new country, I will notify all customers from that country in advance by email.</p>
+<table>
+<thead>
+<tr>
+<th>Country</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Czech Republic</td>
+<td>No taxes collected regardless of customer type.</td>
+</tr>
+<tr>
+<td>The European Union</td>
+<td>Business customers need to pay VAT tax of their country themselves via the reverse charge mechanism. Consumer customers do not pay the VAT tax.</td>
+</tr>
+</tbody>
+</table>
