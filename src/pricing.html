@@ -7,13 +7,94 @@
   <link rel="stylesheet" href="/src/partials/footer/footer.scss">
   <link rel="stylesheet" href="/src/partials/markdown.scss">
 
-  <!-- <link rel="stylesheet" href="/src/guides/_template/guides.scss"> -->
+  <link rel="stylesheet" href="/src/assets/pricing/pricing.scss">
   
   <title>Pricing - Unisave</title>
 </head>
 <body>
 
   <include src="src/partials/navigation/navigation.html"></include>
+
+  <section class="hero">
+    <h1 class="section-title">
+      Monthly pricing
+    </h1>
+
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-title">
+          <h3>Free</h3>
+          <span>$0</span>
+        </div>
+        <ul>
+          <li><em>For the development phase</em></li>
+          <li>&nbsp;</li>
+          <li><b>• 10 DAU</b> (daily active users)</li>
+          <li><b>• 1 h</b> of compute time per day</li>
+          <li><b>• 20 000</b> daily database requests</li>
+          <li><b>• 10 MB</b> database space</li>
+        </ul>
+        <a class="us-button" href="/register">
+          Create Account
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <h3>Hobby</h3>
+          <span>$8</span>
+        </div>
+        <ul>
+          <li><em>For games with low traffic</em></li>
+          <li>&nbsp;</li>
+          <li><b>•</b> unlimited DAU</li>
+          <li><b>• 8 h</b> of compute time per day</li>
+          <li><b>• 30 000</b> daily database requests</li>
+          <li><b>• 50 MB</b> database space</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <h3>Indie</h3>
+          <span>$25</span>
+        </div>
+        <ul>
+          <li><em>For games with 24/7 traffic</em></li>
+          <li>&nbsp;</li>
+          <li><b>•</b> unlimited DAU</li>
+          <li><b>• 24 + 1 h</b> of compute time per day</li>
+          <li><b>• 100K</b> daily database requests</li>
+          <li><b>• 200 MB</b> database space</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <h3>Professional</h3>
+          <span>$35+</span>
+        </div>
+        <ul>
+          <li><em>Automatic scaling with no limits</em></li>
+          <li>&nbsp;</li>
+          <li><b>•</b> unlimited DAU</li>
+          <li><b>• 32 h</b> of compute time per day</li>
+          <li><b>• 200K</b> daily database requests</li>
+          <li><b>• 500 MB</b> database space</li>
+          <li>&nbsp;</li>
+          <li style="text-align: center;">
+            <b>And then get for $1 either</b>
+          </li>
+          <li><b>• 30 h</b> of compute time monthly</li>
+          <li><b>• 3M</b> database requests monthly</li>
+          <li><b>• 1 GB</b> database space monthly</li>
+        </ul>
+      </div>
+
+    </div>
+
+  </section>
 
   <article class="markdown" style="max-width: 650px; margin: 0 auto; padding: 64px 24px;">
     <include src="src/assets/pricing/body.html"></include>

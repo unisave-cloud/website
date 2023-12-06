@@ -1,0 +1,174 @@
+@import "../../partials/variables";
+
+$breakpoint-tablet: 1350px;
+$breakpoint-mobile: 950px;
+
+*::selection {
+  background: $color-primary-light;
+}
+
+
+///////////////////////
+// Shared Components //
+///////////////////////
+
+.us-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: $spacing-8 $spacing-16;
+  
+  color: $color-text-over-primary;
+  text-decoration: none;
+
+  font-size: $font-size-20;
+  font-family: $font-family;
+  font-weight: $font-weight-regular;
+
+  border: 2px solid $color-primary;
+  border-radius: 3px;
+
+  .icon {
+    margin-right: $spacing-8;
+  }
+
+  &:hover {
+    color: $color-text-over-primary;
+    background: $color-primary-lighter;
+    border-color: $color-primary-lighter;
+  }
+
+  &.primary {
+    background: $color-primary;
+    color: $color-text-over-primary;
+
+    &:hover {
+      background: $color-primary-lighter;
+      border-color: $color-primary-lighter;
+    }
+  }
+}
+
+
+//////////////////
+// Hero Section //
+//////////////////
+
+section.hero {
+  position: relative;
+  padding: $spacing-128 0 0 0;
+  margin: 0 auto;
+  max-width: 1320px;
+
+  @media (max-width: 1320px) {
+    max-width: 700px;
+    padding: $spacing-64 0 0 0;
+  }
+
+  .section-title {
+    margin: 0;
+    padding: 0;
+    margin: 0 $spacing-24;
+
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-48;
+    line-height: 1.2;
+    text-align: center;
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: $font-size-30;
+      text-align: left;
+    }
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: $spacing-24;
+    margin-top: $spacing-48;
+
+    @media (max-width: $breakpoint-mobile) {
+      flex-direction: column;
+      gap: $spacing-16;
+      margin-top: $spacing-24;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      
+      padding: $spacing-24 $spacing-24;
+      max-width: 250px;
+      box-sizing: content-box;
+
+      border: 1px solid $color-gray-light;
+      border-radius: 3px;
+      box-shadow: 0 4px $color-gray-light;
+      // background: $color-gray-10;
+
+      @media (max-width: $breakpoint-mobile) {
+        padding: $spacing-16;
+        max-width: 1000px;
+        margin: 0 $spacing-24;
+      }
+
+      .card-title {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+
+        color: $color-text-heading;
+        font-family: $font-family;
+        font-weight: $font-weight-regular;
+        font-size: $font-size-24;
+
+        h3 {
+          margin: 0;
+          padding: 0;
+
+          font-weight: inherit;
+          font-size: inherit;
+
+          text-decoration: underline;
+          text-decoration-color: $color-primary;
+          text-decoration-thickness: 2px;
+          text-underline-offset: 4px;
+        }
+      }
+
+      ul {
+        padding: 0;
+        margin: 0;
+        margin-top: $spacing-8;
+        flex: 1;
+
+        li {
+          list-style-type: none;
+
+          color: $color-text-body;
+          font-family: $font-family;
+          font-weight: $font-weight-regular;
+          font-size: $font-size-16;
+          line-height: 1.4;
+
+          @media (max-width: $breakpoint-mobile) {
+            font-size: $font-size-14;
+          }
+        }
+      }
+
+      .us-button {
+        margin-top: $spacing-32;
+      }
+    }
+  }
+}
