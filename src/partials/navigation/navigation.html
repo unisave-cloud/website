@@ -3,6 +3,40 @@
     let menu = document.querySelector(".nav .nav-body");
     menu.classList.toggle("mobile-hidden");
   }
+
+  function handleLoggedInUser() {
+    const jwt = window.localStorage.getItem("jwt");
+    if (!jwt)
+      return;
+    
+    const parts = jwt.split(".");
+    if (parts.length !== 3)
+      return;
+    
+    const jwtBody = JSON.parse(atob(parts[1]));
+    const expiresAt = jwtBody.exp;
+
+    const remainingSeconds = expiresAt - (Date.now() / 1000);
+    
+    if (remainingSeconds <= 0)
+      return;
+
+    // somebody is logged in, lets show such UI
+    const loginLink = document.getElementById("nav-login-link");
+    const registerLink = document.getElementById("nav-register-link");
+
+    loginLink.href = "/logout";
+    loginLink.innerText = "Logout";
+    loginLink.addEventListener("click", e => {
+      // logout the JWT as well (forget it)
+      window.localStorage.removeItem("jwt");
+    });
+
+    registerLink.href = "/app";
+    registerLink.innerText = "Go to the app";
+  }
+
+  window.addEventListener("load", handleLoggedInUser);
 </script>
 
 <!-- keeps max width on desktop -->
@@ -35,11 +69,14 @@
         <a href="/docs/installation">Documentation</a>
       </li>
       <li class="nav-link">
-        <a href="/login">Login</a>
+        <!-- points to the app instead of login, since if we are in fact
+        logged in, this will save the user a login and if not, the app
+        endpoint will redirect the user to the login page anyways -->
+        <a href="/app" id="nav-login-link">Login</a>
       </li>
 
       <li class="nav-button">
-        <a href="/register">Create Account</a>
+        <a href="/register" id="nav-register-link">Create Account</a>
       </li>
     </ul>
 
