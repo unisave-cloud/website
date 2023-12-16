@@ -6,15 +6,15 @@ image: NO_IMAGE
 tags: []
 author: "Jiří Mayer"
 datePublished: "2023-08-29"
-dateUpdated: null
+dateUpdated: "2023-12-16"
 ---
 
 This module lets you quickly add "login via Epic Games" functionality to your game. It relies on the *Epic Online Services (EOS) Software Development Kit (SDK)* - a C# library that communicates with EOS. The EOS SDK is responsible for the authentication of the player inside your game client. Once authenticated there, this module will use the EOS SDK to authenticate the same player in Unisave by finding or creating a corresponding player document in the ArangoDB database and calling `Auth.Login(doc)` with that document (learn more about the `Auth` facade [here](authentication#custom-authentication)).
 
-> **Version:** `0.1.0`<br>
-> **Unisave:** `0.12.0` or higher<br>
-> **Asset Store:** to be added<br>
-> **Download:** [unisave-epic-authentication-0.1.0.unitypackage](https://github.com/unisave-cloud/epic-authentication/releases/download/v0.1.0/unisave-epic-authentication-0.1.0.unitypackage)<br>
+> **Version:** `1.0.0`<br>
+> **Unisave:** `0.12.1` or higher<br>
+> **Asset Store:** [Epic Authentication - Unisave](https://assetstore.unity.com/packages/slug/272559)<br>
+> **Download:** [unisave-epic-authentication-1.0.0.unitypackage](https://github.com/unisave-cloud/epic-authentication/releases/download/v1.0.0/unisave-epic-authentication-1.0.0.unitypackage)<br>
 > **GitHub:** [unisave-cloud/epic-authentication](https://github.com/unisave-cloud/epic-authentication)<br>
 
 
@@ -40,7 +40,7 @@ First, you should have Unisave installed in your Unity project with backend uplo
 
 Then, start by importing this Unisave module as a Unity package into your project:
 
-- via the Unity Asset Store **(to be added)**
+- via the [Unity Asset Store](https://assetstore.unity.com/packages/slug/272559)
 - or from the `.unitypackage` downloaded from the [GitHub releases page](https://github.com/unisave-cloud/epic-authentication/releases)
 
 Now, create an Epic Games Account, create a Product (your game) and download the C# EOS SDK. You can do so by following [this EOS documentation page](https://dev.epicgames.com/docs/epic-online-services/eos-get-started/services-quick-start).
