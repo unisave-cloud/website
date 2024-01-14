@@ -63,7 +63,7 @@ Now you probably have a specific problem in mind, that you wish Unisave can solv
 
 <img src="unisave-examples.png">
 
-Either way, exploring these examples will give you an idea, how to build custom systems on top of Unisave. Read the next [Start building](#start-building) section to learn about backend folders and then the [Introduction](../introduction.md) documentation page, to learn about the structure of the Unisave platform, and which systems to use to achieve what goals. Maybe you don't have to build your feature from scratch, maybe there already is a module, ready to be configured and used.
+Either way, exploring these examples will give you an idea, how to build custom systems on top of Unisave. Read the next [Start building](#start-building) section to learn about backend folders and then the [Introduction](../introduction/introduction.md) documentation page, to learn about the structure of the Unisave platform, and which systems to use to achieve what goals. Maybe you don't have to build your feature from scratch, maybe there already is a module, ready to be configured and used.
 
 <img src="email-auth-example.png">
 
@@ -105,7 +105,7 @@ You can now create your own [Facets](../facets.md), [Entities](../entities.md), 
 
 <img src="new-backend-contents.png">
 
-You can now proceed onto the [Introduction](../introduction.md) page.
+You can now proceed onto the [Introduction](../introduction/introduction.md) page.
 
 
 ## Updating the asset
