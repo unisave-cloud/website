@@ -26,7 +26,7 @@ When you develop a backend in Unisave, you write code in your Unity Editor and w
 3. You click the play button and make the first facet call.
     1. Unisave asset sends the facet request to the Unisave cloud together with the *backend hash*.
     2. The cloud starts a worker instance with that specific backend version.
-    3. The worker and handles the facet request.
+    3. The worker handles the facet request.
 
 > **Note:** This means that if more than one person works on a game, they each see their own version of the backend.
 
