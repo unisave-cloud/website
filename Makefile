@@ -2,7 +2,7 @@ WEB_IMAGE_PROD=jirkamayer/unisave-website:latest
 URL_PREFIX_PROD=https://unisave.cloud
 
 WEB_IMAGE_LOCAL=jirkamayer/unisave-website:latest-local
-URL_PREFIX_LOCAL=http://unisave.local
+URL_PREFIX_LOCAL=http://unisave.minikube
 
 .PHONY: build-prod push-prod
 
