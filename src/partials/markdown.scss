@@ -34,12 +34,12 @@ $breakpoint-heading-hashes: 740px;
   }
 
   a {
-    color: $color-primary;
+    color: $color-text-heading;
     text-underline-offset: 0.2em;
-    font-weight: $font-weight-medium;
+    text-decoration-color: $color-primary;
 
     &:hover {
-      color: $color-primary-light;
+      color: $color-primary;
     }
   }
 

@@ -56,7 +56,13 @@ body {
     line-height: 1.4;
 
     a {
-      color: $color-primary;
+      color: $color-text-heading;
+      text-underline-offset: 0.2em;
+      text-decoration-color: $color-primary;
+
+      &:hover {
+        color: $color-primary;
+      }
     }
   }
 
