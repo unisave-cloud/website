@@ -37,6 +37,10 @@ const tags = [
   {
     id: "epic-games",
     title: "Epic Games"
+  },
+  {
+    id: "photon",
+    title: "Photon"
   }
 ];
 
