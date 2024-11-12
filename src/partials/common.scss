@@ -91,3 +91,14 @@ body {
     }
   }
 }
+
+
+///////////////////
+//   Glightbox   //
+///////////////////
+
+@import url('../../node_modules/glightbox/dist/css/glightbox.css');
+
+.markdown img {
+  cursor: pointer;
+}
