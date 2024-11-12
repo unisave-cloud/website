@@ -13,7 +13,7 @@ Notes:
 Clone the repo, run:
 
 ```
-npm install
+npm ci
 
 npm run start
 ```
