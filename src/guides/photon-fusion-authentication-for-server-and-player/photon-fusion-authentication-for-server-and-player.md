@@ -71,6 +71,8 @@ public class FusionConnectionToken
 
 > **Note:** You can understand the `FusionConnectionToken` as a username and password pair, that will be used by a player to connect to the Fusion server.
 
+> ⚠️ **Warning:** The *Connection Token* has a limit of 128 bytes maximum, enforced by Photon. This limits how many more fields you can add to it substantially. Also note that there seems to be inconsistency with Client-Host setup, where the limit is only enforced for clients. Be wary of this.
+
 
 ## Fusion Server Authentication
 
@@ -213,7 +215,7 @@ public class MyFusionAuthFacet : Facet
 
     private string GenerateSecureToken()
     {
-        byte[] bytes = new byte[64];
+        byte[] bytes = new byte[32];
         var cryptoProvider = new RNGCryptoServiceProvider();
         cryptoProvider.GetBytes(bytes);
         return Convert.ToBase64String(bytes);
