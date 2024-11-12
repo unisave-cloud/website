@@ -25,5 +25,8 @@
     "parcel": "^2.8.3",
     "posthtml-include": "^1.7.4",
     "posthtml-shorten": "^1.0.0"
+  },
+  "dependencies": {
+    "glightbox": "^3.3.0"
   }
 }
