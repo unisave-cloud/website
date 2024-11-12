@@ -10,7 +10,7 @@ dateUpdated: null
 ---
 
 
-This documentation page is all about player registration and authentication. What templates will get you started quickly, how to protect certain facet methods from unauthorized players, and how to implement custom authentication.
+This documentation page is all about player registration and authentication. What modules will get you started quickly, how to protect certain facet methods from unauthorized players, and how to implement custom authentication.
 
 
 ## Player entity
@@ -43,9 +43,9 @@ You will add new fields to this entity as you will need. If you have anonymous p
 Apart from authentication fields, you may add any aditional fields important to your game. This might be some player preferences (nickname, favourite color, racing number) or resources (coins, gold, experience) or timestamps (premium account until, banned until, last login at), etc...
 
 
-## Authentication templates
+## Authentication modules
 
-Depending on the type of your game, you can use authentication templates to quickly set up player registration and login:
+Depending on the type of your game, you can use authentication modules to quickly set up player registration and login:
 
 **[Email authentication](email-authentication)**<br>
 This method is typical for web-browser-based games and some desktop games. You register via email, provide a password and use them to login later.
@@ -53,9 +53,12 @@ This method is typical for web-browser-based games and some desktop games. You r
 **[Steam authentication](steam-authentication)**<br>
 If you distribute your game via Steam, this authentication method is a no-brainer. Use it together with *Email authentication* by showing a `[Login via Steam]` button on the login form, or use it transparently in the background during game startup.
 
-If none of these templates suit your needs, you can always implement [custom authentication method](#custom-authentication).
+**[Epic authentication](epic-authentication)**<br>
+Analogous to Steam auth, this module provides a `[Login via EpicGames]` button that you can add to your game.
 
-With an authentication template installed, you can start treating authenticated players differently:
+If none of these modules suit your needs, you can always implement [custom authentication method](#custom-authentication).
+
+With an authentication module installed, you can start treating authenticated players differently:
 
 
 ## Authenticated player

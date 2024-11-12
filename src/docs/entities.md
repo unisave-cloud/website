@@ -72,6 +72,23 @@ public class PlayerEntity : Entity
 ```
 
 
+## Specifying collection name
+
+Each entity type corresponds to a document collection inside the ArangoDB database. By default, an entity C# class named `PlayerEntity` will store its data in a collection named `e_PlayerEntity`.
+
+While this behaviour is descriptive, the collection names are a little bit ugly. You can specify the collection name using the `[EntityCollectionName("my_name")]` attribute:
+
+```cs
+[EntityCollectionName("players")]
+public class PlayerEntity : Entity
+{
+    /* ... */
+}
+```
+
+I'd recommend naming collection with snake case, i.e. `unisave_is_the_best` (lowercase with underscores) and using the plural form of the noun. To give some examples: `players`, `vanity_items`, `achievement_assignments`, `leaderboard_records`.
+
+
 ## Working with an entity
 
 
@@ -183,6 +200,8 @@ The following query returns all the leaderboards:
 List<LeaderboardEntity> leaderboards
     = DB.TakeAll<LeaderboardEntity>().Get();
 ```
+
+> **Note:** The `TakeAll` method does not literally take all entities out of the database. It tells you how you should think about the operation, not how it's actually executed on the database machine. The execution plan depends on what filter you apply to the query and what indexes are defined on the database collection. It might be a linear table scan, but it might just be a direct index lookup.
 
 
 ### Retrieving the first entity
@@ -300,7 +319,7 @@ public class PlayerEntity : Entity
 Now you can rewrite your saving facet method like this:
 
 ```cs
-public class HomaFacet : Facet
+public class HomeFacet : Facet
 {
     public void SavePlayer(PlayerEntity givenPlayer)
     {
