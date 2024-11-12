@@ -249,3 +249,34 @@ $guide-center-width: 650px;
     }
   }
 }
+
+
+////////////////////
+// Discord Invite //
+////////////////////
+
+.discord-invite {
+  margin-top: $spacing-32;
+
+  p {
+    margin: 0;
+    margin-bottom: $spacing-16;
+
+    font-family: $font-family;
+    font-size: $font-size-14;
+    color: $color-text-body;
+    font-weight: $font-weight-regular;
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  a {
+    color: $color-text-heading;
+    text-underline-offset: 0.2em;
+    text-decoration-color: $color-primary;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+}
