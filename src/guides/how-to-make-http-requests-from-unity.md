@@ -1,6 +1,7 @@
 ---
 title: "How to make HTTP requests from Unity"
 url: "guides/how-to-make-http-requests-from-unity"
+image: NO_IMAGE
 tags: ["http", "unity"]
 author: "Jiří Mayer"
 datePublished: null

@@ -45,23 +45,21 @@ Each public method on this class can be called over the internet.
 
 ## Calling a facet method
 
-When you want to call a facet method, use the `OnFacet<T>` facade:
+When you want to call a facet method, use the `CallFacet` extension method:
 
 ```cs
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Unisave;
+using Unisave.Facets; // necessary for the extension to load
 
 public class MyScript : MonoBehaviour
 {
     void Start()
     {
-        OnFacet<HomeFacet>
-            .Call<string>(nameof(HomeFacet.GreetClient))
-            .Then(FacetMethodHasBeenCalled)
-            .Done();
+        this.CallFacet(
+            (HomeFacet f) => f.GreetClient()
+        ).Then(FacetMethodHasBeenCalled);
     }
 
     void FacetMethodHasBeenCalled(string serverGreeting)
@@ -76,73 +74,62 @@ You can notice, that it's not exactly like calling an ordinary method. This is b
 It's usually more convenient to use a lambda expression for the callback:
 
 ```cs
-OnFacet<HomeFacet>
-    .Call<string>(nameof(HomeFacet.GreetClient))
-    .Then((greeting) => {
-        Debug.Log("Server greets you: " + greeting);
-    })
-    .Done();
+this.CallFacet(
+    (HomeFacet f) => f.GreetClient()
+).Then((greeting) => {
+    Debug.Log("Server greets you: " + greeting);
+});
 ```
-
-> **Note:** The first argument that `Call<T>(...)` accepts is the name of the method to call. By using the `nameof` construct you tell your IDE, that this string is not any arbitrary string, but a method name. When you automatically rename the method, the code inside the `nameof` expression will be updated accordingly.
-
-> **Credit:** Unisave uses promises library by Real Serious Games, that provides an implementation of these `.Then`, `.Catch` and `.Done` methods. Check out their [Github repository](https://github.com/Real-Serious-Games/C-Sharp-Promise).
 
 
 ### Arguments
 
-You can declare the facet method with arguments that can be passed to it via additional arguments of the `.Call<T>(...)` method:
+You can declare the facet method with arguments that can be passed to it via additional arguments, just like when calling an ordinary method:
 
 ```cs
 string trackName = "Monaco";
 string motorbikeName = "Yamaha";
 int tier = 8;
 
-OnFacet<MatchmakerFacet>
-    .Call(
-        nameof(MatchmakerFacet.StartWaiting),
+this.CallFacet(
+    (MatchmakerFacet f) => f.StartWaiting(
         trackName, motorbikeName, tier
     )
-    .Done();
+);
 ```
-
-> **Note:** Arguments have to match the declaration exactly (same count, same type).
 
 
 ### Return value
 
-Since the facet method is called in this unusual way, C# has no way of knowing the return type of the called method. You have to provide it as a type parameter to the `Call<TReturn>(...)` method:
+If your facet method returns a value, it will be passed as the only argument to the `.Then` callback.
 
 ```cs
-OnFacet<HomeFacet>
-    .Call<PlayerEntity>(nameof(HomeFacet.GetPlayerEntity))
-    .Then((playerEntity) => {
-        Debug.Log(playerEntity.PlayerName);
-    })
-    .Done();
+this.CallFacet(
+    (HomeFacet f) => f.GetPlayerEntity()
+).Then((playerEntity) => {
+    Debug.Log(playerEntity.PlayerName);
+});
 ```
 
-> **Note:** Use the exact type defined in the method. Polymorphism is not advised, nor tested.
-
-If the method returns `void`, simply omit the return type:
+If it returns `void`, the callback should not accept any arguments:
 
 ```cs
-OnFacet<MatchmakerFacet>
-    .Call(nameof(MatchmakerFacet.StartWaiting))
-    .Then(() => {
-        // notice callback has no arguments
-    })
-    .Done();
+this.CallFacet(
+    (MatchmakerFacet f) => f.StartWaiting(...)
+).Then(() => {
+    // notice callback has no arguments
+});
 ```
 
 
 ### Exceptions
 
-When an exception is raised inside the facet method, it can be caught using the `.Catch` method:
+When an exception is raised inside the facet method, it can be caught using the `.Catch` callback:
 
 ```cs
-OnFacet<MatchmakerFacet>
-    .Call(nameof(MatchmakerFacet.StartWaiting))
+this.CallFacet(
+    (MatchmakerFacet f) => f.StartWaiting(...)
+)
     .Then(() => { ... })
     .Catch((exception) => {
         if (exception is PlayerAlreadyWaitingException)
@@ -150,16 +137,12 @@ OnFacet<MatchmakerFacet>
     });
 ```
 
-Note that you have to call either the `.Catch(...)` method, or the `.Done()` method. When neither is present, all exceptions will be silenced and that will make debugging difficult.
-
-> **Note:** `Done()` acts like a `Catch(...)` that reports exceptions to the console.
-
-Also note that a classical `try`, `catch` block won't work, since the entire process is asynchronous.
+Note that a classical `try`, `catch` block won't work, since the exception is not `throw`n as usual.
 
 
 ### `await` calls
 
-The `OnFacet` facade supports the `async`, `await` approach of C#:
+While the `.Then` callback approach is fine for simple calls, when you want to call multiple facets in a sequence or in a loop, you can use the `async`, `await` syntax of C#:
 
 ```cs
 using System;
@@ -173,26 +156,27 @@ public class MyScript : MonoBehaviour
     // notice the *async* keyword
     async void Start()
     {
-        // notice Async suffix and the *await* keyword
-        string serverGreeting = await OnFacet<HomeFacet>
-            .CallAsync<string>(nameof(HomeFacet.GreetClient));
+        // notice the *await* keyword
+        string serverGreeting = await this.CallFacet(
+            (HomeFacet f) => f.GreetClient()
+        );
 
         Debug.Log("Server greets you: " + serverGreeting);
     }
 }
 ```
 
-While this approach is more readable, it comes with its own problems. Make sure you fully understand the consequences of using `async` and `await` inside Unity before using it.
+This approach is more readable and more C# friendly. I recommend using it over the `.Then` callbacks, however, make sure you fully understand the consequences of using `async` and `await` inside Unity first.
 
 > **Tip:** If you want to understand the differences between callbacks, async-await, and coroutines, watch this video from Unite Copenhagen 2019: [https://www.youtube.com/watch?v=7eKi6NKri6I](https://www.youtube.com/watch?v=7eKi6NKri6I)
 
-This approach, however, has the advantage, that you can use `try` and `catch` the way you are used to:
+This approach also has the advantage, that you can use `try` and `catch` the way you are used to:
 
 ```cs
 try
 {
-    await OnFacet<MatchmakerFacet>.CallAsync<string>(
-        nameof(MatchmakerFacet.StartWaiting)
+    await this.CallFacet(
+        (MatchmakerFacet f) => f.StartWaiting(...)
     );
 }
 catch (PlayerAlreadyWaitingException)
@@ -250,3 +234,67 @@ Then if the new class becomes useful in other places, you can always refactor an
 If on the other hand you want to be lazy, or you need a quick and simple solution, you can always use the `System.Tuple<T1, T2, T3, ...>` classes.
 
 > **Note:** You can learn more about C# tuples here: [https://docs.microsoft.com/en-us/dotnet/csharp/tuples](https://docs.microsoft.com/en-us/dotnet/csharp/tuples)
+
+
+## Avoid complex argument expressions
+
+While it might seem like we get an instance of a facet on which we call a method `f.MyMethod()`, it isn't actually what is happening:
+
+```cs
+this.CallFacet(
+    (MyFacet f) => f.MyMethod() // this line actually NEVER RUNS!
+);
+```
+
+The line `(MyFacet f) => f.MyMethod()` is only compiled as an [expression tree](https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/expression-trees/) and then dynamically analyzed during runtime to extract the name of the facet method and values for all arguments.
+
+So while it can handle variable lookups, basic arithmetic operators, and function calls, I'd suggest keeping the arguments to this simple level. Compute any complex expressions before you call the facet and store them in a variable before passing them in.
+
+```cs
+// ✅ DO
+this.CallFacet(
+    (MyFacet f) => f.MyMethod(
+        12, myVar, foo + "asd",
+        Bar(), Baz(13, "14")
+    )
+);
+
+// ❌ DON'T
+this.CallFacet(
+    (MyFacet f) => f.MyMethod(
+        (from num in numbers
+        where num % 2 == 0
+        select num),
+        await FooBar() ?? "none",
+        3 << 5 as sbyte
+    )
+);
+
+// ✅ DO INSTEAD
+var a = (from num in numbers
+        where num % 2 == 0
+        select num);
+var b = await FooBar() ?? "none";
+var c = 3 << 5 as sbyte;
+this.CallFacet(
+    (MyFacet f) => f.MyMethod(a, b, c)
+);
+```
+
+
+## Calling facets outside of MonoBehaviours
+
+Calling facets via the `this.CallFacet` is useful, because the facet request also knows which `MonoBehaviour` is making the request. This is helpful in cases where the request outlives the behvaiour i.e. the behaviour is `Destroy(gameObject)`-ed before the facet request finishes. In this case, Unisave discards the result of the facet call and does not call any callbacks (`.Then` and `.Catch` are never called, `await` never returns). Unity coroutines behave in the same way - they no longer run if the game object was destroyed.
+
+If you want to call a facet from outside a `MonoBehaviour` or you want to break this behaviour association that the request has, you can call the API method directly through the [`FacetClient`](https://github.com/unisave-cloud/asset/blob/master/Assets/Plugins/Unisave/Scripts/Facets/FacetClient.cs) static class:
+
+```cs
+using Unisave.Facets;
+
+public static async void MyGlobalFunction()
+{
+    var result = await FacetClient.CallFacet(
+        (MyFacet f) => f.MyMethod()
+    );
+}
+```
