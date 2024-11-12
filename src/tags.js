@@ -23,6 +23,10 @@ const tags = [
     title: "Entities"
   },
   {
+    id: "case-study",
+    title: "Case Study"
+  },
+  {
     id: "getting-started",
     title: "Getting Started"
   },
