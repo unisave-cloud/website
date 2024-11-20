@@ -647,6 +647,108 @@ section.platform {
 }
 
 
+///////////////////
+// Indie Section //
+///////////////////
+
+section.indie {
+  position: relative;
+  padding: $spacing-128 $spacing-32;
+
+  @media (max-width: $breakpoint-mobile) {
+    padding: $spacing-64 $spacing-24;
+  }
+
+  .section-title {
+    margin: 0;
+    padding: 0;
+
+    color: $color-text-heading;
+    font-family: $font-family;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-48;
+    line-height: 1.2;
+    text-align: left;
+
+    em {
+      font-style: normal;
+      text-decoration: underline;
+      text-decoration-color: $color-primary;
+      text-underline-offset: 10px;
+      text-decoration-thickness: 5px;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: $font-size-30;
+      text-align: left;
+
+      em {
+        text-underline-offset: 5px;
+        text-decoration-thickness: 2px;
+      }
+    }
+  }
+
+  .horizontal-layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0 auto;
+    gap: $spacing-64;
+
+    @media (max-width: $breakpoint-mobile) {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+    }
+
+    .column {
+      flex-grow: 0;
+      flex-shrink: 1;
+
+      &.photo-column {
+        width: 500px;
+      }
+
+      &.text-column {
+        width: 600px;
+      }
+
+      @media (max-width: $breakpoint-mobile) {
+        width: auto !important;
+      }
+    }
+  }
+
+  .about-me-photo {
+    width: 100%;
+    border-radius: 2px;
+    filter: brightness(1.2) contrast(1.1) sepia(0.5);
+  }
+
+  .section-text {
+    color: $color-text-body;
+    font-family: $font-family;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-20;
+    line-height: 1.4;
+    text-align: left;
+
+    @media (max-width: $breakpoint-mobile) {
+      margin: 0;
+      margin-top: $spacing-24;
+      font-size: $font-size-16;
+      text-align: left;
+    }
+
+    &.author {
+      font-style: italic;
+      text-align: right;
+    }
+  }
+}
+
 /////////////////////
 // Discord Section //
 /////////////////////
