@@ -9,7 +9,7 @@ datePublished: null
 dateUpdated: null
 ---
 
-> **TODO:** figure out a title (and URL); prepare media image;
+> **TODO:** figure out a title (and URL); set up tags; prepare media image;
 > Edit at: http://localhost:1234/guides/xxx-bonus-codes
 
 A useful tool in marketing your game may be the distribution of bonus codes, say `CHRISTMAS24`. You can hand out these codes physically on leaflets or digitally on social media to attract players to your game. Players can then redeem these codes in your game to receive some bonus in-game content, such as premium equipment or themed skins.
