@@ -5,7 +5,7 @@ url: "guides/from-zero-to-steam-in-60-days-carsick-carventure"
 image: media-image.png
 tags: ["case-study", "steam"]
 author: "Jiří Mayer, Vladimír Hořký"
-datePublished: "2024-11-18"
+datePublished: "2024-11-21"
 dateUpdated: null
 ---
 

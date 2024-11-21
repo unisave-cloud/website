@@ -92,7 +92,7 @@ From the in-game CCU tracker I know that the peak CCU at 19:00 was around 100 CC
 > **Note:** In the middle of October I did some CCU / RPS measurements so I use those to get the CCU for a given request rate:<br/>
 > `[2024-10-12]: 90 CCU at 4 RPS with 3 worker instances`
 
-I chose this game and month, because it just-enough exhausts one worker instance, so that addional ones have to join in and help. This means that when we compute values like *compute time per facet call*, they are actually representative of the true value (we get something like 87 GBms, which is cca 350 ms of wall-time execution time per facet call).
+I chose this game and month, because it just-enough exhausts one worker instance, so that addional ones have to join in and help. This means that when we compute values like *compute time per facet call*, they are actually representative of the true value (we get something like 87 GBms, which is about 350 ms of wall-time execution time per facet call).
 
 > **Note:** The default worker instance has 250MB of RAM, which means 1 GBs is 4 wall-time execution seconds.
 
