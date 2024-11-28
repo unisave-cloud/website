@@ -6,7 +6,7 @@ image: "media-image.png"
 tags: ["photon", "authentication"]
 author: "Jiří Mayer, Leo Pan"
 datePublished: "2024-11-11"
-dateUpdated: null
+dateUpdated: "2024-11-28"
 ---
 
 This guide explains how to make Photon Fusion and Unisave talk to each other. More specifically, how to authenticate requests sent from *Fusion Dedicated Server* to Unisave and how to authenticate players joining the *Fusion Server* using Unisave.
@@ -22,16 +22,16 @@ There are three main ways in which you can set up Photon Fusion:
 
 This guide focusses on the *Dedicated Server* setup, as it’s the only one where Photon-to-Unisave communication must be handled. In both two remaining cases, there are only game clients, which can be authenticated via standard Unisave authentication.
 
-You would typically choose the *Dedicated Server* setup if you want the Fusion server to have authority over the state of the game. And in this scenario, you want the Fusion server to talk to Unisave, triggering business logic events (e.g. player won race, grant them reward coins).
+You would typically choose the *Dedicated Server* setup if you want the Fusion Server to have authority over the state of the game. And in this scenario, you want the Fusion Server to talk to Unisave, triggering business logic events (e.g. player won race, grant them reward coins).
 
-In this situation, the Fusion server is built as a “Headless Server” build in Unity and uploaded to Photon cloud during deployment. From the Unisave’s perspective, this Fusion server is just another build (like the PC build, mobile build, WebGL build). Therefore when the Fusion server makes a request to Unisave, we need to make sure it is the Fusion server indeed and not just some hacker-client trying to pretend.
+In this situation, the Fusion Server is built as a “Headless Server”, build in Unity, and uploaded to some server hosting provider (say [Hathora](https://hathora.dev/)). From the Unisave’s perspective, your Fusion Server is just another build (like the PC build, mobile build, WebGL build). Therefore when the Fusion Server makes a request to Unisave, we need to make sure it is the Fusion Server indeed and not just some hacker-client trying to pretend.
 
 This is the first scenario and we call this the *Fusion Server Authentication* scenario:
 
 <img src="fusion-server-authentication.png" alt="Fusion Server makes a PlayerWonRace request to Unisave">
 <!-- https://drive.google.com/file/d/1aqwh1_fFH3lahtKzXCjwEPPnw5_wuT1W/view?usp=sharing -->
 
-But even when we secure this, we still have to make sure that when the Fusion server thinks a player won the race, the Fusion server needs to know that this player is who he says he is. And this is handled when the player connects to the Fusion server and the scenario is called the *Fusion Player Authentication* scenario:
+But even when we secure this, we still have to make sure that when the Fusion Server thinks a player won the race, the Fusion Server needs to know that this player is who he says he is. And this is handled when the player connects to the Fusion Server and the scenario is called the *Fusion Player Authentication* scenario:
 
 <img src="fusion-player-authentication.png" alt="Fusion Server asks Unisave to verify a connecting player's identity">
 <!-- https://drive.google.com/file/d/1aqwh1_fFH3lahtKzXCjwEPPnw5_wuT1W/view?usp=sharing -->
@@ -41,7 +41,7 @@ With both these mechanisms in place, we can have Unisave trust the `PlayerWonRac
 
 ## Fusion connection token
 
-Firstly, we need to define what the *Fusion Connection Token* looks like. It’s a binary blob that you can send to Photon whenever a player wants to join. The server can then parse this token to know who is joining in.
+Firstly, we need to define what the *Fusion Connection Token* looks like. It’s a binary blob that you can send to your Fusion Server whenever a player wants to join. The server can then parse this token to know who is joining in.
 
 > **Note:** The connection token is passed to Photon in `StartGame` as a part of the [`StartGameArgs`](https://doc-api.photonengine.com/en/fusion/v2/struct_fusion_1_1_start_game_args.html#a9d0ceab922a47799bf15cba826051ef0). It can then be obtained by calling `Runner.` [`GetPlayerConnectionToken`](https://doc-api.photonengine.com/en/fusion/v2/class_fusion_1_1_network_runner.html#a83afbf1ff2eff060d7be42dfcd819922)`(playerRef)`.
 
@@ -69,23 +69,23 @@ public class FusionConnectionToken
 }
 ```
 
-> **Note:** You can understand the `FusionConnectionToken` as a username and password pair, that will be used by a player to connect to the Fusion server.
+> **Note:** You can understand the `FusionConnectionToken` as a username and password pair, that will be used by a player to connect to the Fusion Server.
 
-> ⚠️ **Warning:** The *Connection Token* has a limit of 128 bytes maximum, enforced by Photon. This limits how many more fields you can add to it substantially. Also note that there seems to be inconsistency with Client-Host setup, where the limit is only enforced for clients. Be wary of this.
+> ⚠️ **Warning:** The *Connection Token* has a limit of 128 bytes maximum, enforced by Photon Fusion. This limits how many more fields you can add to it substantially. Also note that there seems to be inconsistency with Client-Host setup, where the limit is only enforced for clients. Be wary of this.
 
 
 ## Fusion Server Authentication
 
 Fusion Server authentication is the first requirement for a secure Photon Fusion setup with Unisave and it makes sure that facet calls that only the Fusion Server is supposed to make cannot be made by any other client.
 
-The solution is simple. Generate a random token (a password used by the fusion server) and send it with each facet call to Unisave. Unisave then checks this token and if it matches, it performs the requested business action. We can call this token the *Fusion Server Token*.
+The solution is simple. Generate a random token (a password used by the fusion Server) and send it with each facet call to Unisave. Unisave then checks this token and if it matches, it performs the requested business action. We can call this token the *Fusion Server Token*.
 
 
-### Calling facets from the Fusion server
+### Calling facets from the Fusion Server
 
-Since the Fusion server is built with Unity just like any other game build, it gets automatically registered by Unisave in the list of builds and can make facet calls like any other build.
+Since the Fusion Server is built with Unity just like any other game build, it gets automatically registered by Unisave in the list of builds and can make facet calls like any other build.
 
-Let’s say the Fusion server tracks the winner of a race. When the race finishes, it calls Unisave and tells it which player won and that coins should be given to them:
+Let’s say the Fusion Server tracks the winner of a race. When the race finishes, it calls Unisave and tells it which player won and that coins should be given to them:
 
 ```csharp
 public class MyRaceManager : NetworkBehaviour
@@ -106,9 +106,10 @@ public class MyRaceManager : NetworkBehaviour
             "FUSION_SERVER_TOKEN"
         );
 
-        // We assume the Unisave player ID is sent to Photon
-        // as the connection token.
-        string unisavePlayerId = Encoding.UTF8.Decode(
+        // We pull the Unisave player ID from the connection token
+        // again, but you should instead store the ID in some variable
+        // right after the player joins and use that here instead.
+        var connectionToken = FusionConnectionToken.FromBytes(
             Runner.GetPlayerConnectionToken(
                 playerRef
             )
@@ -118,21 +119,21 @@ public class MyRaceManager : NetworkBehaviour
         await this.CallFacet(
             (MyRaceFacet f) => f.PlayerWonRace(
                 fusionServerToken,
-                unisavePlayerId
+                connectionToken.unisavePlayerId
             )
         );
     }
 }
 ```
 
-The *Fusion Server Token* can be passed into the Fusion server via environment variables. How exactly that is performed depends on the hosting provider you use. Photon itself does not provide hosting for servers (Game Session servers in the Photon terminology). Check out this Photon Fusion [documentation page](https://doc.photonengine.com/fusion/current/concepts-and-patterns/dedicated-server-overview). There are a number of listed providers, and for example Hathora can have environment variables [set up like this](https://hathora.dev/docs/guides/access-env-variables).
+The *Fusion Server Token* can be passed into the Fusion Server via environment variables. How exactly that is performed depends on the hosting provider you use. Photon itself does not provide hosting for servers (Game Session servers in the Photon terminology). Check out this Photon Fusion [documentation page](https://doc.photonengine.com/fusion/current/concepts-and-patterns/dedicated-server-overview). There are a number of listed providers, and for example Hathora can have environment variables [set up like this](https://hathora.dev/docs/guides/access-env-variables).
 
 Alternatively you could accept the token as one of the startup command-line arguments of the server, say `--fusion-server-token=123456789`. [Here](https://learn.microsoft.com/en-us/dotnet/api/system.environment.getcommandlineargs) is how to get these from C#.
 
 
-### Securing facets designated for the Fusion server
+### Securing facets designated for the Fusion Server
 
-On the Unisave side, once you receive the facet call, you verify the fusion server token against the one stored in [Unisave environment variables](https://unisave.cloud/docs/environments) (you put the same token into both the fusion server as well as the unisave environment) and if it matches, you perform the business logic:
+On the Unisave side, once you receive the facet call, you verify the fusion Server token against the one stored in [Unisave environment variables](https://unisave.cloud/docs/environments) (you put the same token into both the fusion Server as well as the unisave environment) and if it matches, you perform the business logic:
 
 ```csharp
 public class MyRaceFacet : Facet
@@ -142,11 +143,11 @@ public class MyRaceFacet : Facet
         string unisavePlayerId
     )
     {
-        // Verify the given Fusion server token.
+        // Verify the given Fusion Server token.
         string trueFusionToken = Env.Get("FUSION_SERVER_TOKEN");
         if (trueFusionToken != fusionServerToken)
             throw new Exception(
-                "Given Fusion server token is invalid"
+                "Given Fusion Server token is invalid"
             );
 
         // Give the player their victory gold.
@@ -157,25 +158,25 @@ public class MyRaceFacet : Facet
 }
 ```
 
-For all the facet calls that originate from the Fusion server, you need to send the Fusion Server Token and perform its validation.
+For all the facet calls that originate from the Fusion Server, you need to send the Fusion Server Token and perform its validation.
 
 
 ## Fusion Player Authentication
 
-Now that Unisave can authenticate (verify the identity of) the Fusion server, we also need to Fusion server to authenticate (verify the identity of) players that connect to it.
+Now that Unisave can authenticate (verify the identity of) the Fusion Server, we also need to Fusion Server to authenticate (verify the identity of) players that connect to it.
 
 Photon Fusion [provides a mechanism](https://doc.photonengine.com/fusion/current/manual/connection-and-matchmaking/authentication/custom-authentication) for custom authentication, but because Photon does not host game servers, this authentication only supports making HTTP request to a given endpoint. It does not allow us to make facet calls. Therefore we will use a different approach.
 
-We will let the player connect no matter what, and then when he starts being handled by our Fusion server, we verify his identity there and kick him out in case the validation fails.
+We will let the player connect no matter what, and then when he starts being handled by our Fusion Server, we verify his identity there and kick him out in case the validation fails.
 
 The process will be the following:
 
-1. We will create a new field in the `PlayerEntity` called `fusionPlayerToken`. This random token will act as the password used by the player to join our Fusion server.
-2. Before the player attempts to join the Fusion server, it first fetches its *Fusion Player Token* from Unisave.
-3. Then the player connects to the Fusion server, while providing the *Unisave Player ID* and the *Fusion Player Token* as part of the `ConnectionToken` (a binary payload that can be sent to Photon during connection).
-4. Photon makes the player join a session and in turn triggers the `PlayerJoined` callback on the Fusion server.
+1. We will create a new field in the `PlayerEntity` called `fusionPlayerToken`. This random token will act as the password used by the player to join our Fusion Server.
+2. Before the player attempts to join the Fusion Server, it first fetches its *Fusion Player Token* from Unisave.
+3. Then the player connects to the Fusion Server, while providing the *Unisave Player ID* and the *Fusion Player Token* as part of the `ConnectionToken` (a binary payload that can be sent to your Fusion Server during connection).
+4. Photon makes the player join a session and in turn triggers the `PlayerJoined` callback on the Fusion Server.
 5. The Fusion Server sends the player’s connection credentials to Unisave and Unisave checks their validity.
-6. If the validation fails, the player is kicked from the Fusion server.
+6. If the validation fails, the player is kicked from the Fusion Server.
 
 The process is visualized in this diagram:
 
@@ -223,7 +224,7 @@ public class MyFusionAuthFacet : Facet
 }
 ```
 
-Now, when the player wants to connect to the Fusion server, we first call this facet and pass the information to Photon:
+Now, when the player wants to connect to the Fusion Server, we first call this facet and pass the information to Photon:
 
 ```csharp
 async void StartGame()
@@ -238,7 +239,7 @@ async void StartGame()
         (MyFusionAuthFacet f) => f.GetFusionConnectionToken()
     );
 
-    // Join the Fusion server.
+    // Join the Fusion Server.
     await runner.StartGame(new StartGameArgs()
     {
         ConnectionToken = connectionToken.ToBytes(),
@@ -247,12 +248,12 @@ async void StartGame()
 }
 ```
 
-Then, in the scene (in the Fusion server), we need to have a `NetworkBehaviour` running which will check for new incoming players and verify their identity:
+Then, in the scene (in the Fusion Server), we need to have a `NetworkBehaviour` running which will check for new incoming players and verify their identity:
 
 ```csharp
 public class FusionPlayerAuthenicator : NetworkBehaviour, IPlayerJoined
 {
-    public void PlayerJoined(PlayerRef player)
+    public async void PlayerJoined(PlayerRef player)
     {
         // We only perform authentication if we are the server.
         if (!Runner.IsServer)
