@@ -67,6 +67,16 @@ The framework assembly is also tagged by the [`Microsoft.Owin.OwinStartupAttribu
 )]
 ```
 
+This `OwinStartupAttribute` tag is what is used by the Unisave Worker to locate the OWIN startup class.
+
+
+#### OWIN Properties
+
+Unisave Framework expects these properties provided by the *Host* or the *Server* in the *Properties* startup dictionary.
+
+**host.OnAppDisposing**<br>
+This is a `CancellationToken` that must be invoked by the *Host* when the server is shutting down. It will trigger the disposal of all created backend services.
+
 
 #### Custom Properties
 
@@ -83,7 +93,7 @@ An optional property of type [`IDictionary<string, string>`](https://learn.micro
 > **Note:** The motivation here is to theoretically allow the hosting of multiple web applications within a single OS process.
 
 **unisave.BackendApplication**<br>
-This property is set by the framework startup class and is exported back up into the server and the host. It contains the `BackendApplication` instance that will be used for request handling. This is used by framework startup tests, not by the Unisave Server (yet).
+This property is set by the framework startup class and is exported back up into the server and the host. It contains the `BackendApplication` instance that will be used for request handling. This is used by framework startup tests, not by the Unisave Worker (yet).
 
 
 ### HTTP Request
@@ -314,7 +324,7 @@ The Katana project provides a `host.OnAppDisposing` value in the *Properties* di
 Stopping needs to happen synchronously and immediately. There should be no lengthy cleanup.
 
 
-## Unisave Server
+## Unisave Worker
 
 > **GitHub:** [unisave-cloud/watchdog](https://github.com/unisave-cloud/watchdog)
 
@@ -322,7 +332,7 @@ A component of the Unisave cloud responsible for hosting the backend application
 
 > **Note:** Formerly known as *Unisave Watchdog* - taken from the [OpenFaaS](https://www.openfaas.com/) terminology.
 
-> **TODO:** list possible error responses (initialization crashes, etc...)
+The complete API of the *Unisave Worker* is documented in its GitHub repository. Start by reading its README file.
 
 
 ## Request Gateway
