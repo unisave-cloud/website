@@ -2,7 +2,7 @@
 title: "HTTP Client"
 titleHtml: "HTTP Client"
 url: "docs/http-client"
-image: NO_IMAGE
+image: "media-image.png"
 tags: []
 author: "Jiří Mayer"
 datePublished: "2020-09-01"
@@ -12,11 +12,9 @@ dateUpdated: null
 
 Unisave provides a thin wrapper around the .NET [`HttpClient`](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient) that lets you easily make HTTP requests to external web services.
 
-```
-image about connecting external services here from the leaflet
-```
+<img src="hero-image.png" alt="Unisave communicating with web services" />
 
-If you have never communicated with a web service before, you can read the [HTTP and the Web explained for game developers](../guides/http-and-the-web-explained-for-game-developers/http-and-the-web-explained-for-game-developers.md) guide. The guide is an introduction into the topic, whereas this documentation page serves as a reference documentation for all the available HTTP client features.
+If you have never communicated with a web service before, you can read the [HTTP and the Web explained for game developers](../../guides/http-and-the-web-explained-for-game-developers/http-and-the-web-explained-for-game-developers.md) guide. The guide is an introduction into the topic, whereas this documentation page serves as a reference documentation for all the available HTTP client features.
 
 
 ## Asynchronicity
@@ -31,7 +29,7 @@ var response = await Http.GetAsync("http://test.com");
 var response = Http.Get("http://test.com");
 ```
 
-If you've never seen `async` and `await` before, go and read the [Async-Await for Dummies](../guides/async-await-for-dummies/async-await-for-dummies.md) guide. You don't need to know how asynchronicity works in order to use it. In the end, you just need to add a few keywords in a couple of places.
+If you've never seen `async` and `await` before, go and read the [Async-Await for Dummies](../../guides/async-await-for-dummies/async-await-for-dummies.md) guide. You don't need to know how asynchronicity works in order to use it. In the end, you just need to add a few keywords in a couple of places.
 
 
 ## Making requests
@@ -311,7 +309,7 @@ var thirdResponse = await thirdTask;
 
 ## Dependency injection
 
-All the examples in this documentation use the `Http` static class facade. You can also access the same API via an injected `IHttp` service from the Unisave [service container](./service-container.md). This is an example usecase in a facet:
+All the examples in this documentation use the `Http` static class facade. You can also access the same API via an injected `IHttp` service from the Unisave [service container](../service-container.md). This is an example usecase in a facet:
 
 ```cs
 using Unisave.Facets;
