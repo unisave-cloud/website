@@ -149,7 +149,7 @@ class FacetThatUsesDiscord : Facet
         this.discord = discord;
     }
 
-    public PerformSomeLogic(string foo)
+    public void PerformSomeLogic(string foo)
     {
         discord.SendMessage(
             "Some logic has been performed: " + foo
