@@ -256,7 +256,7 @@ async function callFacet({ facetName, methodName, arguments }) {
       facetName: facetName,
       methodName: methodName,
       arguments: arguments,
-      sessionId: loadSessionId(),
+      sessionId: loadSessionId(), // send null when none has been received yet
       deviceId: loadDeviceId(),
       device: {
         platform: "Custom",
@@ -291,7 +291,10 @@ async function callFacet({ facetName, methodName, arguments }) {
   const returned = executionResult["returned"];
   const special = executionResult["special"];
 
-  storeSessionId(special["sessionId"]);
+  // store session ID if it was sent by the server,
+  // else keep the old one
+  if (special["sessionId"] != null)
+    storeSessionId(special["sessionId"]);
 
   if (result === "exception") {
     throw new Error("[" + exception["ClassName"] + "] " + exception["Message"]);
