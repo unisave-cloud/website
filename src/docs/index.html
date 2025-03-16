@@ -2,10 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta http-equiv="refresh" content="0; URL=/docs/installation" />
+
+  <!-- (2) no-javascript automatic redirect without query string preserving -->
+  <noscript>
+    <meta http-equiv="refresh" content="0; URL=/docs/installation" />
+  </noscript>
+
   <title>Documentation - Unisave</title>
 </head>
 <body>
-  <a href="/docs/installation">Click here if you are not redirected automatically</a>
+  <!-- (1) javascript redirect that preserves query string and fragment -->
+  <script>
+    window.location.href = "/docs/installation"
+      + (window.location.search || "")
+      + (window.location.hash || "");
+  </script>
+
+  <!-- (3) ultimate fallback: user interaction -->
+  <a href="/docs/installation">
+    Click here if you are not redirected automatically
+  </a>
 </body>
 </html>
