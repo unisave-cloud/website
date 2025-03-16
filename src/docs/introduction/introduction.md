@@ -174,7 +174,7 @@ Now you can continue to a multitude of places, depending on your needs:
 - Read [guides](../../guides/index.html) to learn how to build custom features.
 - Read more on [facets](../facets.md) and [entities](../entities.md) to learn in what ways they can be used.
 - Read about the [authentication system](../authentication.md), to see how all the authentication modules yield control back to you, once a player becomes logged-in.
-- If you want to communicate with external services, use the [HTTP client](../http-client.md).
+- If you want to communicate with external services, use the [HTTP client](../http-client/http-client.md).
 - Try to see if [Heapstore](../heapstore.md) does not fit your problem best, instead of facets and entities.
 
 You can start by reading the [How to store player data online with Unity](../../guides/how-to-store-player-data-online-with-unity/how-to-store-player-data-online-with-unity.md) guide.

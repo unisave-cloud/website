@@ -15,6 +15,7 @@ function getTagDepth(tag) {
  * @returns 
  */
 function renderGuideContents(textualContent) {
+  const MAX_DEPTH = 3; // allow only <h2> and <h3>
   const parts = [];
   let depth = 2
 
@@ -24,6 +25,10 @@ function renderGuideContents(textualContent) {
     }
     
     const thisDepth = getTagDepth(section.tag);
+    if (thisDepth > MAX_DEPTH) {
+      continue; // skip headings that are too deep
+    }
+
     while (depth < thisDepth) {
       parts.push("<ol>");
       depth += 1;
