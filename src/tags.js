@@ -31,6 +31,10 @@ const tags = [
     title: "Getting Started"
   },
   {
+    id: "zero-to-hero",
+    title: "Zero to Hero"
+  },
+  {
     id: "authentication",
     title: "Authentication"
   },
