@@ -18,7 +18,7 @@ This tutorial shows you how to integrate the Unisave cloud backend platform into
 > 📖 **Navigation**<br>
 > [Unisave Zero to Hero](../zero-to-hero.md)<br>
 > ⬅️ Previous: [Introduction](../00-introduction/zth-introduction.md)<br>
-> ➡️ Next: Backend Folders, Uploading (comming soon)
+> ➡️ Next: [Backend Folders, Uploading](../02-backend-folders-uploading/zth-backend-folders-uploading.md)
 
 
 ## Import the Unity asset
@@ -78,4 +78,4 @@ If you don't get any errors, the connection is set up correctly. If you get an e
 Thank you for reading the tutorial. You can visit the [Installation](../../../docs/installation/installation.md) documentation page and browse the documentation to learn more details.
 
 **You can continue with the next tutorial in the series:**<br>
-➡️ Backend Folders, Uploading - #2 Zero to Hero (comming soon)
+➡️ [Backend Folders, Uploading - #2 Zero to Hero](../02-backend-folders-uploading/zth-backend-folders-uploading.md)

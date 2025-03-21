@@ -22,7 +22,7 @@ Each episode has a corresponding web page with textual version of the tutorial. 
 
 0. [Introduction - #0 Zero to Hero](00-introduction/zth-introduction.md)
 1. [Registration, Asset, Installation - #1 Zero to Hero](01-registration-asset-installation/zth-registration-asset-installation.md)
-2. Backend Folders, Uploading - #2 Zero to Hero
+2. [Backend Folders, Uploading - #2 Zero to Hero](02-backend-folders-uploading/zth-backend-folders-uploading.md)
 3. Example Projects - #3 Zero to Hero
 
 The future:
