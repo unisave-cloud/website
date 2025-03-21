@@ -1,5 +1,5 @@
 ---
-title: "Introduction #0 Zero to Hero"
+title: "Introduction - #0 Zero to Hero"
 titleHtml: "<em>Introduction</em><br>#0 Zero to Hero"
 url: "guides/zero-to-hero/introduction"
 image: "youtube-thumbnail.png"
@@ -13,7 +13,11 @@ dateUpdated: null
     <iframe width="560" height="315" src="https://www.youtube.com/embed/leGadAt4t9k?si=Z2_xOUGUZr3ihKtN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Hello, my name is Jirka. Welcome to *Unisave Zero to Hero* - a video tutorial series that explains Unisave from the absolute basics. But first, what is Unisave? Unisave is a platform for building backend servers for Unity games.
+Hello, my name is Jirka. Welcome to [Unisave Zero to Hero](../zero-to-hero.md) - a video tutorial series that explains Unisave from the absolute basics. But first, what is Unisave? Unisave is a platform for building backend servers for Unity games.
+
+> 📖 **Navigation**<br>
+> [Unisave Zero to Hero](../zero-to-hero.md)<br>
+> ➡️ Next: [Registration, Asset, Installation](../01-registration-asset-installation/zth-registration-asset-installation.md)
 
 
 ## What is Unisave
@@ -77,3 +81,6 @@ The primary advantage of Unisave is its flexibility - you can build any backend 
 If you are interested in adding such features to your game, please continue watching this tutorial series. The goal is to teach you the basics even if you know nothing to begin with. Each video has a corresponding web page linked from the video description on YouTube and that web page contains all the code and resources shown in the video.
 
 That's all from me, see you at the next one.
+
+**You can continue with the next tutorial in the series:**<br>
+➡️ [Registration, Asset, Installation - #1 Zero to Hero](../01-registration-asset-installation/zth-registration-asset-installation.md)
