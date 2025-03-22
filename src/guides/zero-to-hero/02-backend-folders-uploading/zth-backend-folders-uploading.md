@@ -18,7 +18,7 @@ This tutorial talks about backend folders, whose content is uploaded to Unisave 
 > 📖 **Navigation**<br>
 > [Unisave Zero to Hero](../zero-to-hero.md)<br>
 > ⬅️ Previous: [Registration, Asset, Installation](../01-registration-asset-installation/zth-registration-asset-installation.md)<br>
-> ➡️ Next: Example Projects (comming soon)
+> ➡️ Next: [Example Projects](../03-example-projects/zth-example-projects.md)
 
 
 ## Backend folders
@@ -92,4 +92,4 @@ Modules are standalone libraries that extend the Unisave functionality in some w
 Thank you for reading the tutorial. You can visit the [Introduction](../../../docs/introduction/introduction.md) documentation page and browse the documentation to learn more details.
 
 **You can continue with the next tutorial in the series:**<br>
-➡️ Example Projects - #3 Zero to Hero (comming soon)
+➡️ [Example Projects - #3 Zero to Hero](../03-example-projects/zth-example-projects.md)

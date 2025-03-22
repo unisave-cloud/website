@@ -23,7 +23,7 @@ Each episode has a corresponding web page with textual version of the tutorial. 
 0. [Introduction - #0 Zero to Hero](00-introduction/zth-introduction.md)
 1. [Registration, Asset, Installation - #1 Zero to Hero](01-registration-asset-installation/zth-registration-asset-installation.md)
 2. [Backend Folders, Uploading - #2 Zero to Hero](02-backend-folders-uploading/zth-backend-folders-uploading.md)
-3. Example Projects - #3 Zero to Hero
+3. [Example Projects - #3 Zero to Hero](03-example-projects/zth-example-projects.md)
 
 The future:
 
@@ -31,9 +31,3 @@ The future:
 5. Facets, Cloud Functions - #5 Zero to Hero
 6. Entities, Storing Data - #6 Zero to Hero
 7. AQL Queries - #7 Zero to Hero
-
-- session storage
-- anonymous authentication
-- email authentication module
-- http client, external services and discord
-- broadcasting, chat
