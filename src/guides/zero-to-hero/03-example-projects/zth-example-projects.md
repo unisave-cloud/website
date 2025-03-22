@@ -5,7 +5,7 @@ url: "guides/zero-to-hero/example-projects"
 image: "youtube-thumbnail.png"
 tags: ["zero-to-hero", "getting-started"]
 author: "Jiří Mayer"
-datePublished: null
+datePublished: "2025-03-22"
 dateUpdated: null
 ---
 

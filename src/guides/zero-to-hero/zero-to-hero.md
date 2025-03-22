@@ -5,7 +5,7 @@ url: "guides/zero-to-hero"
 image: "00-introduction/youtube-thumbnail.png"
 tags: ["zero-to-hero", "getting-started"]
 author: "Jiří Mayer"
-datePublished: null
+datePublished: "2025-03-22"
 dateUpdated: null
 ---
 
