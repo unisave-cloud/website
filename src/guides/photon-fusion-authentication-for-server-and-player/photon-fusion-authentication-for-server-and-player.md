@@ -144,7 +144,7 @@ public class MyRaceFacet : Facet
     )
     {
         // Verify the given Fusion Server token.
-        string trueFusionToken = Env.Get("FUSION_SERVER_TOKEN");
+        string trueFusionToken = Env.GetString("FUSION_SERVER_TOKEN");
         if (trueFusionToken != fusionServerToken)
             throw new Exception(
                 "Given Fusion Server token is invalid"
