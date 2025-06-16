@@ -75,13 +75,15 @@ For example, the `tools/ContentBuilder` is used to upload a built game binary to
 The library provides public methods for interacting with Steamworks for you to call from your game. It implements these methods by communicating via inter-process communication (IPC) with the running Steam client. If the Steam client process is not running, the library refuses to do any work. It's then up to the Steam client to communicate with Steam servers.
 
 <!-- https://drive.google.com/file/d/1CRZQYzwO3LHWV34yi8bimTnevfJPw-7W/view?usp=drive_link -->
-<img src="steam-client-communication.png" alt="Your game, the Steam Client and Steam Servers and how they all communicate." />
+<img src="steam-client-communication.png" alt="Your game, the Steam client and Steam servers and how they all communicate." />
 
-The library can also render the [Steam Overlay](https://partner.steamgames.com/doc/features/overlay), which is Steam-related user interface that is displayed on top of your game. You have no control over this overlay, the library manages all of it. For example, when you initiate a microtransaction, this library will display the overlay, pause your game, handle the purchase, and then return control back to you once it's all finished (or failed). Notice that **the overlay is really a part of your game!** It is running in the same process, just the code is imported from the `steam_api.dll` library. This becomes a complication when used in-development in the Unity editor, as Unity also shares the same process as your game.
+The library can also render the [Steam Overlay](https://partner.steamgames.com/doc/features/overlay), which is Steam-related user interface that is displayed on top of your game. You have no control over this overlay, the library manages all of it. For example, when you initiate a microtransaction, this library will display the overlay, pause your game, handle the purchase, and then return control back to you once it's all finished (or failed). Notice that **the overlay is really a part of your game!** It is running in the same process, just the code is imported from the `steam_api.dll` library.
+
+This becomes a complication when used in-development in the Unity editor, as Unity also shares the same process as your game. The Steam APIs that only communicate with the Steam client (such as getting the logged-in player) work fine in Unity, but APIs that open the overlay (such as microtransactions) cannot be tested from within the Unity editor. Instead, you must build the game completely, upload to Steam (maybe as a beta branch), and launch it from within the Steam client. This is quite painful, but I found no other solution. Just remember that when you get a non-sensical error in Unity, this might be the reason.
 
 <img src="steam-overlay.jpg" alt="Steam Overlay displayed over the game Elden Ring." />
 
-You could place this library into your Unity project and start talking to it, but it would be painful. The library is written in C++, which is a pain to talk to from within C#. Luckily, people have built wrapper libraries that provide access to it from C#, and they also handle all the integration related to game-pausing and Steam overlay for Unity.
+To do the Steamworks integration, you could place the `steam_api.dll` library into your Unity project and start talking to it. However, the library is written in C++, which is a pain to talk to from within C#. Luckily, people have built wrapper libraries that provide access to it from C#, and they also handle all the integration related to game-pausing and Steam overlay for Unity.
 
 Note that this C++ interface of the library is what is documented in the official [Steamworks API Reference](https://partner.steamgames.com/doc/api) documentation page.
 
@@ -117,10 +119,10 @@ The `Steamworks.NET` library is integrated into your game through the `SteamMana
 It does the following:
 
 - Makes sure it only exists once and that it survives scene changes.
-- Re-launches your game through the Steam Client, if launched directly.
+- Re-launches your game through the Steam client, if launched directly.
 - Loads the `steam_api.dll` library.
-- Initializes the connection to the Steam Client.
-- Consumes callbacks coming from the Steam Client and invokes them within the body of its `Update` method.
+- Initializes the connection to the Steam client.
+- Consumes callbacks coming from the Steam client and invokes them within the body of its `Update` method.
 
 The easiest way to make sure you have the `SteamManager` present in your game is to create an empty game object in your startup scene and add the `SteamManager` to it. If you have it in multiple scenes simultaneously, it's ok, it will only be used once and the other instances will destroy themselves automatically.
 
