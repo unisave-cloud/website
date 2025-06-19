@@ -330,7 +330,7 @@ Our users then need to define this bootstrapper, to set up our module:
 ```csharp
 using Unisave.Bootstrapping;
 
-abstract class DiscordClientBootstrapper : DiscordClientBootstrapperBase
+class DiscordClientBootstrapper : DiscordClientBootstrapperBase
 {
     protected override string TransformMessage(string msg)
     {
