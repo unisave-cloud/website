@@ -18,7 +18,7 @@ dateUpdated: null
 
 If you just want to have the setup quickly done, follow this checklist. If you want to learn more about what is actually happening, read the rest of the article.
 
-1. Go to the [GitHub releases](https://github.com/rlabrecque/Steamworks.NET/releases) page of Steamworks.NET and downloads the latst `.unitypackage`.
+1. Go to the [GitHub releases](https://github.com/rlabrecque/Steamworks.NET/releases) page of Steamworks.NET and download the latest `.unitypackage`.
 2. Import everything into your project.
     - Right-click in the `Assets` window and choose `Import Package > Custom Package` and select the downloaded `.unitypackage`.
 
@@ -126,14 +126,14 @@ It does the following:
 
 The easiest way to make sure you have the `SteamManager` present in your game is to create an empty game object in your startup scene and add the `SteamManager` to it. If you have it in multiple scenes simultaneously, it's ok, it will only be used once and the other instances will destroy themselves automatically.
 
-Alternatively, you can create it programmatically by reading the `SteamManager.Instance` static property:
+Alternatively, you can create it programmatically by reading the `SteamManager.Initialized` static property:
 
 ```csharp
 // This creates the SteamManager if it does not exist yet.
-var _ = SteamManager.Instance;
+var _ = SteamManager.Initialized;
 
 // We can just throw the variable away (underscore), since
-// we don't need to do anything with it. Just create it.
+// we don't need to do anything with it.
 ```
 
 Run this code in `Awake` so that the `SteamManager` is initialized by the time your `Start` method runs. You cannot use it immediately, its `Awake` method must be called before first use.
@@ -141,9 +141,9 @@ Run this code in `Awake` so that the `SteamManager` is initialized by the time y
 
 ## Unisave modules
 
-Unisave is a game backend platform that lets you build a custom backend server. It can be used to register players and store their data online. Unisave provides ready-to-use modules that integrate it with certain Steam features. For example, in order to use Steam Microtransactions, Steam needs you to have a "[purchasing server](https://partner.steamgames.com/doc/features/microtransactions/implementation#3)" which acts as a safe place to store all your player's transactions and also your Steam API keys. The [Steam Microtransactions](../../docs/steam-microtransactions.md) Unisave module provides this purchasing server, as well as additional code to make the integration easier.
+Unisave is a game backend platform that lets you build a custom backend server. It can be used to register players and store their data online. Unisave provides ready-to-use modules that integrate it with certain Steam features. For example, in order to use Steam Microtransactions, Steam needs you to have a "[purchasing server](https://partner.steamgames.com/doc/features/microtransactions/implementation#3)" which acts as a safe place to store all your player's transactions and also your Steam API keys. The [Steam Microtransactions](../../docs/steam-microtransactions/steam-microtransactions.md) Unisave module provides this purchasing server, as well as additional code to make the integration easier.
 
 Unisave currently provides these Steam modules:
 
 - [Steam Authentication](../../docs/steam-authentication.md) (login via Steam)
-- [Steam Microtransactions](../../docs/steam-microtransactions.md)
+- [Steam Microtransactions](../../docs/steam-microtransactions/steam-microtransactions.md)
