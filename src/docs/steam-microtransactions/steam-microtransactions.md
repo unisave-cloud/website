@@ -2,7 +2,7 @@
 title: "Steam Microtransactions"
 titleHtml: "Steam Microtransactions"
 url: "docs/steam-microtransactions"
-image: NO_IMAGE
+image: "media-image.png"
 tags: ["steam"]
 author: "Jiří Mayer"
 datePublished: "2020-09-01"
@@ -10,6 +10,8 @@ dateUpdated: "2025-06-25"
 ---
 
 Steam is an online marketplace for selling and distributing games. It also offers a microtransactions service where you can let players purchase virtual goods through Steam's payment gateway directly inside your game. The integration requires a secure backend server (called the purchasing server) to validate and perform these purchases. This module lets you quickly set up this purchasing server on the Unisave platform.
+
+<img src="hero-image.png" alt="Two characters trading USD for diamonds." />
 
 > **Version:** `1.0.0-rc.1`<br>
 > **Unisave:** `0.14.1` or higher<br>
