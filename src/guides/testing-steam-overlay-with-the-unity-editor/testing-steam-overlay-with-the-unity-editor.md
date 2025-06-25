@@ -5,7 +5,7 @@ url: "guides/testing-steam-overlay-with-the-unity-editor"
 image: "media-image.png"
 tags: ["steam"]
 author: "Jiří Mayer"
-datePublished: "2025-06-23"
+datePublished: "2025-06-25"
 dateUpdated: null
 ---
 

@@ -3,17 +3,18 @@ title: "Steam Microtransactions"
 titleHtml: "Steam Microtransactions"
 url: "docs/steam-microtransactions"
 image: NO_IMAGE
-tags: []
+tags: ["steam"]
 author: "Jiří Mayer"
 datePublished: "2020-09-01"
-dateUpdated: null
+dateUpdated: "2025-06-25"
 ---
 
 Steam is an online marketplace for selling and distributing games. It also offers a microtransactions service where you can let players purchase virtual goods through Steam's payment gateway directly inside your game. The integration requires a secure backend server (called the purchasing server) to validate and perform these purchases. This module lets you quickly set up this purchasing server on the Unisave platform.
 
-> **Version:** `1.0.0`<br>
+> **Version:** `1.0.0-rc.1`<br>
 > **Unisave:** `0.14.1` or higher<br>
-> **Download:** TODO, asset name: "Unisave Microtransactions for Steam"<br>
+> **Asset Store:** Waiting for approval: [Unisave Microtransactions for Steam](https://assetstore.unity.com/packages/slug/324579)<br>
+> **Download:** [unisave-steam-microtransactions-1.0.0-rc.1.unitypackage](https://github.com/unisave-cloud/steam-microtransactions/releases/download/v1.0.0-rc.1/unisave-steam-microtransactions-1.0.0-rc.1.unitypackage)<br>
 > **GitHub:** [unisave-cloud/steam-microtransactions](https://github.com/unisave-cloud/steam-microtransactions)<br>
 
 
@@ -42,7 +43,7 @@ Then, since this is a Steam integration, you also need to have the [Steamworks.N
 
 Now you can import this Unisave module as a Unity asset:
 
-- TODO: from the asset store
+- from the [Unity Asset Store](https://assetstore.unity.com/packages/slug/324579) (waiting for approval...)
 - from the `.unitypackage` downloaded from the [GitHub releases page](https://github.com/unisave-cloud/steam-microtransactions/releases)
 
 The `SteamMicrotransactionsModule` backend folder included in the asset should be now enabled for backend uploading and the backend server should compile fine.
