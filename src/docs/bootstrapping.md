@@ -132,7 +132,7 @@ using Unisave.Bootstrapping;
 class NotificationSystemBootstrapper : Bootstrapper
 {
     // run in between the framework and the user
-    public override int Stage => BootstrappingStage.Modules;
+    public override int StageNumber => BootstrappingStage.Modules;
 
     public override void Main()
     {
