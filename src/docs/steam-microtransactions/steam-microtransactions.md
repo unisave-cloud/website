@@ -13,10 +13,10 @@ Steam is an online marketplace for selling and distributing games. It also offer
 
 <img src="hero-image.png" alt="Two characters trading USD for diamonds." />
 
-> **Version:** `1.0.0-rc.1`<br>
+> **Version:** `1.0.0-rc.2`<br>
 > **Unisave:** `0.14.1` or higher<br>
 > **Asset Store:** Waiting for approval: [Unisave Microtransactions for Steam](https://assetstore.unity.com/packages/slug/324579)<br>
-> **Download:** [unisave-steam-microtransactions-1.0.0-rc.1.unitypackage](https://github.com/unisave-cloud/steam-microtransactions/releases/download/v1.0.0-rc.1/unisave-steam-microtransactions-1.0.0-rc.1.unitypackage)<br>
+> **Download:** [unisave-steam-microtransactions-1.0.0-rc.2.unitypackage](https://github.com/unisave-cloud/steam-microtransactions/releases/download/v1.0.0-rc.2/unisave-steam-microtransactions-1.0.0-rc.2.unitypackage)<br>
 > **GitHub:** [unisave-cloud/steam-microtransactions](https://github.com/unisave-cloud/steam-microtransactions)<br>
 
 
