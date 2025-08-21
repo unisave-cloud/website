@@ -286,6 +286,8 @@ The entity stores all the metadata about the transaction, as well as its progres
 - `string ErrorDescription`: Human-readable description for the error code above. Only present for Steam errors, not for code-exceptions.
 - `JsonObject Exception`: Serialized exception, if an unexpected code-exception was raised, both on the server, or the client. Set to `null` if no exception occured.
 - `string StateBeforeException`: Stores the value of `State` field before an code exception was raised.
+- `ReportOrder SteamReportOrder`: The module [periodically fetches](#background-reconciliation) data about the transaction from Steam. This data is written here for you to access.
+- `DateTime? SteamReportOrderTimestamp`: The last time the Steam transaction data was fetched.
 
 The `SteamTransactionItem` has these fields that come from the corresponding `SteamProduct` and are frozen in place in the entity for auditing reasons:
 
@@ -322,6 +324,30 @@ If you observe entities in your database, that got stuck in some state which is 
 Both the sever-side and client-side code of the module are covered by try-catch blocks, which capture any unexpected failures that may occur. Especially in the user code that grants players their purchased products. If such an exception occurs, the transaction transitions into the `exception` state and the state in which that exception occured is stored in the `StateBeforeException` field. But this will not capture all the faults, if the exception occurs on the client due to network connection, it very likely cannot be sent to the backend server to be stored. Similarly if the database crashes, it cannot be stored there either. But these are extreme examples.
 
 Note that once the transaction has passed the `authorized` state, the player has been charged for money. If the transaction failed after that, **it will not be automatically refunded**. You must check at what stage the transaction failed and whether the products have been given to the player. Then either refund the transaction manually, give the player the products manually by editing the database, or negotiate something else with the player.
+
+
+## Background reconciliation
+
+The module periodically in the background polls Steam servers to get updates about existing transactions. It calls the Steam's [`GetReport/v5/`](https://partner.steamgames.com/doc/webapi/ISteamMicroTxn#GetReport) API endpoint. Steam requires your game to call this endpoint to get information about fraudulent or refunded transactions. This is because you should revoke (claw back) the items purchased in the transaction from the player's account.
+
+This module currently does not support item revocation. If you'd like to have this functionality in your game, contact me via email or Discord.
+
+The module requests Steam servers for this information every 15 minutes (if at least one backend worker is running) and only for transactions younger than 90 days. The information is written as-is to corresponding `SteamTransactionEntity` instances, to their `SteamReportOrder` field. If Steam reviewers want you to prove you're calling the `GetReport/v5/` endpoint, you can send back to them the data in this field.
+
+All parameters of this background task can be adjusted via environment variables. These are their default values:
+
+```bash
+STEAM_MTX_SCHEDULER_ENABLED=true
+STEAM_MTX_SCHEDULER_DELAY_SECONDS=30
+STEAM_MTX_SCHEDULER_PERIOD_SECONDS=900
+STEAM_MTX_RECONCILE_TRANSACTIONS_YOUNGER_THAN_DAYS=90
+```
+
+You can disable the reconciliation logic completely by setting this variable alone:
+
+```bash
+STEAM_MTX_SCHEDULER_ENABLED=false
+```
 
 
 ## Client-side player data
