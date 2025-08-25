@@ -9,7 +9,7 @@ datePublished: "2025-06-25"
 dateUpdated: null
 ---
 
-Steam Overlay is a feature of Steamworks SDK that displays Steam's UI on top of your game when you press `Shit + Tab`. It also handles other interactions between Steam and your game, such as authorizing Steam microtransactions. Due to the way it integrates with your game, it is impossible to test Steamworks features that utilize the Overlay from within the Unity Editor. This guide describes possible workarounds to ease development and debugging.
+Steam Overlay is a feature of Steamworks SDK that displays Steam's UI on top of your game when you press `Shift + Tab`. It also handles other interactions between Steam and your game, such as authorizing Steam microtransactions. Due to the way it integrates with your game, it is impossible to test Steamworks features that utilize the Overlay from within the Unity Editor. This guide describes possible workarounds to ease development and debugging.
 
 <img src="hero-image.png" alt="Illustration of the Steam overlay over a game written in Unity." />
 
