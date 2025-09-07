@@ -151,6 +151,10 @@ section.hero {
 
   .postscript {
     font-size: $font-size-16;
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: $font-size-14;
+    }
   }
 
   .hero-particles {
