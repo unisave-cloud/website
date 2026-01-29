@@ -49,6 +49,10 @@ const tags = [
   {
     id: "photon",
     title: "Photon"
+  },
+  {
+    id: "integration",
+    title: "Integration"
   }
 ];
 
